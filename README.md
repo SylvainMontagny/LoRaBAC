@@ -120,6 +120,7 @@ The values in brackets [ ] are the available possibilities.
     <li><strong>identity</strong> : DO NOT MODIFY.</li>
     <li><strong>controller</strong> : THIS SECTION IS YOUR CONTROLLER INFORMATION.
         <ul>
+            <li><strong>debug</strong> : Personalized debug. ["all", "up", "down", "creation", "txTime"] </li>
             <li><strong>model</strong> : Controller model. Complete this section only when using API Rest. [null, distechControls*] </li>
             <li><strong>interface</strong> : Interface type between LoRaBAC and the controller. [restAPI, bacnet]</li>
             <li><strong>ipAddress</strong> : Controller's IP address.</li>
@@ -165,6 +166,7 @@ In the "bacnet" section of the device type description, there is a property call
     "valve": {
         "identity": {},
         "controller": {
+            "debug": ["all"],
             "model": "distechControls",
             "interface": "restAPI",
             "ipAddress": "X.Y.W.Z",
@@ -199,6 +201,7 @@ In the "bacnet" section of the device type description, there is a property call
   "temperaturesensor": {
         "identity": {},
         "controller": {
+            "debug": ["all"],
             "model": null,
             "interface": "bacnet",
             "ipAddress": "ipAddress",
