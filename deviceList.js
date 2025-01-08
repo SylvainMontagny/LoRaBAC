@@ -1,14 +1,27 @@
+/////////////////////////////////////////////////////
+////////////    TO CONFIGURE      ///////////////////
+/////////////////////////////////////////////////////
+
+const debugDefault = ["all"];   // ["all", "up", "down", "creation", "txTime"]
+const ipAddress = "TO_CONFIGURE";               // "a.b.c.d"
+const networkServer = "TO_CONFIGURE";           // tts, chirpstack, actility 
+const protocol = "TO_CONFIGURE";               // restAPIBacnet, bacnet, later : restAPIModbus, modbus
+const chirpstackGrpcApikey = "TO_CONFIGURE_IF_USING_CHIRPSTACK"     // chirpstack only
+const login = "TO_CONFIGURE_IF_USING_restAPIBacnet";
+const password = "TO_CONFIGURE_IF_USING_restAPIBacnet";
+
 
 let deviceList = {
+   
     //////////////////////////////////////////////////////////////////////////
     // valve simulation - STM32WL Nucleo
     /////////////////////////////////////////////////////////////////////////
-    "valve": {
+    "usmb-valve": {
         "identity": {},
         "controller": {
-            "debug": debugDefault,
-            "model": "distechControls",
-            "interface": interface,
+            "debug": debugDefault,//debugDefault, // ["all"],
+            "model": "distechControlsV2",
+            "protocol": protocol,
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
@@ -42,17 +55,16 @@ let deviceList = {
             "topicDownlink": {},
         }
     },
-
     //////////////////////////////////////////////////////////////////////////
     // Temperature-Humidity sensor - LHT-65
     /////////////////////////////////////////////////////////////////////////
 
-    "lht65": {
+    "dragino-lht65": {
         "identity": {},
         "controller": {
             "debug": debugDefault,
-            "model": "distechControls",
-            "interface": interface,
+            "model": "distechControlsV2",
+            "protocol": protocol,
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
@@ -86,15 +98,125 @@ let deviceList = {
         }
     },
 
+
+
+    //////////////////////////////////////////////////////////////////////////
+    // Temperature and Humidity sensor - WATTECO Tempo
+    /////////////////////////////////////////////////////////////////////////
+    "watteco-tempo": {
+        "identity": {},
+        "controller": {
+            "debug": debugDefault,  //debugDefault, //["all"],
+            "model": "distechControlsV2",
+            "protocol": protocol,
+            "ipAddress": ipAddress,
+            "login": login,
+            "password": password,
+        },
+        "lorawan": {
+            "networkServer": networkServer,
+            "downlinkPort": null,
+            "flushDownlinkQueue": true,
+            "chirpstack": {
+                "grpcApikey": chirpstackGrpcApikey
+            }
+        },
+        "bacnet": {
+            "offset": 2000,
+            "instanceRange": 5,
+            "objects": {
+                "temperature": { "lorawanPayloadName": "data[5].value", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "humidity": { "lorawanPayloadName": "data[11].value", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null }
+            }
+        },
+        "mqtt": {
+            "topicDownlink": {},
+        }
+    },
+
+    //////////////////////////////////////////////////////////////////////////
+    // C02 - Temperature - Humidity sensor - ATIM THAQ
+    /////////////////////////////////////////////////////////////////////////
+    "atim-thaq": {
+        "identity": {},
+        "controller": {
+            "debug": debugDefault, //debugDefault, //["all"],
+            "model": "distechControlsV2",
+            "protocol": protocol,
+            "ipAddress": ipAddress,
+            "login": login,
+            "password": password,
+        },
+        "lorawan": {
+            "networkServer": networkServer,
+            "downlinkPort": null,
+            "flushDownlinkQueue": true,
+            "chirpstack": {
+                "grpcApikey": chirpstackGrpcApikey
+            }
+        },
+        "bacnet": {
+            "offset": 2100,
+            "instanceRange": 5,
+            "objects": {
+                "co2": { "lorawanPayloadName": "C02.value[0]", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "humidity": { "lorawanPayloadName": "humidity0.value[0]", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
+                "cov": { "lorawanPayloadName": "COV.value[0]", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "uplink", "value": null },
+                "temperature": { "lorawanPayloadName": "temperature0.value[0]", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "uplink", "value": null }
+            }
+        },
+        "mqtt": {
+            "topicDownlink": {},
+        }
+    },
+
+    //////////////////////////////////////////////////////////////////////////
+    // C02 - Temperature - Humidity sensor - ELSYS ERS2C02
+    /////////////////////////////////////////////////////////////////////////
+    "elsys-ers2co2": {
+        "identity": {},
+        "controller": {
+            "debug": debugDefault,//debugDefault, //["all"],
+            "model": "distechControlsV2",
+            "protocol": protocol,
+            "ipAddress": ipAddress,
+            "login": login,
+            "password": password,
+        },
+        "lorawan": {
+            "networkServer": networkServer,
+            "downlinkPort": null,
+            "flushDownlinkQueue": true,
+            "chirpstack": {
+                "grpcApikey": chirpstackGrpcApikey
+            }
+        },
+        "bacnet": {
+            "offset": 2200,
+            "instanceRange": 10,
+            "objects": {
+                "co2": { "lorawanPayloadName": "co2", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "people": { "lorawanPayloadName": "motion", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
+                "humidity": { "lorawanPayloadName": "humidity", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "uplink", "value": null },
+                "temperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "uplink", "value": null },
+                "batteryVoltage": { "lorawanPayloadName": "vdd", "objectType": "analogValue", "instanceNum": 4, "dataDirection": "uplink", "value": null },
+                "light": { "lorawanPayloadName": "light", "objectType": "analogValue", "instanceNum": 5, "dataDirection": "uplink", "value": null }
+            }
+        },
+        "mqtt": {
+            "topicDownlink": {},
+        }
+    },
+
     //////////////////////////////////////////////////////////////////////////
     // Thermostatic valve - MClimate Vicki
     /////////////////////////////////////////////////////////////////////////
-    "vicki": {
+    "mclimate-vicki": {
         "identity": {},
         "controller": {
             "debug": debugDefault,
-            "model": "distechControls",
-            "interface": interface,
+            "model": "distechControlsV2",
+            "protocol": protocol,
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
@@ -138,12 +260,12 @@ let deviceList = {
     //////////////////////////////////////////////////////////////////////////
     // Thermostatic Valve - Milesight - wt101
     /////////////////////////////////////////////////////////////////////////
-    "wt101": {
+    "milesight-wt101": {
         "identity": {},
         "controller": {
             "debug": debugDefault,
-            "model": "distechControls",
-            "interface": interface,
+            "model": "distechControlsV2",
+            "protocol": protocol,
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
@@ -170,7 +292,7 @@ let deviceList = {
                 "valveSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
                 "controllerSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 },
-                "controllerSetpointError": { "lorawanPayloadName": "temperature_error", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "downlink", "value": 0.1 }
+                "controllerSetpointError": { "lorawanPayloadName": "temperature_error", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "downlink", "value": 0.5 }
             }
         },
         "mqtt": {
@@ -181,12 +303,12 @@ let deviceList = {
     //////////////////////////////////////////////////////////////////////////
     // Thermostatic valve - Micropelt MLR003
     /////////////////////////////////////////////////////////////////////////
-    "mlr003": {
+    "micropelt-mlr003": {
         "identity": {},
         "controller": {
-            "debug": debugDefault,
-            "model": "distechControls",
-            "interface": interface,
+            "debug": debugDefault,//["txTime"] , //debugDefault,
+            "model": "distechControlsV2",
+            "protocol": protocol,
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
@@ -230,12 +352,12 @@ let deviceList = {
     //////////////////////////////////////////////////////////////////////////
     // Current sensor - ATIM TCT e-green
     /////////////////////////////////////////////////////////////////////////
-    "egreen": {
+    "atim-egreen": {
         "identity": {},
         "controller": {
-            "debug": debugDefault,
-            "model": "distechControls",
-            "interface": interface,
+            "debug": debugDefault, //debugDefault,
+            "model": "distechControlsV2",
+            "protocol": protocol,
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
@@ -246,18 +368,11 @@ let deviceList = {
             "flushDownlinkQueue": true,
             "chirpstack": {
                 "grpcApikey": chirpstackGrpcApikey
-            },
-            "actility": {
-                "driver": {
-                    "pId": "TO_CONFIGURE_IF_USING_ACTILITY_AND_DOWNLINK",
-                    "mId": "TO_CONFIGURE_IF_USING_ACTILITY_AND_DOWNLINK",
-                    "ver": "TO_CONFIGURE_IF_USING_ACTILITY_AND_DOWNLINK"
-                }
             }
         },
         "bacnet": {
             "offset": 6000,
-            "instanceRange": 10,
+            "instanceRange": 5,
             "objects": {
                 "batteryVoltage": { "lorawanPayloadName": "tension.value[0]", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "temperature": { "lorawanPayloadName": "temperature0.value[0]", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -268,5 +383,40 @@ let deviceList = {
             "topicDownlink": {},
         }
     },
+
+    //////////////////////////////////////////////////////////////////////////
+    // Current sensor - MILESIGHT CT103
+    /////////////////////////////////////////////////////////////////////////
+    "milesight-ct103": {
+        "identity": {},
+        "controller": {
+            "debug": debugDefault, //debugDefault,
+            "model": "distechControlsV2",
+            "protocol": protocol,
+            "ipAddress": ipAddress,
+            "login": login,
+            "password": password,
+        },
+        "lorawan": {
+            "networkServer": networkServer,
+            "downlinkPort": null,
+            "flushDownlinkQueue": true,
+            "chirpstack": {
+                "grpcApikey": chirpstackGrpcApikey
+            }
+        },
+        "bacnet": {
+            "offset": 6100,
+            "instanceRange": 5,
+            "objects": {
+                "totalCurrent": { "lorawanPayloadName": "total_current", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "current": { "lorawanPayloadName": "current", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
+                "temperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "uplink", "value": null }
+            }
+        },
+        "mqtt": {
+            "topicDownlink": {},
+        }
+    }
 
 }
