@@ -320,5 +320,23 @@ For **valve-51** :
 }
 ```
 
+## 5. Adding a new device
+1. Provision your new LoRaWAN end-device on your LNS and start it up.
+   
+Each time your LoRaWAN end-device sends an uplink, LoRaBAC should send an error **"this Device Type doesn't belong to the Device List"**
+
+2. Add this device to the deviceList in LoRaBAC
+
+If you haven't set up the payload decoder on the LNS, each time your LoRaWAN end-device sends an uplink, LoRaBAC should send an error **"No payload decoder configured on the Network Server"**
+
+3. Set up the payload decoder on the LNS.
+
+You should see the uplinks in the logs.
+
+## 6. Change device Name :
+1. Change on the LNS
+2. Change on the device list
+3. Delete BACnet object on the controller
+4. If there is downlink, you have to change the downlink strategy.
 
 
