@@ -245,6 +245,7 @@ Each device type in the deviceList is a JSON object with its complete configurat
 | `controller`| Object | Information about the controller                              | Yes      |
 | `lorawan`   | Object | Information about the LoRaWAN Network Server                  | Yes      |
 | `bacnet`    | Object | Correspondence between LoRaWAN payload and BACnet object      | Yes      |
+
 <br><br>
 
 #### **Details of the `controller` property:**
@@ -253,7 +254,7 @@ The values in brackets [ ] are the available possibilities.
 
 | Property   | Type   | Description                                                   | Required               |
 |------------|--------|---------------------------------------------------------------|------------------------|
-| `debug`    | String | Debug level: [null, "all", "forceOn", "up", "down", "creation", "txTime"] | No                     |
+| `debug`    | String | Debug level: [null, "all", "forceOn", "up", "down", "creation", "txTime"] | No         |
 | `model`    | String | Controller's model: ["distechControlsV2"]                     | Only if using RestAPI  |
 | `protocol` | String | Type of protocol: ["restAPIBacnet", "bacnet"]                 | Yes                    |
 | `ipAddress`| String | IP address of the controller: "X.Y.W.Z"                       | Yes                    |
@@ -280,6 +281,7 @@ The values in brackets [ ] are the available possibilities.
 | `chirpstack`        | [ChirpStack specific information](#43-specific-information-about-the-network-server) | Only if using ChirpStack AND Flush downlink Queue capability |
 | `actility`          | [Actility specific information](#43-specific-information-about-the-network-server) | Only if using Actility AND downlink |
 | `tts`               | [TTS specific information](#43-specific-information-about-the-network-server) | Only if using TTS              |
+
 <br><br>
 
 
