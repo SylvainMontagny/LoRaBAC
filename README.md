@@ -1,13 +1,22 @@
 # LoRaBAC, an open-source LoRaWAN to BACnet interface
+LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables seamless communication between these two systems, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN) data flows.
+
+
+
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
-  - [1. LoRaBAC](#1-lorabac)
-    - [1.1. What is LoRaBAC ?](#11-what-is-lorabac-)
-    - [1.2. Why LoRaBAC is different from other LoRaWAN-BACnet interfaces](#12-why-lorabac-is-different-from-other-lorawan-bacnet-interfaces)
-    - [1.3. Support](#13-support)
-  - [2. Prerequisites](#2-prerequisites)
-    - [2.1. LoRaWAN end-device](#21-lorawan-end-device)
-    - [2.2. MQTT broker](#22-mqtt-broker)
-    - [2.3. Node-RED](#23-node-red)
+  - [**1. Overview**](#1-overview)
+    - [**1.1. What is LoRaBAC?**](#11-what-is-lorabac)
+      - [**Key Features:**](#key-features)
+    - [**1.2. What Makes LoRaBAC Unique?**](#12-what-makes-lorabac-unique)
+      - [**Drawbacks:**](#drawbacks)
+    - [**1.3. Support**](#13-support)
+  - [**2. Prerequisites**](#2-prerequisites)
+    - [**2.1. LoRaWAN End-Device**](#21-lorawan-end-device)
+    - [**2.2. MQTT Broker**](#22-mqtt-broker)
+    - [**2.3. Node-RED Setup**](#23-node-red-setup)
+      - [**Required Node-RED Packages:**](#required-node-red-packages)
+      - [**Additional Packages for ChirpStackV4:**](#additional-packages-for-chirpstackv4)
+      - [**Quick Start with Docker:**](#quick-start-with-docker)
   - [3. Getting Started](#3-getting-started)
     - [3.1. LoRaWAN Network Server configuration](#31-lorawan-network-server-configuration)
     - [3.2 LoRaBAC configuration for uplink](#32-lorabac-configuration-for-uplink)
@@ -20,77 +29,96 @@
     - [4.4. BACnet object description](#44-bacnet-object-description)
     - [4.5. Examples](#45-examples)
 
-## 1. LoRaBAC
-### 1.1. What is LoRaBAC ?
-LoRaBAC is a simple Node-RED application that aims to interface LoRaWAN end-devices with one or several BACnet controllers. It runs on either the controller itself or on the same local network.
+## **1. Overview**
+### **1.1. What is LoRaBAC?**
+LoRaBAC is open-source application built on **Node-RED**. It allows you to integrate LoRaWAN devices with BACnet controllers, making it ideal for **smart building applications**.
 
 // ADD an image
+#### **Key Features:**
+- **Universal Compatibility:**
+  - [x] Works with **all LoRaWAN end-devices** and **gateways**.
+  - [x] Supports **ChirpStack**, **Actility**, and **The Things Stack** (The Things Network / The Things Industries) Network Servers.
+  - [x] Integrates with **all BACnet controllers** using native BACnet protocols (or **Distech-Controls controllers** when using API Rest).
 
-It works with :
-- [x] All LoRaWAN end-devices.
-- [x] All LoRaWAN Gateways.
-- [x] ChirpStack, Actility or The Thing Stack (The Things Network / The Things Industries) Network Servers.
-- [x] All BACnet controllers when using native BACnet (only Distech-Controls controllers when using API Rest).
+- **Bidirectional Communication:**
+  - [x] **Uplink:** Writes LoRaWAN payloads to specific BACnet objects.
+  - [x] **Downlink:** Reads BACnet objects and sends data to LoRaWAN devices.
 
-LoRaBAC works in both ways :
-- [x] It writes LoRaWAN payload in a specific BACnet object in your BACnet controller (uplink)
-- [x] It reads a BACnet object from your BACnet controller and sends it to your LoRaWAN end-Device (downlink).
-
-LoRaBAC has been tested with many Smart Building uses cases :
-- [x] Thermostatic valves
-- [x] Temperature and humidity sensors
-- [x] Air quality sensors
-- [x] Current monitoring sensors
-- [x] Pilot wired electric heater controller
+- **Proven Use Cases:**
+  - [x] Thermostatic valves
+  - [x] Temperature and humidity sensors
+  - [x] Air quality sensors
+  - [x] Current monitoring sensors
+  - [x] Pilot wired electric heater controller
 
 
-### 1.2. Why LoRaBAC is different from other LoRaWAN-BACnet interfaces
-There are many LoRaWAN to BACnet interfaces available on the market. Most of them work really well but LoRaBAC has been design with a complete different mindset :
+### **1.2. What Makes LoRaBAC Unique?**
+LoRaBAC is designed with a **different approach** compared to other LoRaWAN-BACnet interfaces. Here’s why it stands out:
 
 **Advantages** :
 
-1. **LoRaBAC is a BACnet client** : while all LoRaWAN-BACnet interfaces are server like application (as far as I know) , LoRaBAC is a BACnet client that reads and writes commands to the controller. These read/write commands are launched only when a LoRaWAN payload has arrived.
+1. **BACnet Client Architecture:**
+   - Unlike most interfaces that act as **BACnet servers**, LoRaBAC operates as a **BACnet client**. It only interacts with the controller when a LoRaWAN payload is received, reducing unnecessary traffic.
 
-2. **LoRaBAC can be installed anywhere** : while all LoRaWAN-BACnet interfaces are set up in the LoRaWAN Gateway itself with its embeded LoRaWAN Network Server, LoRaBAC can be installed anywhere : in the LoRaWAN Gateway, in the local network, or in the controller itself. 
+2. **Flexible Deployment:**
+   - LoRaBAC can be installed **anywhere**:
+     - On the **LoRaWAN Gateway**.
+     - Within the **local network**.
+     - Directly on the **BACnet controller**.
 
-3. **LoRaWAN is free and open source** : while all LoRaWAN-BACnet interfaces are proprietary applications, LoRaWAN is free and open-source under the MIT Licence.
+3. **Open Source and Free:**
+   - LoRaBAC is **free to use** and **open-source** under the **MIT License**, offering full transparency and customization.
 
-**Drawbacks** :
+#### **Drawbacks:**
+1. **No "Who-is" Service Support:**
+   - LoRaBAC does not respond to the **"Who-is" service**, which can be useful for discovering BACnet devices in some setups.
 
-1. Most LoRaWAN-BACnet interfaces available on the market answer to the "Who-is" service that can be useful if you program your controller when the BACnet object is already stored on the interface. **That is not the case with LoRaBAC**.
+2. **Manual Configuration Required:**
+   - Each new LoRaWAN device type requires **manual configuration**. It is not a "Plug and Play" solution.
 
-2. Most LoRaWAN-BACnet interfaces available on the market have a predifined number of "ready to use" LoRaWAN end-device. In that case, you don't have any configuration to do and it should be "Plug and Play". **This is not the case with LoRaBAC** as each new LoRaWAN end-device type needs a configuration. 
-
-### 1.3. Support
+### **1.3. Support**
 To get support on LoRaWAN or LoRaBAC, please refers to the followings ressources, or [reach us](https://www.univ-smb.fr/lorawan/en/contact/) out.
 
 :tv: Webinar Replay: [LoRaWAN and BACnet interfaces for Smart Building]()
 
-:notebook: Free ebook available here:[LoRaWAN for beginers books](https://www.univ-smb.fr/lorawan/en/free-book/)
+:notebook: Free ebook:[LoRaWAN for beginers books](https://www.univ-smb.fr/lorawan/en/free-book/)
 
-:tv: E-learning platform available here: [LoRaWAN for beginers videos](https://www.udemy.com/course/lora-lorawan-internet-of-things/?referralCode=21DED0F1021F4E261955)
+:tv: E-learning platform: [LoRaWAN for beginers videos](https://www.udemy.com/course/lora-lorawan-internet-of-things/?referralCode=21DED0F1021F4E261955)
 
-:tv: E-learning platform for Advanced users here: [LoRaWAN for Advanced users videos](https://www.udemy.com/course/lorawan-for-advanced-users/?referralCode=BA4A670560916E1AED77)
+:tv: E-learning platform for Advanced users: [LoRaWAN for Advanced users videos](https://www.udemy.com/course/lorawan-for-advanced-users/?referralCode=BA4A670560916E1AED77)
 
-:bulb: 2 days training sessions available here: [LoRaWAN and IoT Training](https://www.univ-smb.fr/lorawan/avada_portfolio/formation-distanciel/)
+:bulb: 2 days training sessions: [LoRaWAN and IoT Training](https://www.univ-smb.fr/lorawan/avada_portfolio/formation-distanciel/)
 
-## 2. Prerequisites
+## **2. Prerequisites**
 
-### 2.1. LoRaWAN end-device
-To use LoRaBAC, you need LoRaWAN end-devices provisionned on a Network Server with their payload decoders enable. If you want to use the downlink capability, then you also need the payload encoder. These 2 scripts should be provided by your end-device manufacturer.
+### **2.1. LoRaWAN End-Device**
+To use LoRaBAC, ensure your LoRaWAN devices are:
+- Provisioned on a **Network Server**.
+- Configured with a **payload decoders** (for uplink).
+- Configured with a **payload encoders** (for downlink, if needed).
 
-### 2.2. MQTT broker
-LoRaBAC subscribes and publishes to a MQTT broker. TTS, ChirpStack and ThingPark provide one as part as their Network Server, but you can also use your own if you prefer. 
+Payload decoder and encoders should be provided by your device manufacturer.
 
-### 2.3. Node-RED 
-LoRaBAC is a Node-RED flow so you need a Node-RED instance in order to run this application. The following packages (palette) need to be installed :
-- node-red-contrib-bacnet
 
-If you use ChirpStackV4 and you want to use the "Flush Downlink queue" capability, than you also need these two packages :
-- @grpc/grpc-js
-- @chirpstack/chirpstack-api
+### **2.2. MQTT Broker**
+LoRaBAC relies on an **MQTT broker** for communication. You can use:
+- The built-in MQTT broker provided by **ChirpStack**, **Actility**, or **The Things Stack**.
+- Your own **custom MQTT broker**.
 
-We provide a Node-RED docker application is ready to use with all packages on [Docker Hub](https://hub.docker.com/r/montagny/node-red/tags).
+
+### **2.3. Node-RED Setup**
+LoRaBAC is a **Node-RED flow**, so you need a **Node-RED instance** to run it. Ensure the following packages are installed:
+
+#### **Required Node-RED Packages:**
+- `node-red-contrib-bacnet` (for BACnet integration).
+
+#### **Additional Packages for ChirpStackV4:**
+If you’re using **ChirpStackV4** and want to enable the **"Flush Downlink Queue"** feature, install:
+- `@grpc/grpc-js`
+- `@chirpstack/chirpstack-api`
+
+#### **Quick Start with Docker:**
+A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://hub.docker.com/r/montagny/node-red/tags). It includes all required packages for easy deployment.
 
 
 
@@ -102,7 +130,7 @@ We provide a Node-RED docker application is ready to use with all packages on [D
     * Add a new end-device following the naming pattern `xxxxx-NUM` (e.g., mclimate-vicki-1, micropelt-mlr003-3...)
     * Configure the **payload decoder** for this end-device. If downlink is required, also configure the **payload encoder**.
 2. **MQTT integration:**
-    * Note down the server address, login, password and topic.
+    * Note down the MQTT broker address, login, password and topic.
 
 ### 3.2 LoRaBAC configuration for uplink
 1. **Import LoRaBAC:**
@@ -110,7 +138,7 @@ We provide a Node-RED docker application is ready to use with all packages on [D
     * Select the LoRaBAC.json file from the [GitHub repository](https://github.com/SylvainMontagny)
 2. **Connect the MQTT client:**
     * In Node-RED, locate the MQTT client subscriber node (on the left).
-    * Enter the MQTT broker details (server address, login, password).
+    * Enter the MQTT broker details (broker address, login, password).
     * Set the topic to subscribe to (see the comment panel in your flow).
 3. **Deploy and test:**
     * Click `Deploy` in Node-RED.
@@ -158,7 +186,7 @@ For **usmb-valve-51**:
 1. **Connect the MQTT publisher:**
     *  Click `Deploy` in Node-RED.
     *  Locate the MQTT client publisher node in Node-RED (on the right).
-    *  Enter the MQTT broker details (server address, login, password).
+    *  Select the MQTT broker.
     * /!\ **Do not set a topic**.
 2. **Deploy and test**:
     * Check your MQTT publisher (should be `connected` and `green`).
@@ -325,7 +353,7 @@ The `objects` is a JSON object that describes the association between all LoRaWA
     }
 ```
 
-
+// ADD an example 
 
 **Second example**: A "valve" LoRaWAN device connected to a **Distech-Controls** controller using **Rest API**, **ChirpStack**, 3 BACnet objects (2 uplink and 1 downlink), object instances **start at 0**, downlink port used is **30**.
 
@@ -354,4 +382,4 @@ The `objects` is a JSON object that describes the association between all LoRaWA
         }
     }
 ```
-
+// Add an example
