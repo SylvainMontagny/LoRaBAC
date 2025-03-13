@@ -3,6 +3,7 @@ LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRa
 
 
 
+
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
   - [**1. Overview**](#1-overview)
     - [**1.1. What is LoRaBAC?**](#11-what-is-lorabac)
@@ -17,17 +18,22 @@ LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRa
       - [**Required Node-RED Packages:**](#required-node-red-packages)
       - [**Additional Packages for ChirpStackV4:**](#additional-packages-for-chirpstackv4)
       - [**Quick Start with Docker:**](#quick-start-with-docker)
-  - [3. Getting Started](#3-getting-started)
-    - [3.1. LoRaWAN Network Server configuration](#31-lorawan-network-server-configuration)
-    - [3.2 LoRaBAC configuration for uplink](#32-lorabac-configuration-for-uplink)
-    - [3.3. LoRaWAN payload and BACnet instance number](#33-lorawan-payload-and-bacnet-instance-number)
-    - [3.4. LoRaBAC configuration for downlink](#34-lorabac-configuration-for-downlink)
-  - [4. The device list](#4-the-device-list)
-    - [4.1. Introduction](#41-introduction)
-    - [4.2. Device type description](#42-device-type-description)
-    - [4.3. Specific information about the Network Server](#43-specific-information-about-the-network-server)
-    - [4.4. BACnet object description](#44-bacnet-object-description)
-    - [4.5. Examples](#45-examples)
+  - [**3. Getting Started**](#3-getting-started)
+    - [**3.1. LoRaWAN Network Server configuration**](#31-lorawan-network-server-configuration)
+    - [**3.2 LoRaBAC configuration for uplink**](#32-lorabac-configuration-for-uplink)
+    - [**3.3. LoRaWAN payload and BACnet instance number**](#33-lorawan-payload-and-bacnet-instance-number)
+    - [**3.4. LoRaBAC configuration for downlink**](#34-lorabac-configuration-for-downlink)
+  - [**4. The device list**](#4-the-device-list)
+    - [**4.1. Introduction**](#41-introduction)
+    - [**4.2. Device type description**](#42-device-type-description)
+      - [**Details of the `controller` property:**](#details-of-the-controller-property)
+      - [**Details of the `lorawan` property:**](#details-of-the-lorawan-property)
+      - [**Details of the `bacnet` property:**](#details-of-the-bacnet-property)
+    - [**4.3. Specific information about the Network Server**](#43-specific-information-about-the-network-server)
+    - [**4.4. BACnet object description**](#44-bacnet-object-description)
+    - [**4.5. Examples**](#45-examples)
+      - [**First example**:](#first-example)
+      - [**Second example**:](#second-example)
 
 ## **1. Overview**
 ### **1.1. What is LoRaBAC?**
@@ -122,9 +128,9 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 
 
 
-## 3. Getting Started
+## **3. Getting Started**
 
-### 3.1. LoRaWAN Network Server configuration
+### **3.1. LoRaWAN Network Server configuration**
 1. **Provision your end-device:**
     * Log in to your LoRaWAN Network Server (LNS)
     * Add a new end-device following the naming pattern `xxxxx-NUM` (e.g., mclimate-vicki-1, micropelt-mlr003-3...)
@@ -132,7 +138,7 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 2. **MQTT integration:**
     * Note down the MQTT broker address, login, password and topic.
 
-### 3.2 LoRaBAC configuration for uplink
+### **3.2 LoRaBAC configuration for uplink**
 1. **Import LoRaBAC:**
     * Open Node-RED and got to `Menu > Import`
     * Select the LoRaBAC.json file from the [GitHub repository](https://github.com/SylvainMontagny)
@@ -158,7 +164,7 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 > At this point, each time your LoRaWAN end-device sends an uplink, LoRaBAC should write the LoRaWAN paylaod in the corresponding BACnet object in the controller. 
 
 
-### 3.3. LoRaWAN payload and BACnet instance number
+### **3.3. LoRaWAN payload and BACnet instance number**
 The `number` in the end-device name determines the BACnet object instance number.
 
 Example: For the device type `usmb-valve` with an `instanceRange=10` and `offset=0`.
@@ -182,7 +188,7 @@ For **usmb-valve-51**:
 - ...
 
 
-### 3.4. LoRaBAC configuration for downlink
+### **3.4. LoRaBAC configuration for downlink**
 1. **Connect the MQTT publisher:**
     *  Click `Deploy` in Node-RED.
     *  Locate the MQTT client publisher node in Node-RED (on the right).
@@ -195,9 +201,9 @@ For **usmb-valve-51**:
 
 
 
-## 4. The device list
+## **4. The device list**
  
-### 4.1. Introduction
+### **4.1. Introduction**
 The list of device supported is provided thanks to a JSON object called "deviceList" that contains an infinite number of devices types. For example, if your use case has 200 "thermostatic-valve" and 300 "temperature-sensor", then you need to configure 2 device types and the device list should look like as follows :
 
 ```javascript
@@ -231,28 +237,28 @@ let deviceList = {
 Please, [reach us](https://www.univ-smb.fr/lorawan/en/contact/) out if you need us to configure LoRaBAC for your LoRaWAN end-device. 
 
 
-### 4.2. Device type description
+### **4.2. Device type description**
 Each device type in the deviceList is a JSON object with its complete configuration. Here are the properties that need to be completed.
 
-| Property   | Type     | Description                          | Required |
-|------------|----------|--------------------------------------|----------|
-| `controller` | Object | Information about the controller                          | Yes      |
-| `lorawan`    | Object | Information about the LoRaWAN Network Server              | Yes      |
-| `bacnet`     | Object | Correspondence beetween LoRaWAN payload and BACnet object | Yes      |
+| Property    | Type   | Description                                                   | Required |
+|-------------|--------|---------------------------------------------------------------|----------|
+| `controller`| Object | Information about the controller                              | Yes      |
+| `lorawan`   | Object | Information about the LoRaWAN Network Server                  | Yes      |
+| `bacnet`    | Object | Correspondence between LoRaWAN payload and BACnet object      | Yes      |
 <br><br>
 
-**Details of the `controller` property:**
+#### **Details of the `controller` property:**
 
 The values in brackets [ ] are the available possibilities.
 
-| Property   | Type     | Description                          | Required |
-|------------|----------|--------------------------------------|----------|
-| `debug`    | String | Debug level: [null, "all", "forceOn", "up", "down", "creation", "txTime"]         | No                            |
-| `model`    | String | Controller's model: ["distechControlsV2"]                               | Only if using RestAPI         |
-| `protocol` | String | Type of protocol: ["restAPIBacnet", "bacnet"]                         | Yes                           |
-| `ipAddress`| String | IP address of the controller : "X.Y.W.Z"            | Yes                           |
-| `login`    | String | Login of the controller                             |  Only if using RestAPI        |
-| `password` | String | Password of the controller                          |  Only if using RestAPI        |
+| Property   | Type   | Description                                                   | Required               |
+|------------|--------|---------------------------------------------------------------|------------------------|
+| `debug`    | String | Debug level: [null, "all", "forceOn", "up", "down", "creation", "txTime"] | No                     |
+| `model`    | String | Controller's model: ["distechControlsV2"]                     | Only if using RestAPI  |
+| `protocol` | String | Type of protocol: ["restAPIBacnet", "bacnet"]                 | Yes                    |
+| `ipAddress`| String | IP address of the controller: "X.Y.W.Z"                       | Yes                    |
+| `login`    | String | Login of the controller                                       | Only if using RestAPI  |
+| `password` | String | Password of the controller                                    | Only if using RestAPI  |
 
 **Debug level:**
 - **null**: No debug
@@ -264,29 +270,30 @@ The values in brackets [ ] are the available possibilities.
 - **"forceOn"** : Used to force a debug function whatever the debug level
 <br><br>
 
-**Details of the `lorawan` property:**
-| Property   | Type     | Description                          | Required |
-|------------|----------|--------------------------------------|----------|
-| `networkServer`   | String | Network Server used: ["tts", "chirpstack", "actility"]         | Yes                            |
-| `downlinkPort`    | Number | Downlink port used for downlink                               | Only if using downlink         |
-| `flushDownlinkQueue` | Boolean | Enable "Flush Downlink Queue": [true, false]                         | Only if using downlink                          |
-| `chirpstack`| Object | [ChirpStack specific information](#43-specific-information-about-the-network-server)            | Only if using ChirpStack AND Flush downlink Queue capability                           |
-| `actility`    | Object | [Actility specific information](#43-specific-information-about-the-network-server)        |  Only if using Actility AND downlink       |
-| `tts` | Object | [TTS specific information](#43-specific-information-about-the-network-server)   |  Only if using TTS        |
+#### **Details of the `lorawan` property:**
+
+| Property            | Description                                                                 | Required                       |
+|---------------------|-----------------------------------------------------------------------------|--------------------------------|
+| `networkServer`     | Network Server used: ["tts", "chirpstack", "actility"]                      | Yes                            |
+| `downlinkPort`      | Downlink port used for downlink                                             | Only if using downlink         |
+| `flushDownlinkQueue`| Enable "Flush Downlink Queue": [true, false]                                | Only if using downlink         |
+| `chirpstack`        | [ChirpStack specific information](#43-specific-information-about-the-network-server) | Only if using ChirpStack AND Flush downlink Queue capability |
+| `actility`          | [Actility specific information](#43-specific-information-about-the-network-server) | Only if using Actility AND downlink |
+| `tts`               | [TTS specific information](#43-specific-information-about-the-network-server) | Only if using TTS              |
 <br><br>
 
 
+#### **Details of the `bacnet` property:**
 
-**Details of the `bacnet` property:**
-| Property   | Type     | Description                          | Required |
-|------------|----------|--------------------------------------|----------|
-| `offset`          | Number | Beginning of instance range                  | Yes                            |
-| `instanceRange`   | Number | Number of BACnet object to store             | Yes         |
-| `objects`         | Object | [LoRaWAN payload and BACnet object correspondence](#44-bacnet-object-description)  | Yes                      |
+| Property        | Type   | Description                                      | Required |
+|-----------------|--------|--------------------------------------------------|----------|
+| `offset`        | Number | Beginning of instance range                      | Yes      |
+| `instanceRange` | Number | Number of BACnet objects to store                | Yes      |
+| `objects`       | Object | [LoRaWAN payload and BACnet object correspondence](#44-bacnet-object-description) | Yes      |
 
 
 
-### 4.3. Specific information about the Network Server
+### **4.3. Specific information about the Network Server**
 Depending on the LoRaWAN Network Server, there might be some specific configuration. They are store within the following properties.
 
 - Details for the `actility` property:
@@ -310,7 +317,7 @@ When using downlink as well as the "Flush Downlink Queue" capability, LoRaBAC us
 - Details for the `tts` property:
 There is no use for the `tts`property yet. This is Reserved for Future just in case.
 
-### 4.4. BACnet object description
+### **4.4. BACnet object description**
 The `objects` is a JSON object that describes the association between all LoRaWAN payload and its corresponding BACnet objects. The association is described as follows. All properties are required:
 ```json
 "objects": {
@@ -330,11 +337,12 @@ The `objects` is a JSON object that describes the association between all LoRaWA
 
 
 
-### 4.5. Examples 
-**First example**: A **"temperaturesensor"** that works with **any controllers** using **native BACnet**, **TTN**, 1 BACnet object, object instance **starts at 1000**, **no downlink**.
+### **4.5. Examples**
+#### **First example**: 
+A `brand-sensor` LoRaWAN device that works with `any controller`s using native BACnet, `TTN`, 1 BACnet object, object instance `starts at 1000`, `no downlink`.
 
 ```json
-  "temperaturesensor": {
+  "brand-sensor": {
         "controller": {
             "debug": ["all"],
             "interface": "bacnet",
@@ -347,18 +355,23 @@ The `objects` is a JSON object that describes the association between all LoRaWA
             "offset": 1000,
             "instanceRange": 1,
             "objects": {
-                "temperature": { "lorawanPayloadName": "TempC_SHT", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "temperature": { "lorawanPayloadName": "TempC", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
             }
         }
     }
 ```
 
-// ADD an example 
+In this example, the LoRaWAN payload `TempC` will be written in an `analog value` BACnet object called `temperature` with the following instance numbers :
+- `1001` for `brand-sensor-1`
+- `1002` for `brand-sensor-2`
+- `1003` for `brand-sensor-3`
+- `offset + (instanceRange * x) + instanceNum` for `brand-sensor-x`. 
 
-**Second example**: A "valve" LoRaWAN device connected to a **Distech-Controls** controller using **Rest API**, **ChirpStack**, 3 BACnet objects (2 uplink and 1 downlink), object instances **start at 0**, downlink port used is **30**.
+#### **Second example**:
+A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller using `Rest API`, `ChirpStack`, 3 BACnet objects (2 uplink and 1 downlink), object instances `start at 0`, downlink port used is `30`.
 
 ```json
-    "valve": {
+    "brand-sensor": {
         "controller": {
             "debug": ["all"],
             "model": "distechControlsV2",
@@ -375,11 +388,22 @@ The `objects` is a JSON object that describes the association between all LoRaWA
             "offset": 0,
             "instanceRange": 3,
             "objects": {
-                "valveSetpoint": { "lorawanPayloadName": "valveSetpoint", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
-                "valveTemperature": { "lorawanPayloadName": "valveTemperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 }
+                "valveSetpoint": { "lorawanPayloadName": "setpoint", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
+                "controllerSetpoint": { "lorawanPayloadName": "target-setpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 }
             }
         }
     }
 ```
-// Add an example
+In this example:
+- The LoRaWAN payload `setpoint` will be written in an `analog value` BACnet object called `valveSetpoint`:
+- The LoRaWAN payload `temperature` will be written in an `analog value` BACnet object called `valveTemperature`.
+- The LoRaWAN payload `target-setpoint` will be written in an `analog value` BACnet object called `controllerSetpoint`.
+
+|                   | valveSetpoint   | valveTemperature | controllerSetpoint |
+|-------------------|:---------------:|:----------------:|:------------------:|
+| `brand-sensor-1`  |        3        |        4         |         5          |
+| `brand-sensor-2`  |        6        |        7         |         8          |
+| `brand-sensor-3`  |        9        |       10         |        11          |
+| `brand-sensor-x`  |         offset + (instanceRange * x) + instanceNum |   offset + (instanceRange * x) + instanceNum  | offset + (instanceRange * x) + instanceNum  |    
+
