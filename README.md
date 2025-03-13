@@ -33,7 +33,7 @@ LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRa
 ### **1.1. What is LoRaBAC?**
 LoRaBAC is open-source application built on **Node-RED**. It allows you to integrate LoRaWAN devices with BACnet controllers, making it ideal for **smart building applications**.
 
-// ADD an image
+![alt text](../images/lorabac.png)
 #### **Key Features:**
 - **Universal Compatibility:**
   - [x] Works with **all LoRaWAN end-devices** and **gateways**.
