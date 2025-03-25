@@ -435,7 +435,7 @@ This logic is implemented in the Downlink Configuration Node in Node-RED.
 2. **Add a new strategy:**
     * Add a new entry for your device type.
     * The policy must return the following javascript object or null if there is nothing to dowlink:
-```json
+```javascript
 return {
     payload: {
         "NAME_OF_THE_BACNET_OBJECT_TO_DOWNLINK": VALUE_OF_THE BACNET_OBJECT_TO_DOWNLINK
