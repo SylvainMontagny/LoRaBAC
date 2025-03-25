@@ -1,7 +1,5 @@
 # LoRaBAC, an open-source LoRaWAN to BACnet interface
-LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables seamless communication between these two systems, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN) data flows.
-
-
+LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables a seamless communication between these two systems, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN).
 
 
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
@@ -34,6 +32,9 @@ LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRa
     - [**4.5. Examples**](#45-examples)
       - [**First example**:](#first-example)
       - [**Second example**:](#second-example)
+  - [**5. Downlink strategies**](#5-downlink-strategies)
+    - [**5.1. Overview of the Downlink Strategy**](#51-overview-of-the-downlink-strategy)
+    - [**5.2. Steps to Add a New Downlink Strategy**](#52-steps-to-add-a-new-downlink-strategy)
 
 ## **1. Overview**
 ### **1.1. What is LoRaBAC?**
@@ -140,7 +141,7 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 
 ### **3.2 LoRaBAC configuration for uplink**
 1. **Import LoRaBAC:**
-    * Open Node-RED and got to `Menu > Import`
+    * Open Node-RED and go to `Menu > Import`
     * Select the LoRaBAC.json file from the [GitHub repository](https://github.com/SylvainMontagny)
 2. **Connect the MQTT client:**
     * In Node-RED, locate the MQTT client subscriber node (on the left).
@@ -154,7 +155,7 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 
 
 1. **Add your device to the device list:**
-    * If you want to use the list of supported end-devices, copy the content of configuration.js file from the [GitHub repository](https://github.com/SylvainMontagny). Open the "TO CONFIGURE" node and paste the content in the "TO CONFIGURE" section.
+    * If you want to use the list of supported end-devices, copy the whole content of `configuration.js` file from the [GitHub repository](https://github.com/SylvainMontagny). Open the `TO CONFIGURE` node in the configuration group and paste the whole content to update the whole // TO CONFIGURE // section.
     * If your end-device is not natively supported by the solution, you need to follow the [Device List section](#4-the-device-list) to add a new end-device type in the device list.
 
 2. **Adjust properties:**
@@ -318,7 +319,7 @@ When using downlink as well as the "Flush Downlink Queue" capability, LoRaBAC us
 }
 ```
 - Details for the `tts` property:
-There is no use for the `tts`property yet. This is Reserved for Future just in case.
+There is no use for the `tts`property yet. This is Reserved for Future.
 
 ### **4.4. BACnet object description**
 The `objects` is a JSON object that describes the association between all LoRaWAN payload and its corresponding BACnet objects. The association is described as follows. All properties are required:
@@ -399,9 +400,11 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
     }
 ```
 In this example:
-- The LoRaWAN payload `setpoint` will be written in an `analog value` BACnet object called `valveSetpoint`:
-- The LoRaWAN payload `temperature` will be written in an `analog value` BACnet object called `valveTemperature`.
-- The LoRaWAN payload `target-setpoint` will be written in an `analog value` BACnet object called `controllerSetpoint`.
+- The LoRaWAN payload `setpoint` will be **written** in an `analog value` BACnet object called `valveSetpoint`:
+- The LoRaWAN payload `temperature` will be **written** in an `analog value` BACnet object called `valveTemperature`.
+- The `analog value` of the BACnet object `controllerSetpoint` will be **written** in the LoRaWAN payload called `target-setpoint`.
+
+The following instance number will be used for the BACnet object:
 
 |                   | valveSetpoint   | valveTemperature | controllerSetpoint |
 |-------------------|:---------------:|:----------------:|:------------------:|
@@ -410,3 +413,33 @@ In this example:
 | `brand-sensor-3`  |        9        |       10         |        11          |
 | `brand-sensor-x`  |         offset + (instanceRange * x) + instanceNum |   offset + (instanceRange * x) + instanceNum  | offset + (instanceRange * x) + instanceNum  |    
 
+
+## **5. Downlink strategies**
+Interfacing uplink LoRaWAN payload with BACNet object is quite simple, however it's more challenging to send downlink from BACnet object to LoRaWAN end-device as we need to define a strategy. The strategy describes what downlink message should be sent from the BACnet object to the LoRaWAN end-device.
+
+### **5.1. Overview of the Downlink Strategy**
+The downlink strategy is device-specific. Right now, in the LoRaBAC application, the only LoRaWAN end-devices that use downlink are thermostatic valves so they all have the same strategy. For example, in the case of thermostatic valves:
+
+* On each uplink, the valve's setpoint is compared to the controller's setpoint.
+* If the values are different, the controller's setpoint is sent to the valve via a downlink message.
+* If the values are the same, no action is taken.
+
+
+This logic is implemented in the Downlink Configuration Node in Node-RED.
+
+### **5.2. Steps to Add a New Downlink Strategy**
+
+1. **Open the donwlink configuration node:**
+    * Open LoRaBAC application.
+    * Locate the `Downlink` group and open the node `TO CONFIGURE`.
+2. **Add a new strategy:**
+    * Add a new entry for your device type.
+    * The policy must return the following javascript object or null if there is nothing to dowlink:
+```json
+return {
+    payload: {
+        "NAME_OF_THE_BACNET_OBJECT_TO_DOWNLINK": VALUE_OF_THE BACNET_OBJECT_TO_DOWNLINK
+    },
+    device: device
+}
+```

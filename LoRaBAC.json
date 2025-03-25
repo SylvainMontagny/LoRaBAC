@@ -270,7 +270,7 @@
         "id": "8c37322f38881de8",
         "type": "group",
         "z": "2b2877bbf78077bc",
-        "name": "Configuration",
+        "name": "LoRaBAC Configuration",
         "style": {
             "stroke": "#ff0000",
             "fill": "#ffbfbf",

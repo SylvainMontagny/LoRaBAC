@@ -18,7 +18,7 @@ let deviceList = {
     /////////////////////////////////////////////////////////////////////////
     "usmb-valve": {
         "controller": {
-            "debug": debugDefault,//debugDefault, // ["all"],
+            "debug": debugDefault,
             "model": "distechControlsV2",
             "protocol": protocol,
             "ipAddress": ipAddress,
@@ -82,7 +82,7 @@ let deviceList = {
     /////////////////////////////////////////////////////////////////////////
     "watteco-tempo": {
         "controller": {
-            "debug": debugDefault,  //debugDefault, //["all"],
+            "debug": debugDefault, 
             "model": "distechControlsV2",
             "protocol": protocol,
             "ipAddress": ipAddress,
@@ -107,7 +107,7 @@ let deviceList = {
     /////////////////////////////////////////////////////////////////////////
     "atim-thaq": {
         "controller": {
-            "debug": debugDefault, //debugDefault, //["all"],
+            "debug": debugDefault, 
             "model": "distechControlsV2",
             "protocol": protocol,
             "ipAddress": ipAddress,
@@ -134,7 +134,7 @@ let deviceList = {
     /////////////////////////////////////////////////////////////////////////
     "elsys-ers2co2": {
         "controller": {
-            "debug": debugDefault,//debugDefault, //["all"],
+            "debug": debugDefault,
             "model": "distechControlsV2",
             "protocol": protocol,
             "ipAddress": ipAddress,
@@ -227,7 +227,7 @@ let deviceList = {
     /////////////////////////////////////////////////////////////////////////
     "micropelt-mlr003": {
         "controller": {
-            "debug": debugDefault,//["txTime"] , //debugDefault,
+            "debug": debugDefault,
             "model": "distechControlsV2",
             "protocol": protocol,
             "ipAddress": ipAddress,
@@ -262,7 +262,7 @@ let deviceList = {
     /////////////////////////////////////////////////////////////////////////
     "atim-egreen": {
         "controller": {
-            "debug": debugDefault, //debugDefault,
+            "debug": debugDefault, 
             "model": "distechControlsV2",
             "protocol": protocol,
             "ipAddress": ipAddress,
@@ -288,7 +288,7 @@ let deviceList = {
     /////////////////////////////////////////////////////////////////////////
     "milesight-ct103": {
         "controller": {
-            "debug": debugDefault, //debugDefault,
+            "debug": debugDefault, 
             "model": "distechControlsV2",
             "protocol": protocol,
             "ipAddress": ipAddress,
