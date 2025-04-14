@@ -168,24 +168,33 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 ### **3.3. LoRaWAN payload and BACnet instance number**
 The `number` in the end-device name determines the BACnet object instance number.
 
-Example: For the device type `usmb-valve` with an `instanceRange=10` and `offset=0`.
+Example: For the device type `usmb-valve` with an `instanceRangeAV=10`, an `instanceRangeBV=5` and `offset=0`.
 
 For **usmb-valve-1**:
-- 1st BACnet object will be written at instance 10.
-- 2de BACnet object will be written at instance 11.
-- 3rd BACnet object will be written at instance 11.
+- 1st `analog value` BACnet object will be written at instance **10**.
+- 2de `analog value` BACnet object will be written at instance **11**.
+- 3rd `analog value` BACnet object will be written at instance **13**.
+- 1st `binary value` BACnet object will be written at instance **10**.
+- 2de `binary value` BACnet object will be written at instance **11**.
+- 3rd `binary value` BACnet object will be written at instance **13**.
 - ...
 
 For **usmb-valve-2**:
-- 1st BACnet object will be written at instance 20.
-- 2de BACnet object will be written at instance 21.
-- 3rd BACnet object will be written at instance 21.
+- 1st `analog value` BACnet object will be written at instance **20**.
+- 2de `analog value` BACnet object will be written at instance **21**.
+- 3rd `analog value` BACnet object will be written at instance **22**.
+- 1st `binary value` BACnet object will be written at instance **15**.
+- 2de `binary value` BACnet object will be written at instance **16**.
+- 3rd `binary value` BACnet object will be written at instance **17**.
 - ...
 
 For **usmb-valve-51**:
-- 1st BACnet object will be written at instance 510.
-- 2de BACnet object will be written at instance 511.
-- 3rd BACnet object will be written at instance 512.
+- 1st `analog value` BACnet object will be written at instance **510**.
+- 2de `analog value` BACnet object will be written at instance **511**.
+- 3rd `analog value` BACnet object will be written at instance **512**.
+- 1st `binary value` BACnet object will be written at instance **255**.
+- 2de `binary value` BACnet object will be written at instance **256**.
+- 3rd `binary value` BACnet object will be written at instance **257**.
 - ...
 
 
@@ -288,11 +297,13 @@ The values in brackets [ ] are the available possibilities.
 
 #### **Details of the `bacnet` property:**
 
-| Property        | Type   | Description                                      | Required |
-|-----------------|--------|--------------------------------------------------|----------|
-| `offset`        | Number | Beginning of instance range                      | Yes      |
-| `instanceRange` | Number | Number of BACnet objects to store                | Yes      |
-| `objects`       | Object | [LoRaWAN payload and BACnet object correspondence](#44-bacnet-object-description) | Yes      |
+| Property          | Type   | Description                                      | Required |
+|-------------------|--------|--------------------------------------------------|----------|
+| `offsetAV`        | Number | Beginning of analog values instance range        | Yes      |
+| `offsetBV`        | Number | Beginning of binary values instance range        | Yes      |
+| `instanceRangeAV` | Number | Number of analog value BACnet objects to store   | Yes      |
+| `instanceRangeBV` | Number | Number of binary value BACnet objects to store   | Yes      |
+| `objects`         | Object | [LoRaWAN payload and BACnet object correspondence](#44-bacnet-object-description) | Yes      |
 
 
 
@@ -343,7 +354,7 @@ The `objects` is a JSON object that describes the association between all LoRaWA
 
 ### **4.5. Examples**
 #### **First example**: 
-A `brand-sensor` LoRaWAN device that works with `any controller`s using native BACnet, `TTN`, 1 BACnet object, object instance `starts at 1000`, `no downlink`.
+A `brand-sensor` LoRaWAN device that works with `any controller`s using native BACnet, `TTN`, 1 BACnet object, object instance for `analog values starts at 1000`, object instance for `binary values starts at 500`, `no downlink`.
 
 ```json
   "brand-sensor": {
@@ -356,8 +367,10 @@ A `brand-sensor` LoRaWAN device that works with `any controller`s using native B
             "networkServer": "tts",
         },
         "bacnet": {
-            "offset": 1000,
-            "instanceRange": 1,
+            "offsetAV": 1000,
+            "offsetBV": 500,
+            "instanceRangeAV": 1,
+            "instanceRangeBV": 0,
             "objects": {
                 "temperature": { "lorawanPayloadName": "TempC", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
             }
@@ -369,10 +382,10 @@ In this example, the LoRaWAN payload `TempC` will be written in an `analog value
 - `1001` for `brand-sensor-1`
 - `1002` for `brand-sensor-2`
 - `1003` for `brand-sensor-3`
-- `offset + (instanceRange * x) + instanceNum` for `brand-sensor-x`. 
+- `offsetAV + (instanceRangeAV * x) + instanceNum` for `brand-sensor-x`. 
 
 #### **Second example**:
-A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller using `Rest API`, `ChirpStack`, 3 BACnet objects (2 uplink and 1 downlink), object instances `start at 0`, downlink port used is `30`.
+A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller using `Rest API`, `ChirpStack`, 3 BACnet objects (2 uplink and 1 downlink), object instance for `analog values starts at 0`, object instance for `binary values starts at 0`,, downlink port used is `30`.
 
 ```json
     "brand-sensor": {
@@ -389,8 +402,10 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
             "downlinkPort": 30
         },
         "bacnet": {
-            "offset": 0,
-            "instanceRange": 3,
+            "offsetAV": 0,
+            "offsetBV": 0,
+            "instanceRangeAV": 3,
+            "instanceRangeBV": 0,
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "setpoint", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -411,7 +426,7 @@ The following instance number will be used for the BACnet object:
 | `brand-sensor-1`  |        3        |        4         |         5          |
 | `brand-sensor-2`  |        6        |        7         |         8          |
 | `brand-sensor-3`  |        9        |       10         |        11          |
-| `brand-sensor-x`  |         offset + (instanceRange * x) + instanceNum |   offset + (instanceRange * x) + instanceNum  | offset + (instanceRange * x) + instanceNum  |    
+| `brand-sensor-x`  |         offsetAV + (instanceRangeAV * x) + instanceNum |   offsetAV + (instanceRangeAV * x) + instanceNum  | offsetAV + (instanceRangeAV * x) + instanceNum  |    
 
 
 ## **5. Downlink strategies**
