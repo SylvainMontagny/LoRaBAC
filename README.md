@@ -168,7 +168,7 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 ### **3.3. LoRaWAN payload and BACnet instance number**
 The `number` in the end-device name determines the BACnet object instance number.
 
-Example: For the device type `usmb-valve` with an `instanceRangeAV=10`, an `instanceRangeBV=5` and `offset=0`.
+Example: For the device type `usmb-valve` with an `instanceRangeAV=10`, an `instanceRangeBV=5`, an `offsetAV=0` and `offsetBV=0`.
 
 For **usmb-valve-1**:
 - 1st `analog value` BACnet object will be written at instance **10**.
