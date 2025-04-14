@@ -39,12 +39,15 @@ let deviceList = {
             }
         },
         "bacnet": {
-            "offset": 0,
-            "instanceRange": 10,
+            "offsetAV": 0,
+            "offsetBV": 0,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 1,
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "valveSetpoint", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "valveTemperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 }
+                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 },
+                "ValeurTest": { "lorawanPayloadName": "val_test", "objectType": "binaryValue", "instanceNum": 0, "dataDirection": "downlink", "value": 1 }
             }
         }
     },
@@ -65,8 +68,10 @@ let deviceList = {
             "networkServer": networkServer
         },
         "bacnet": {
-            "offset": 1000,
-            "instanceRange": 5,
+            "offsetAV": 200,
+            "offsetBV": 5,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 0,
             "objects": {
                 "temperature": { "lorawanPayloadName": "TempC_SHT", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "humidity": { "lorawanPayloadName": "Hum_SHT", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -93,8 +98,10 @@ let deviceList = {
             "networkServer": networkServer
         },
         "bacnet": {
-            "offset": 2000,
-            "instanceRange": 5,
+            "offsetAV": 300,
+            "offsetBV": 5,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 0,
             "objects": {
                 "temperature": { "lorawanPayloadName": "data[5].value", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "humidity": { "lorawanPayloadName": "data[11].value", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null }
@@ -118,8 +125,10 @@ let deviceList = {
             "networkServer": networkServer
         },
         "bacnet": {
-            "offset": 2100,
-            "instanceRange": 5,
+            "offsetAV": 400,
+            "offsetBV": 5,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 0,
             "objects": {
                 "co2": { "lorawanPayloadName": "C02.value[0]", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "humidity": { "lorawanPayloadName": "humidity0.value[0]", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -145,8 +154,10 @@ let deviceList = {
             "networkServer": networkServer
         },
         "bacnet": {
-            "offset": 2200,
-            "instanceRange": 10,
+            "offsetAV": 500,
+            "offsetBV": 5,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 0,
             "objects": {
                 "co2": { "lorawanPayloadName": "co2", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "people": { "lorawanPayloadName": "motion", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -176,8 +187,10 @@ let deviceList = {
             "flushDownlinkQueue": false
         },
         "bacnet": {
-            "offset": 3000,
-            "instanceRange": 10,
+            "offsetAV": 600,
+            "offsetBV": 5,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 5,
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "targetTemperature", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "sensorTemperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -211,8 +224,10 @@ let deviceList = {
             "flushDownlinkQueue": false
         },
         "bacnet": {
-            "offset": 4000,
-            "instanceRange": 10,
+            "offsetAV": 700,
+            "offsetBV": 50,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 0,
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -240,19 +255,28 @@ let deviceList = {
             "flushDownlinkQueue": false,
         },
         "bacnet": {
-            "offset": 5000,
-            "instanceRange": 10,
+            "offsetAV": 800,
+            "offsetBV": 51,
+            "instanceRangeAV": 12,
+            "instanceRangeBV": 5,
             "objects": {
+                ///////////////// UPLINKS /////////////////////
                 "valveSetpoint": { "lorawanPayloadName": "User_Value", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "Ambient_Temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 },
-                "userMode": { "lorawanPayloadName": "User_Mode", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "uplink", "value": null },
-                "currentConsumed": { "lorawanPayloadName": "Average_Current_Consumed", "objectType": "analogValue", "instanceNum": 4, "dataDirection": "uplink", "value": null },
-                "currentGenerated": { "lorawanPayloadName": "Average_Current_Generated", "objectType": "analogValue", "instanceNum": 5, "dataDirection": "uplink", "value": null },
-                "valvePosition": { "lorawanPayloadName": "Current_Valve_Position", "objectType": "analogValue", "instanceNum": 6, "dataDirection": "uplink", "value": null },
-                "valveFlowTemperature": { "lorawanPayloadName": "Flow_Temperature", "objectType": "analogValue", "instanceNum": 7, "dataDirection": "uplink", "value": null },
-                "batteryVoltage": { "lorawanPayloadName": "Storage_Voltage", "objectType": "analogValue", "instanceNum": 8, "dataDirection": "uplink", "value": null },
+                "usedTemperature": { "lorawanPayloadName": "Used_Temperature", "objectType": "analogValue", "instanceNum": 11, "dataDirection": "uplink", "value": null },
+                "currentConsumed": { "lorawanPayloadName": "Average_Current_Consumed", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "uplink", "value": null },
+                "currentGenerated": { "lorawanPayloadName": "Average_Current_Generated", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "uplink", "value": null }, 
+                "valvePosition": { "lorawanPayloadName": "Current_Valve_Position", "objectType": "analogValue", "instanceNum": 4, "dataDirection": "uplink", "value": null },
+                "valveFlowTemperature": { "lorawanPayloadName": "Flow_Temperature", "objectType": "analogValue", "instanceNum": 5, "dataDirection": "uplink", "value": null },
+                "batteryVoltage": { "lorawanPayloadName": "Storage_Voltage", "objectType": "analogValue", "instanceNum": 6, "dataDirection": "uplink", "value": null },
                 "ackError": { "lorawanPayloadName": "Radio_Communication_Error", "objectType": "binaryValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                //////////////// DOWNLINKS ////////////////////
+                "controllerSetpoint": { "lorawanPayloadName": "setValue", "objectType": "analogValue", "instanceNum": 7, "dataDirection": "downlink", "value": 20 },
+                "userMode": { "lorawanPayloadName": "userMode", "objectType": "binaryValue", "instanceNum": 1, "dataDirection": "downlink", "value": 1 },
+                "safetyMode": { "lorawanPayloadName": "safetyMode", "objectType": "binaryValue", "instanceNum": 2, "dataDirection": "downlink", "value": 1 },
+                "safetyValue": { "lorawanPayloadName": "safetyValue", "objectType": "analogValue", "instanceNum": 8, "dataDirection": "downlink", "value": 20 },
+                "Room_Temperature": { "lorawanPayloadName": "Room_Temperature", "objectType": "analogValue", "instanceNum": 9, "dataDirection": "downlink", "value": 0 },
+                "radioInterval": { "lorawanPayloadName": "radioInterval", "objectType": "analogValue", "instanceNum": 10, "dataDirection": "downlink", "value": 10 }
             }
         }
     },
@@ -273,8 +297,10 @@ let deviceList = {
             "networkServer": networkServer
         },
         "bacnet": {
-            "offset": 6000,
-            "instanceRange": 5,
+            "offsetAV": 900,
+            "offsetBV": 100,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 0,
             "objects": {
                 "batteryVoltage": { "lorawanPayloadName": "tension.value[0]", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "temperature": { "lorawanPayloadName": "temperature0.value[0]", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
@@ -301,8 +327,10 @@ let deviceList = {
             "flushDownlinkQueue": false
         },
         "bacnet": {
-            "offset": 6100,
-            "instanceRange": 5,
+            "offsetAV": 1000,
+            "offsetBV": 101,
+            "instanceRangeAV": 10,
+            "instanceRangeBV": 0,
             "objects": {
                 "totalCurrent": { "lorawanPayloadName": "total_current", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "current": { "lorawanPayloadName": "current", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
