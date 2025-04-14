@@ -11,6 +11,7 @@ const login = "TO_CONFIGURE_IF_USING_restAPIBacnet";
 const password = "TO_CONFIGURE_IF_USING_restAPIBacnet";
 
 
+
 let deviceList = {
    
     //////////////////////////////////////////////////////////////////////////
@@ -28,7 +29,6 @@ let deviceList = {
         },
         "lorawan": {
             "networkServer": networkServer,
-            "downlinkPort": 30,
             "flushDownlinkQueue": false,
             "actility": {
                 "driver": {
@@ -46,8 +46,7 @@ let deviceList = {
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "valveSetpoint", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "valveTemperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 },
-                "ValeurTest": { "lorawanPayloadName": "val_test", "objectType": "binaryValue", "instanceNum": 0, "dataDirection": "downlink", "value": 1 }
+                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "high","objectToCompareWith": "valveSetpoint", "value": 20 },
             }
         }
     },
@@ -79,9 +78,48 @@ let deviceList = {
             }
         }
     },
-
-
-
+    //////////////////////////////////////////////////////////////////////////
+    // Thermostatic valve - Micropelt MLR003
+    /////////////////////////////////////////////////////////////////////////
+    "micropelt-mlr003": {
+        "controller": {
+            "debug": debugDefault,
+            "model": "distechControlsV2",
+            "protocol": protocol,
+            "ipAddress": ipAddress,
+            "login": login,
+            "password": password,
+        },
+        "lorawan": {
+            "networkServer": networkServer,
+            "flushDownlinkQueue": false,
+        },
+        "bacnet": {
+            "offsetAV": 800,
+            "offsetBV": 51,
+            "instanceRangeAV": 12,
+            "instanceRangeBV": 5,
+            "objects": {
+                ///////////////// UPLINKS /////////////////////
+                "valveSetpoint": { "lorawanPayloadName": "User_Value", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "valveTemperature": { "lorawanPayloadName": "Ambient_Temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
+                "usedTemperature": { "lorawanPayloadName": "Used_Temperature", "objectType": "analogValue", "instanceNum": 11, "dataDirection": "uplink", "value": null },
+                "currentConsumed": { "lorawanPayloadName": "Average_Current_Consumed", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "uplink", "value": null },
+                "currentGenerated": { "lorawanPayloadName": "Average_Current_Generated", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "uplink", "value": null }, 
+                "valvePosition": { "lorawanPayloadName": "Current_Valve_Position", "objectType": "analogValue", "instanceNum": 4, "dataDirection": "uplink", "value": null },
+                "valveFlowTemperature": { "lorawanPayloadName": "Flow_Temperature", "objectType": "analogValue", "instanceNum": 5, "dataDirection": "uplink", "value": null },
+                "batteryVoltage": { "lorawanPayloadName": "Storage_Voltage", "objectType": "analogValue", "instanceNum": 6, "dataDirection": "uplink", "value": null },
+                "ackError": { "lorawanPayloadName": "Radio_Communication_Error", "objectType": "binaryValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                //////////////// DOWNLINKS ////////////////////
+                "controllerSetpoint": { "lorawanPayloadName": "setValue", "objectType": "analogValue", "instanceNum": 7, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high","objectToCompareWith": "valveSetpoint", "value": 20 },
+                "userMode": { "lorawanPayloadName": "userMode", "objectType": "binaryValue", "instanceNum": 1, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "value": 1 },
+                "safetyMode": { "lorawanPayloadName": "safetyMode", "objectType": "binaryValue", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "value": 1 },
+                "safetyValue": { "lorawanPayloadName": "safetyValue", "objectType": "analogValue", "instanceNum": 8, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "value": 20 },
+                "Room_Temperature": { "lorawanPayloadName": "Room_Temperature", "objectType": "analogValue", "instanceNum": 9, "dataDirection": "downlink", "downlinkPort": 10, "downlinkPortPriority": "low","objectToCompareWith": "usedTemperature", "value": 0 },
+                "radioInterval": { "lorawanPayloadName": "radioInterval", "objectType": "analogValue", "instanceNum": 10, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "value": 10 }
+            }
+        }
+    },
     //////////////////////////////////////////////////////////////////////////
     // Temperature and Humidity sensor - WATTECO Tempo
     /////////////////////////////////////////////////////////////////////////
@@ -183,7 +221,6 @@ let deviceList = {
         },
         "lorawan": {
             "networkServer": networkServer,
-            "downlinkPort": 1,
             "flushDownlinkQueue": false
         },
         "bacnet": {
@@ -194,10 +231,10 @@ let deviceList = {
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "targetTemperature", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "sensorTemperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "setTargetTemperature", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 21 },
+                "controllerSetpoint": { "lorawanPayloadName": "setTargetTemperature", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink","downlinkPort": 1, "downlinkPortPriority": "low","objectToCompareWith": "valveSetpoint", "value": 21 },
                 "valvePosition": { "lorawanPayloadName": "valveOpenness", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "uplink", "value": null },
                 "valveChildLock": { "lorawanPayloadName": "childLock", "objectType": "binaryValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
-                "controllerChildLock": { "lorawanPayloadName": "setChildLock", "objectType": "binaryValue", "instanceNum": 1, "dataDirection": "downlink", "value": true },
+                "controllerChildLock": { "lorawanPayloadName": "setChildLock", "objectType": "binaryValue", "instanceNum": 1, "dataDirection": "downlink","downlinkPort": 1, "downlinkPortPriority": "low","objectToCompareWith": "valveChildLock", "value": true },
                 "batteryVoltage": { "lorawanPayloadName": "batteryVoltage", "objectType": "analogValue", "instanceNum": 4, "dataDirection": "uplink", "value": null },
                 "openWindownDetection": { "lorawanPayloadName": "openWindow", "objectType": "binaryValue", "instanceNum": 2, "dataDirection": "uplink", "value": null },
                 "valveHumidity": { "lorawanPayloadName": "relativeHumidity", "objectType": "analogValue", "instanceNum": 5, "dataDirection": "uplink", "value": null },
@@ -220,7 +257,6 @@ let deviceList = {
         },
         "lorawan": {
             "networkServer": networkServer,
-            "downlinkPort": 85,
             "flushDownlinkQueue": false
         },
         "bacnet": {
@@ -231,56 +267,11 @@ let deviceList = {
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 },
-                "controllerSetpointError": { "lorawanPayloadName": "temperature_error", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "downlink", "value": 0.5 }
+                "controllerSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink","downlinkPort": 85, "downlinkPortPriority": "low","objectToCompareWith": "valveSetpoint", "value": 20 },
+                "controllerSetpointError": { "lorawanPayloadName": "temperature_error", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "downlink","downlinkPort": 85, "downlinkPortPriority": "low", "value": 0.5 }
             }
         }
     },
-
-    //////////////////////////////////////////////////////////////////////////
-    // Thermostatic valve - Micropelt MLR003
-    /////////////////////////////////////////////////////////////////////////
-    "micropelt-mlr003": {
-        "controller": {
-            "debug": debugDefault,
-            "model": "distechControlsV2",
-            "protocol": protocol,
-            "ipAddress": ipAddress,
-            "login": login,
-            "password": password,
-        },
-        "lorawan": {
-            "networkServer": networkServer,
-            "downlinkPort": 1,
-            "flushDownlinkQueue": false,
-        },
-        "bacnet": {
-            "offsetAV": 800,
-            "offsetBV": 51,
-            "instanceRangeAV": 12,
-            "instanceRangeBV": 5,
-            "objects": {
-                ///////////////// UPLINKS /////////////////////
-                "valveSetpoint": { "lorawanPayloadName": "User_Value", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
-                "valveTemperature": { "lorawanPayloadName": "Ambient_Temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "usedTemperature": { "lorawanPayloadName": "Used_Temperature", "objectType": "analogValue", "instanceNum": 11, "dataDirection": "uplink", "value": null },
-                "currentConsumed": { "lorawanPayloadName": "Average_Current_Consumed", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "uplink", "value": null },
-                "currentGenerated": { "lorawanPayloadName": "Average_Current_Generated", "objectType": "analogValue", "instanceNum": 3, "dataDirection": "uplink", "value": null }, 
-                "valvePosition": { "lorawanPayloadName": "Current_Valve_Position", "objectType": "analogValue", "instanceNum": 4, "dataDirection": "uplink", "value": null },
-                "valveFlowTemperature": { "lorawanPayloadName": "Flow_Temperature", "objectType": "analogValue", "instanceNum": 5, "dataDirection": "uplink", "value": null },
-                "batteryVoltage": { "lorawanPayloadName": "Storage_Voltage", "objectType": "analogValue", "instanceNum": 6, "dataDirection": "uplink", "value": null },
-                "ackError": { "lorawanPayloadName": "Radio_Communication_Error", "objectType": "binaryValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
-                //////////////// DOWNLINKS ////////////////////
-                "controllerSetpoint": { "lorawanPayloadName": "setValue", "objectType": "analogValue", "instanceNum": 7, "dataDirection": "downlink", "value": 20 },
-                "userMode": { "lorawanPayloadName": "userMode", "objectType": "binaryValue", "instanceNum": 1, "dataDirection": "downlink", "value": 1 },
-                "safetyMode": { "lorawanPayloadName": "safetyMode", "objectType": "binaryValue", "instanceNum": 2, "dataDirection": "downlink", "value": 1 },
-                "safetyValue": { "lorawanPayloadName": "safetyValue", "objectType": "analogValue", "instanceNum": 8, "dataDirection": "downlink", "value": 20 },
-                "Room_Temperature": { "lorawanPayloadName": "Room_Temperature", "objectType": "analogValue", "instanceNum": 9, "dataDirection": "downlink", "value": 0 },
-                "radioInterval": { "lorawanPayloadName": "radioInterval", "objectType": "analogValue", "instanceNum": 10, "dataDirection": "downlink", "value": 10 }
-            }
-        }
-    },
-
     //////////////////////////////////////////////////////////////////////////
     // Current sensor - ATIM TCT e-green
     /////////////////////////////////////////////////////////////////////////
@@ -323,7 +314,6 @@ let deviceList = {
         },
         "lorawan": {
             "networkServer": networkServer,
-            "downlinkPort": null,
             "flushDownlinkQueue": false
         },
         "bacnet": {

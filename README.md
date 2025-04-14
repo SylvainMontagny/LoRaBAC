@@ -29,8 +29,9 @@ Current version : v1.1.0
       - [**Details of the `lorawan` property:**](#details-of-the-lorawan-property)
       - [**Details of the `bacnet` property:**](#details-of-the-bacnet-property)
     - [**4.3. Specific information about the Network Server**](#43-specific-information-about-the-network-server)
-    - [**4.4. BACnet object description**](#44-bacnet-object-description)
-    - [**4.5. Examples**](#45-examples)
+    - [**4.4. Downlink BACnet object description**](#44-downlink-bacnet-object-description)
+    - [**4.5. Uplink BACnet object description**](#45-uplink-bacnet-object-description)
+    - [**4.6. Examples**](#46-examples)
       - [**First example**:](#first-example)
       - [**Second example**:](#second-example)
   - [**5. Downlink strategies**](#5-downlink-strategies)
@@ -287,7 +288,6 @@ The values in brackets [ ] are the available possibilities.
 | Property            | Description                                                                 | Required                       |
 |---------------------|-----------------------------------------------------------------------------|--------------------------------|
 | `networkServer`     | Network Server used: ["tts", "chirpstack", "actility"]                      | Yes                            |
-| `downlinkPort`      | Downlink port used for downlink                                             | Only if using downlink         |
 | `flushDownlinkQueue`| Enable "Flush Downlink Queue": [true, false]                                | Only if using downlink         |
 | `chirpstack`        | [ChirpStack specific information](#43-specific-information-about-the-network-server) | Only if using ChirpStack AND Flush downlink Queue capability |
 | `actility`          | [Actility specific information](#43-specific-information-about-the-network-server) | Only if using Actility AND downlink |
@@ -333,15 +333,19 @@ When using downlink as well as the "Flush Downlink Queue" capability, LoRaBAC us
 - Details for the `tts` property:
 There is no use for the `tts`property yet. This is Reserved for Future.
 
-### **4.4. BACnet object description**
+
+### **4.4. Downlink BACnet object description**
 The `objects` is a JSON object that describes the association between all LoRaWAN payload and its corresponding BACnet objects. The association is described as follows. All properties are required:
 ```javascript
 "objects": {
     "BACNET_OBJECT_NAME_1": {       // String, name of the BACnet object to write in the controller
-        "lorawanPayloadName": "LORAWAN_PAYLOAD_NAME", // String, name of the LoRaWAN paylaod as provided by the payload decoder
+        "lorawanPayloadName": "LORAWAN_PAYLOAD_NAME", // String, name of the LoRaWAN paylaod as provided by the payload encoder
         "objectType": "OBJECT_TYPE",    // String, BACnet type: ["analogValue", "binaryValue"]
         "instanceNum": INSTANCE_NUM,    // Number, BACnet object instance number
-        "dataDirection": "DIRECTION",   // String, Direction of the BACnet Object: ["uplink", "downlink"]
+        "dataDirection": "downlink",   // String, Direction of the BACnet Object
+        "downlinkPort": 10,             // LoRaWAN downlink Port
+        "downlinkPortPriority": "low",  // Priority level of the downlink
+        "objectToCompareWith": "usedTemperature", // The name of the uplink object to compare with to know if a downlink is needed
         "value": null                   // Number, LoRaWAN payload value <> BACnet object present value. 
         },
     "BACNET_OBJECT_NAME_2": {
@@ -352,8 +356,26 @@ The `objects` is a JSON object that describes the association between all LoRaWA
 ```
 
 
+### **4.5. Uplink BACnet object description**
+The `objects` is a JSON object that describes the association between all LoRaWAN payload and its corresponding BACnet objects. The association is described as follows. All properties are required:
+```javascript
+"objects": {
+    "BACNET_OBJECT_NAME_1": {       // String, name of the BACnet object to write in the controller
+        "lorawanPayloadName": "LORAWAN_PAYLOAD_NAME", // String, name of the LoRaWAN paylaod as provided by the payload decoder
+        "objectType": "OBJECT_TYPE",    // String, BACnet type: ["analogValue", "binaryValue"]
+        "instanceNum": INSTANCE_NUM,    // Number, BACnet object instance number
+        "dataDirection": "uplink",   // String, Direction of the BACnet Object
+        "value": null                   // Number, LoRaWAN payload value <> BACnet object present value. 
+        },
+    "BACNET_OBJECT_NAME_2": {
+        ...
+    },
+    ...
+}
+```
 
-### **4.5. Examples**
+
+### **4.6. Examples**
 #### **First example**: 
 A `brand-sensor` LoRaWAN device that works with `any controller`s using native BACnet, `TTN`, 1 BACnet object, object instance for `analog values starts at 1000`, object instance for `binary values starts at 500`, `no downlink`.
 
@@ -399,8 +421,7 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
             "password": "YOUR_PASSWORD",
         },
         "lorawan": {
-            "networkServer": "chirpstack",
-            "downlinkPort": 30
+            "networkServer": "chirpstack"
         },
         "bacnet": {
             "offsetAV": 0,
@@ -410,7 +431,7 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "setpoint", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "target-setpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "value": 20 }
+                "controllerSetpoint": { "lorawanPayloadName": "target-setpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low","objectToCompareWith": "valveSetpoint", "value": 20 }
             }
         }
     }
