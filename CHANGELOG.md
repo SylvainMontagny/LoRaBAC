@@ -2,7 +2,7 @@
 #### Author: Sylvain Montagny & Sacha Faure & Quentin Casagranda 
 
 
-## Knows limitation
+## Known limitations
 * only tested with class A devices.
 
 ## Version: V1.1.0 | 2025-04-14
