@@ -174,18 +174,18 @@ For **usmb-valve-1**:
 - 1st `analog value` BACnet object will be written at instance **10**.
 - 2de `analog value` BACnet object will be written at instance **11**.
 - 3rd `analog value` BACnet object will be written at instance **13**.
-- 1st `binary value` BACnet object will be written at instance **10**.
-- 2de `binary value` BACnet object will be written at instance **11**.
-- 3rd `binary value` BACnet object will be written at instance **13**.
+- 1st `binary value` BACnet object will be written at instance **5**.
+- 2de `binary value` BACnet object will be written at instance **6**.
+- 3rd `binary value` BACnet object will be written at instance **7**.
 - ...
 
 For **usmb-valve-2**:
 - 1st `analog value` BACnet object will be written at instance **20**.
 - 2de `analog value` BACnet object will be written at instance **21**.
 - 3rd `analog value` BACnet object will be written at instance **22**.
-- 1st `binary value` BACnet object will be written at instance **15**.
-- 2de `binary value` BACnet object will be written at instance **16**.
-- 3rd `binary value` BACnet object will be written at instance **17**.
+- 1st `binary value` BACnet object will be written at instance **10**.
+- 2de `binary value` BACnet object will be written at instance **11**.
+- 3rd `binary value` BACnet object will be written at instance **12**.
 - ...
 
 For **usmb-valve-51**:
