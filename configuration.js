@@ -27,6 +27,9 @@ let deviceList = {
             "password": password,
 
         },
+        "identity":{
+            "maxDevNum": 15
+        },
         "lorawan": {
             "networkServer": networkServer,
             "flushDownlinkQueue": false,
@@ -63,6 +66,9 @@ let deviceList = {
             "login": login,
             "password": password,
         },
+        "identity":{
+            "maxDevNum": 15
+        },
         "lorawan": {
             "networkServer": networkServer
         },
@@ -89,6 +95,9 @@ let deviceList = {
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
+        },
+        "identity":{
+            "maxDevNum": 15
         },
         "lorawan": {
             "networkServer": networkServer,
@@ -132,6 +141,9 @@ let deviceList = {
             "login": login,
             "password": password,
         },
+        "identity":{
+            "maxDevNum": 15
+        },
         "lorawan": {
             "networkServer": networkServer
         },
@@ -158,6 +170,9 @@ let deviceList = {
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
+        },
+        "identity":{
+            "maxDevNum": 15
         },
         "lorawan": {
             "networkServer": networkServer
@@ -187,6 +202,9 @@ let deviceList = {
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
+        },
+        "identity":{
+            "maxDevNum": 15
         },
         "lorawan": {
             "networkServer": networkServer
@@ -218,6 +236,9 @@ let deviceList = {
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
+        },
+        "identity":{
+            "maxDevNum": 15
         },
         "lorawan": {
             "networkServer": networkServer,
@@ -255,6 +276,9 @@ let deviceList = {
             "login": login,
             "password": password,
         },
+        "identity":{
+            "maxDevNum": 15
+        },
         "lorawan": {
             "networkServer": networkServer,
             "flushDownlinkQueue": false
@@ -284,6 +308,9 @@ let deviceList = {
             "login": login,
             "password": password,
         },
+        "identity":{
+            "maxDevNum": 15
+        },
         "lorawan": {
             "networkServer": networkServer
         },
@@ -311,6 +338,9 @@ let deviceList = {
             "ipAddress": ipAddress,
             "login": login,
             "password": password,
+        },
+        "identity":{
+            "maxDevNum": 15
         },
         "lorawan": {
             "networkServer": networkServer,

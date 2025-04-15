@@ -26,6 +26,7 @@ Current version : v1.1.0
     - [**4.1. Introduction**](#41-introduction)
     - [**4.2. Device type description**](#42-device-type-description)
       - [**Details of the `controller` property:**](#details-of-the-controller-property)
+      - [**Details of the `identity` property:**](#details-of-the-identity-property)
       - [**Details of the `lorawan` property:**](#details-of-the-lorawan-property)
       - [**Details of the `bacnet` property:**](#details-of-the-bacnet-property)
     - [**4.3. Specific information about the Network Server**](#43-specific-information-about-the-network-server)
@@ -255,6 +256,7 @@ Each device type in the deviceList is a JSON object with its complete configurat
 | Property    | Type   | Description                                                   | Required |
 |-------------|--------|---------------------------------------------------------------|----------|
 | `controller`| Object | Information about the controller                              | Yes      |
+| `identity`  | Object | Information about the device type                             | Yes      |
 | `lorawan`   | Object | Information about the LoRaWAN Network Server                  | Yes      |
 | `bacnet`    | Object | Correspondence between LoRaWAN payload and BACnet object      | Yes      |
 
@@ -282,6 +284,15 @@ The values in brackets [ ] are the available possibilities.
 - **"txTime"**: Debug the Transmission time part only
 - **"forceOn"** : Used to force a debug function whatever the debug level
 <br><br>
+
+#### **Details of the `identity` property:**
+
+| Property            | Description                                                                 | Required                       |
+|---------------------|-----------------------------------------------------------------------------|--------------------------------|
+| `maxDevNum`         | Maximum number of device supported by this device type                      | Yes                            |
+
+<br><br>
+
 
 #### **Details of the `lorawan` property:**
 
@@ -379,7 +390,7 @@ The `objects` is a JSON object that describes the association between all LoRaWA
 
 ### **4.6. Examples**
 #### **First example**: 
-A `brand-sensor` LoRaWAN device that works with `any controller`s using native BACnet, `TTN`, 1 BACnet object, object instance for `analog values starts at 1000`, object instance for `binary values starts at 500`, `no downlink`.
+A `brand-sensor` LoRaWAN device that works with `any controller`s using native BACnet, `TTN`, 1 BACnet object, object instance for `analog values starts at 1000`, object instance for `binary values starts at 500`, maximun number of device is `15`, `no downlink`.
 
 ```json
   "brand-sensor": {
@@ -387,6 +398,9 @@ A `brand-sensor` LoRaWAN device that works with `any controller`s using native B
             "debug": ["all"],
             "interface": "bacnet",
             "ipAddress": "ipAddress",
+        },
+        "identity":{
+            "maxDevNum": 15
         },
         "lorawan": {
             "networkServer": "tts",
@@ -410,7 +424,7 @@ In this example, the LoRaWAN payload `TempC` will be written in an `analog value
 - `offsetAV + (instanceRangeAV * x) + instanceNum` for `brand-sensor-x`. 
 
 #### **Second example**:
-A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller using `Rest API`, `ChirpStack`, 3 BACnet objects (2 uplink and 1 downlink), object instance for `analog values starts at 0`, object instance for `binary values starts at 0`,, downlink port used is `30`.
+A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller using `Rest API`, `ChirpStack`, 3 BACnet objects (2 uplink and 1 downlink), object instance for `analog values starts at 0`, object instance for `binary values starts at 0`, maximun number of device is `15`, downlink port used is `30`.
 
 ```json
     "brand-sensor": {
@@ -421,6 +435,9 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
             "ipAddress": "X.Y.W.Z",
             "login": "YOUR_LOGIN",
             "password": "YOUR_PASSWORD",
+        },
+        "identity":{
+            "maxDevNum": 15
         },
         "lorawan": {
             "networkServer": "chirpstack"
