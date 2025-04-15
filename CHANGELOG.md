@@ -5,6 +5,14 @@
 ## Known limitations
 * only tested with class A devices.
 
+## Version: V1.2.0 | 2025-04-15
+
+### Added
+- An "assignement mode" field has been added to the downlink BACnet objects description to choose if the instance Number is Automatically or manually set.
+
+### Modified
+- The identity propriety which was automatically added before is now to include inside the device list object with its child property, "maxDevNum" that has to be configured. 
+
 ## Version: V1.2.0 | 2025-04-14
 
 ### Added
