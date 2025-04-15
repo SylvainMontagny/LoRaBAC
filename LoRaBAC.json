@@ -1,8 +1,8 @@
 [
     {
-        "id": "cb6d01f8bfd82a80",
+        "id": "fdc4d05e7d77a1ac",
         "type": "subflow",
-        "name": "Rest API Downlink",
+        "name": "Rest API Downlink (5)",
         "info": "",
         "category": "",
         "in": [
@@ -11,7 +11,7 @@
                 "y": 140,
                 "wires": [
                     {
-                        "id": "1785fde28f7428ba"
+                        "id": "461bf082becc03d0"
                     }
                 ]
             }
@@ -22,7 +22,7 @@
                 "y": 140,
                 "wires": [
                     {
-                        "id": "ab39c37c03c45039",
+                        "id": "5e71f1e070a6c7e9",
                         "port": 0
                     }
                 ]
@@ -33,10 +33,10 @@
         "color": "#DDAA99"
     },
     {
-        "id": "1785fde28f7428ba",
+        "id": "461bf082becc03d0",
         "type": "function",
-        "z": "cb6d01f8bfd82a80",
-        "g": "792178519b56983c",
+        "z": "fdc4d05e7d77a1ac",
+        "g": "349d7dd2c0935a84",
         "name": "READ Downlink Objects",
         "func": "let device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\nconst debug = flow.get('$parent.g_debug');\n\n\nswitch (device.controller.model) {\n\n    ///////////////////////////////////////////////////////////\n    ////// Distech Controls Eclypse APEX\n    ////// https://www.postman.com/distech/distech-ecy-v2-public/request/rsns661/read-property-multiple\n    ///////////////////////////////////////////////////////////\n    case \"distechControlsV2\":\n        /********** HTTP Request Read Multiple Properties \n        {\n            \"method\": \"POST\",\n            \"url\": url,\n            \"headers\": {Authorization: flow.get('$parent.g_httpAuthentication'),\n                          ContentType: \"application/json\"}\n            \"payload\": {\n                \"encode\": \"text\",\n                \"property-references\": [\n                    {\n                      \"type\": \"analogValue\",\n                      \"instance\": 1,\n                      \"property\": \"presentValue\"\n                    },\n                    {\n                      \"type\": \"analogValue\",\n                      \"instance\": 4,\n                      \"property\": \"presentValue\"\n                    },\n                    ...\n                ]\n            },\n            \"requestTimeout\" : xxx (ms)\n        }\n        */\n\n        let property_references = [];\n\n        debug(device, \"down\", `${device.identity.deviceName} (RestAPI) : Read Downlink Objects`);\n\n        for (let object in bacnetObjects) {\n            if (bacnetObjects[object].dataDirection == \"downlink\") {\n                let temp = '{ \"type\": \"' + bacnetObjects[object].objectType + '\", \"instance\": ' + bacnetObjects[object].instanceNum + ', \"property\": \"presentValue\" }';\n                property_references.push(JSON.parse(temp));\n            }\n        }\n\n        // Return HTTP Request\n        return {\n            \"method\": \"POST\",\n            \"url\": \"https://\" + device.controller.ipAddress + \"/api/rest/v2/services/bacnet/local/objects/read-property-multiple\",\n            \"headers\": {\n                Authorization: device.controller.httpAuthentication,\n                ContentType: \"application/json\"\n            },\n            \"payload\": {\n                \"encode\": \"text\",\n                \"property-references\": property_references\n            },\n            \"requestTimeout\": flow.get('$parent.g_httpRequestTimeOut'),\n            \"device\": device,\n        }\n\n\n    ///////////////////////////////////////////////////////////\n    ////// XXXXX Controller\n    ////// URL to the API documentation\n    ///////////////////////////////////////////////////////////\n    case \"anotherController\":\n\n\n}",
         "outputs": 1,
@@ -49,15 +49,15 @@
         "y": 140,
         "wires": [
             [
-                "f007daf914358f35"
+                "7a42afcfb8a685d2"
             ]
         ]
     },
     {
-        "id": "f007daf914358f35",
+        "id": "7a42afcfb8a685d2",
         "type": "http request",
-        "z": "cb6d01f8bfd82a80",
-        "g": "792178519b56983c",
+        "z": "fdc4d05e7d77a1ac",
+        "g": "349d7dd2c0935a84",
         "name": "HTTP REQUEST",
         "method": "use",
         "ret": "obj",
@@ -74,15 +74,15 @@
         "y": 140,
         "wires": [
             [
-                "ab39c37c03c45039"
+                "5e71f1e070a6c7e9"
             ]
         ]
     },
     {
-        "id": "ab39c37c03c45039",
+        "id": "5e71f1e070a6c7e9",
         "type": "function",
-        "z": "cb6d01f8bfd82a80",
-        "g": "792178519b56983c",
+        "z": "fdc4d05e7d77a1ac",
+        "g": "349d7dd2c0935a84",
         "name": "Store Downlink object",
         "func": "/////////////////////////////////////////////////////////////////////\n/////////////////  Store Downlink Objects              //////////////\n/////////////////////////////////////////////////////////////////////\n/* This function stores the downlink data from the controller */\n\nlet device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\n\n// For InfluxDB support\ndevice.influxdb.source = \"downlink\";\n\nswitch (device.controller.model) {\n    case \"distechControlsV2\":\n        let donwlinkObjects = msg.payload;\n\n        for (let i = 0; i < donwlinkObjects.results.length; i++) {\n            Object.values(bacnetObjects).forEach(obj => {\n                if (donwlinkObjects.results[i].type == obj.objectType && donwlinkObjects.results[i].instance == obj.instanceNum) {\n                    if (obj.objectType == \"analogValue\") obj.value = Number(donwlinkObjects.results[i].value);\n                    if (obj.objectType == \"binaryValue\") obj.value = donwlinkObjects.results[i].value;\n                }\n            });\n        }\n\n        return {\n            device: device\n        };\n\n\n\n    ///////////////////////////////////////////////////////////\n    ////// XXXXX Controller\n    ////// URL to the API documentation\n    ///////////////////////////////////////////////////////////\n    case \"anotherController\":\n\n}\n",
         "outputs": 1,
@@ -98,9 +98,9 @@
         ]
     },
     {
-        "id": "792178519b56983c",
+        "id": "349d7dd2c0935a84",
         "type": "group",
-        "z": "cb6d01f8bfd82a80",
+        "z": "fdc4d05e7d77a1ac",
         "name": "Read DOWNLINK BACnet Objects",
         "style": {
             "stroke": "#ff0000",
@@ -109,9 +109,9 @@
             "color": "#000000"
         },
         "nodes": [
-            "1785fde28f7428ba",
-            "f007daf914358f35",
-            "ab39c37c03c45039"
+            "461bf082becc03d0",
+            "7a42afcfb8a685d2",
+            "5e71f1e070a6c7e9"
         ],
         "x": 514,
         "y": 99,
@@ -119,9 +119,9 @@
         "h": 82
     },
     {
-        "id": "7fa81edc0245a9ce",
+        "id": "05aa49c69dd92539",
         "type": "subflow",
-        "name": "Native BACnet Downlink",
+        "name": "Native BACnet Downlink (5)",
         "info": "",
         "category": "",
         "in": [
@@ -130,7 +130,7 @@
                 "y": 240,
                 "wires": [
                     {
-                        "id": "631b1b94f44bec19"
+                        "id": "1c72187ab8d7c197"
                     }
                 ]
             }
@@ -141,7 +141,7 @@
                 "y": 240,
                 "wires": [
                     {
-                        "id": "327e44764c833332",
+                        "id": "47383d3dcf732212",
                         "port": 0
                     }
                 ]
@@ -152,10 +152,10 @@
         "color": "#DDAA99"
     },
     {
-        "id": "631b1b94f44bec19",
+        "id": "1c72187ab8d7c197",
         "type": "function",
-        "z": "7fa81edc0245a9ce",
-        "g": "79fc538d1926524e",
+        "z": "05aa49c69dd92539",
+        "g": "40f09968bdcb9909",
         "name": "Read Downlink Objects",
         "func": "let device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\nlet requestArray = [];\nconst debug = flow.get('$parent.g_debug');\n\ndebug(device, \"down\",`${device.identity.deviceName} (${device.controller.protocol}) : Read Downlink Objects`)\n\nfor ( let object in bacnetObjects){\n    if (bacnetObjects[object].dataDirection == \"downlink\"){\n        let temp = '{ \"objectId\": {\"type\": 2,\"instance\":' + bacnetObjects[object].instanceNum + '},\"properties\": [ {\"id\": 85} ] }';\n        requestArray.push(JSON.parse(temp));\n    }\n}\n\nreturn {\n    \"payload\": {\n        \"deviceIPAddress\": device.controller.ipAddress,\n        \"requestArray\": requestArray\n    },\n    \"device\" : device\n};\n\n",
         "outputs": 1,
@@ -168,15 +168,15 @@
         "y": 240,
         "wires": [
             [
-                "e37f0f89e28557cf"
+                "a6df8b8ca067b95e"
             ]
         ]
     },
     {
-        "id": "e37f0f89e28557cf",
+        "id": "a6df8b8ca067b95e",
         "type": "BACnet-Read",
-        "z": "7fa81edc0245a9ce",
-        "g": "79fc538d1926524e",
+        "z": "05aa49c69dd92539",
+        "g": "40f09968bdcb9909",
         "name": "",
         "objectType": "",
         "instance": "d73587a053000e72",
@@ -188,15 +188,15 @@
         "y": 240,
         "wires": [
             [
-                "327e44764c833332"
+                "47383d3dcf732212"
             ]
         ]
     },
     {
-        "id": "327e44764c833332",
+        "id": "47383d3dcf732212",
         "type": "function",
-        "z": "7fa81edc0245a9ce",
-        "g": "79fc538d1926524e",
+        "z": "05aa49c69dd92539",
+        "g": "40f09968bdcb9909",
         "name": "Store Downlink Object",
         "func": "/////////////////////////////////////////////////////////////////////\n/////////////////  Store Downlink Objects              //////////////\n/////////////////////////////////////////////////////////////////////\n/* This function stores the downlink data from the controller */\n\nlet device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\nlet donwlinkObjects = msg.payload.values;\n\nfor (let i = 0; i < donwlinkObjects.length; i++) {\n    Object.values(bacnetObjects).forEach(obj => {\n        if (donwlinkObjects[i].objectId.type == obj.objectType && donwlinkObjects[i].objectId.instance == obj.instanceNum) {\n            obj.value = donwlinkObjects[i].values[0].value[0].value;\n\n        }\n    });\n}\n\nreturn {\n    \"device\": device\n};\n\n",
         "outputs": 1,
@@ -212,9 +212,9 @@
         ]
     },
     {
-        "id": "79fc538d1926524e",
+        "id": "40f09968bdcb9909",
         "type": "group",
-        "z": "7fa81edc0245a9ce",
+        "z": "05aa49c69dd92539",
         "name": "Read DOWNLINK BACnet Objects",
         "style": {
             "stroke": "#ff3f3f",
@@ -223,9 +223,9 @@
             "color": "#000000"
         },
         "nodes": [
-            "631b1b94f44bec19",
-            "e37f0f89e28557cf",
-            "327e44764c833332"
+            "1c72187ab8d7c197",
+            "a6df8b8ca067b95e",
+            "47383d3dcf732212"
         ],
         "x": 534,
         "y": 199,
@@ -233,9 +233,9 @@
         "h": 82
     },
     {
-        "id": "d928e4c7a3fa0bb8",
+        "id": "4d0f0c0771ab4500",
         "type": "subflow",
-        "name": "Rest API Uplink",
+        "name": "Rest API Uplink (5)",
         "info": "",
         "category": "",
         "in": [
@@ -244,7 +244,7 @@
                 "y": 360,
                 "wires": [
                     {
-                        "id": "e81001597722874e"
+                        "id": "0f12d8169e956e8a"
                     }
                 ]
             }
@@ -255,7 +255,7 @@
                 "y": 460,
                 "wires": [
                     {
-                        "id": "506aad681fb40dcb",
+                        "id": "f7f1301c75c39d11",
                         "port": 1
                     }
                 ]
@@ -266,9 +266,9 @@
         "color": "#DDAA99"
     },
     {
-        "id": "506aad681fb40dcb",
+        "id": "f7f1301c75c39d11",
         "type": "function",
-        "z": "d928e4c7a3fa0bb8",
+        "z": "4d0f0c0771ab4500",
         "name": "BACnet Object Exist ?",
         "func": "let device = msg.device;\nconst debug = flow.get(\"$parent.g_debug\");\n\nswitch (msg.statusCode) {\n    //////////////////////////////////////////////////    \n    // Case 200 : \"Success\" > Stops here OR continue to read Downlink Objects. \n    // Case 200 : \"Object does not exist\" > Create Objects\n    //////////////////////////////////////////////////\n    case 200:\n        if (msg.payload.includes(\"Unknown Object\")) {\n            debug(device, \"creation\", `${device.identity.deviceName} : Some BACnet objects don't exist`);\n            return [{ device: device }, null];       // Create Downlink Objects\n        }\n        else {\n            debug(device, \"up\", `${device.identity.deviceName} (RestAPI) : Write Uplink Objects`);\n            const dataDirection = Object.values(device.bacnet.objects).map(obj => obj.dataDirection);\n\n            if (dataDirection.some(direction => { return direction === \"downlink\" })) {\n                return [null, { device: device }];    // Continue to read downlink Objects\n            }\n            else {\n                debug(device, \"txTime\", `${device.identity.deviceName} (${device.controller.protocol}) : TX time = ${Date.now() - device.transmitTime} ms`); \n                return [null, null];                 // Stops here\n            }\n        }\n\n    case 400:\n        node.error(\"Error : Bad HTTP Request\");\n        if (msg.payload.includes(\"write-access-denied\")) {\n            node.error(\"Error : Trying to write a Read Only object (analogInput)\");\n        }\n        return [null, null];\n\n    case 401:\n        node.error(\"Error : Can't connect to controller : Authorization error\");\n        return [null, null];\n\n    case 500:\n        node.error(\"Error : Server Error 500\");\n        return [null, null];\n\n    case 404:\n        node.error(\"Error : 404\");\n        return [null, null];\n\n    case \"ETIMEDOUT\":\n        node.error(\"Error : Can't connect to controller : TimeOut\");\n        return [null, null];\n\n    case \"UNABLE_TO_VERIFY_LEAF_SIGNATURE\":\n        node.error(\"Error : You forgot to enable the TLS config in your HTTP node\");\n        return [null, null];\n\n}\n",
         "outputs": 2,
@@ -281,17 +281,17 @@
         "y": 360,
         "wires": [
             [
-                "44b1941021198257"
+                "2ea60b064ee5fd3e"
             ],
             []
         ],
         "icon": "node-red/switch.svg"
     },
     {
-        "id": "aa32896080618b5a",
+        "id": "ce546944050fc09d",
         "type": "http request",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "f11892a0d3f6c7f9",
+        "z": "4d0f0c0771ab4500",
+        "g": "9b9ee65b4f88d4a8",
         "name": "HTTP REQUEST",
         "method": "use",
         "ret": "txt",
@@ -308,15 +308,15 @@
         "y": 360,
         "wires": [
             [
-                "506aad681fb40dcb"
+                "f7f1301c75c39d11"
             ]
         ]
     },
     {
-        "id": "e81001597722874e",
+        "id": "0f12d8169e956e8a",
         "type": "function",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "f11892a0d3f6c7f9",
+        "z": "4d0f0c0771ab4500",
+        "g": "9b9ee65b4f88d4a8",
         "name": "WRITE Uplink Objects",
         "func": "\nlet device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\n\nif(device.controller.protocol != \"restAPIBacnet\") return null;\n\nswitch (device.controller.model) {\n\n  ///////////////////////////////////////////////////////////\n  ////// Distech Controls Eclypse APEX\n  ////// https://www.postman.com/distech/distech-ecy-v2-public/request/3qk28wy/write-property-multiple\n  ///////////////////////////////////////////////////////////\n  case \"distechControlsV2\":\n    /********* HTTP Request Write Properties\n    {\n        \"method\": \"POST\",\n        \"url\": \"https://@IP/api/rest/v2/services/bacnet/local/objects/write-property-multiple\",\n        \"headers\": {Authorization: httpAuthentication,\n                  ContentType: \"application/json\"},\n        \n        \"payload\": {\n            \"encode\": \"text\",\n            \"property-references\": [\n                {\n                  \"type\": \"analogValue\",\n                  \"instance\": y,\n                  \"property\": \"presentValue\",\n                  \"value\" : \"xx\"\n                },\n                {\n                  \"type\": \"analogValue\",\n                  \"instance\": y,\n                  \"property\": \"presentValue\",\n                  \"value\" : \"xx\"\n                },\n                ...\n            ]\n        },\n        \"requestTimeout\" : xxx (ms)\n    }\n    */\n\n    let property_references = [];\n    for (let object in bacnetObjects) {\n      if (bacnetObjects[object].dataDirection == \"uplink\") {\n        let temp = '{ \"type\": \"' + bacnetObjects[object].objectType + '\", \"instance\": ' + bacnetObjects[object].instanceNum + ', \"property\": \"presentValue\", \"value\": ' + bacnetObjects[object].value + ' }';\n        property_references.push(JSON.parse(temp));\n      }\n    }\n\n    // Return HTTP Request\n    return {\n      \"method\": \"POST\",\n      \"url\": \"https://\" + device.controller.ipAddress + \"/api/rest/v2/services/bacnet/local/objects/write-property-multiple\",\n      \"headers\": {\n        Authorization: device.controller.httpAuthentication,\n        ContentType: \"application/json\"\n      },\n      \"payload\": {\n        \"encode\": \"text\",\n        \"property-references\": property_references\n      },\n      \"requestTimeout\": global.get('g_httpRequestTimeOut'),\n      \"device\": device\n    }\n\n\n  ///////////////////////////////////////////////////////////\n  ////// XXXXX Controller\n  ////// URL to the API documentation\n  ///////////////////////////////////////////////////////////\n  case \"anotherController\":\n\n\n}\n\n\n\n",
         "outputs": 1,
@@ -329,15 +329,15 @@
         "y": 360,
         "wires": [
             [
-                "aa32896080618b5a"
+                "ce546944050fc09d"
             ]
         ]
     },
     {
-        "id": "44b1941021198257",
+        "id": "2ea60b064ee5fd3e",
         "type": "function",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "3dc5aeb62706d68e",
+        "z": "4d0f0c0771ab4500",
+        "g": "885bfde15373d132",
         "name": "CREATE Objects",
         "func": "\nlet device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\n\nswitch (device.controller.model) {\n\n  ///////////////////////////////////////////////////////////\n  ////// Distech Controls Eclypse APEX\n  ////// https://www.postman.com/distech/distech-ecy-v2-public/request/57jbx8w/create-objects-multiple\n  ///////////////////////////////////////////////////////////\n  case \"distechControlsV2\":\n\n    /**********  Objects creation on the controller\n    {\n        \"method\": \"POST\",\n        \"url\": \"https://\" + flow.get('$parent.g_controllerIP') +\"/api/rest/v2/batch\",\n        \"headers\": {Authorization: flow.get('$parent.g_httpAuthentication'),\n                  ContentType: \"application/json\"}\n        \"payload\":{\n            \"requests\": [\n                {\n                  \"id\": \"1\",\n                  \"method\": \"POST\",\n                  \"url\": \"/api/rest/v2/services/bacnet/local/objects/add\",\n                  \"body\": {\n                    \"object-type\": \"AnalogValue\",\n                    \"instance-number\": 10010,\n                    \"name\": \"apiAVTest10\"\n                  }\n                },\n                {\n                  \"id\": \"2\",\n                  \"method\": \"POST\",\n                  \"url\": \"/api/rest/v2/services/bacnet/local/objects/add\",\n                  \"body\": {\n                    \"object-type\": \"BinaryValue\",\n                    \"instance-number\": 10010,\n                    \"name\": \"apiBVTest10\"\n                  }\n                },\n                ...\n            ]\n        },\n        \"requestTimeout\" : xxx (ms)\n    }\n    */\n\n\n    let requests = [], i = 1;\n\n    for (let object in bacnetObjects) {\n      let temp = '{ \"id\": \"' + (i++) + '\", \"method\": \"POST\", \"url\": \"/api/rest/v2/services/bacnet/local/objects/add\", \"body\": { \"object-type\": \"' + bacnetObjects[object].objectType + '\", \"instance-number\": ' + bacnetObjects[object].instanceNum + ', \"name\": \"' + bacnetObjects[object].objectName + '\" } }';\n      requests.push(JSON.parse(temp));\n    }\n\n    // Return HTTP Request\n    return {\n      \"method\": \"POST\",\n      \"url\": \"https://\" + device.controller.ipAddress + \"/api/rest/v2/batch\",\n      \"headers\": {\n        Authorization: device.controller.httpAuthentication,\n        ContentType: \"application/json\"\n      },\n      \"payload\": { \"requests\": requests },\n      \"requestTimeout\": flow.get('$parent.g_httpRequestTimeOut'),\n      \"device\": device\n    }\n\n  ///////////////////////////////////////////////////////////\n  ////// XXXXX Controller\n  ////// URL to the API documentation\n  ///////////////////////////////////////////////////////////\n  case \"anotherController\":\n\n  \n}",
         "outputs": 1,
@@ -350,15 +350,15 @@
         "y": 260,
         "wires": [
             [
-                "4682bb25252c2165"
+                "66bac6f6d3ef486f"
             ]
         ]
     },
     {
-        "id": "4682bb25252c2165",
+        "id": "66bac6f6d3ef486f",
         "type": "http request",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "3dc5aeb62706d68e",
+        "z": "4d0f0c0771ab4500",
+        "g": "885bfde15373d132",
         "name": "HTTP REQUEST",
         "method": "use",
         "ret": "txt",
@@ -375,16 +375,16 @@
         "y": 260,
         "wires": [
             [
-                "e371754cea200fe7",
-                "b317289272a5b5c9"
+                "2d70ba55e9d6dbc8",
+                "f8147aafe51f87df"
             ]
         ]
     },
     {
-        "id": "e371754cea200fe7",
+        "id": "2d70ba55e9d6dbc8",
         "type": "function",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "3dc5aeb62706d68e",
+        "z": "4d0f0c0771ab4500",
+        "g": "885bfde15373d132",
         "name": "WRITE Objects",
         "func": "\n\nlet device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\n\nswitch (device.controller.model) {\n\n    ///////////////////////////////////////////////////////////\n    ////// Distech Controls Eclypse APEX\n    ////// https://www.postman.com/distech/distech-ecy-v2-public/request/3qk28wy/write-property-multiple\n    ///////////////////////////////////////////////////////////\n    case \"distechControlsV2\":\n        let property_references = [];\n\n        for (let object in bacnetObjects) {\n            let temp = '{ \"type\": \"' + bacnetObjects[object].objectType + '\", \"instance\": ' + bacnetObjects[object].instanceNum + ', \"property\": \"presentValue\", \"value\": ' + bacnetObjects[object].value + ' }';\n            property_references.push(JSON.parse(temp));\n        }\n\n        // Return HTTP Request\n        return {\n            \"method\": \"POST\",\n            \"url\": \"https://\" + device.controller.ipAddress + \"/api/rest/v2/services/bacnet/local/objects/write-property-multiple\",\n            \"headers\": {\n                Authorization: device.controller.httpAuthentication,\n                ContentType: \"application/json\"\n            },\n            \"payload\": {\n                \"encode\": \"text\",\n                \"property-references\": property_references\n            },\n            \"requestTimeout\": flow.get('$parent.g_httpRequestTimeOut'),\n            \"device\": device\n        }\n\n\n    ///////////////////////////////////////////////////////////\n    ////// XXXXX Controller\n    ////// URL to the API documentation\n    ///////////////////////////////////////////////////////////\n    case \"anotherController\":\n\n\n}\n\n\n\n",
         "outputs": 1,
@@ -397,15 +397,15 @@
         "y": 320,
         "wires": [
             [
-                "9c6860428c107ecb"
+                "ba52022330bc5460"
             ]
         ]
     },
     {
-        "id": "9c6860428c107ecb",
+        "id": "ba52022330bc5460",
         "type": "http request",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "3dc5aeb62706d68e",
+        "z": "4d0f0c0771ab4500",
+        "g": "885bfde15373d132",
         "name": "HTTP REQUEST",
         "method": "use",
         "ret": "txt",
@@ -422,15 +422,15 @@
         "y": 320,
         "wires": [
             [
-                "858275559f0dc826"
+                "89ccb3dd49118281"
             ]
         ]
     },
     {
-        "id": "b317289272a5b5c9",
+        "id": "f8147aafe51f87df",
         "type": "function",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "3dc5aeb62706d68e",
+        "z": "4d0f0c0771ab4500",
+        "g": "885bfde15373d132",
         "name": "Creation results",
         "func": "let device = msg.device;\nconst debug = flow.get('$parent.g_debug');\n\nswitch (msg.statusCode) {\n    //////////////////////////////////////////////////    \n    // Case 200 : \"Success\" > Objects have been created\n    //////////////////////////////////////////////////\n    case 200:\n        if (msg.payload.includes(\"\\\"status\\\":200\")) {\n            debug(device, \"creation\", `${device.identity.deviceName} (RestAPI) : Some BACnet objects have been created`);\n        }\n        if (msg.payload.includes(\"Instance already exists\") || msg.payload.includes(\"Object with same name already exists\")) {\n            global.set('g_errorObjectCreation', flow.get('$parent.g_errorObjectCreation') + 1);\n            node.error(`${device.identity.deviceName} : Some BACnet objects already existed`);\n        }\n        break;\n\n    case 400:\n        node.error(\"Error : Bad HTTP Request\");\n        break;\n\n    case 401:\n        node.error(\"Error : Can't connect to controller : Authorization error\");\n        break;\n\n    case 500:\n        node.error(\"Error : Server Error 500\");\n        break;\n\n    case 404:\n        node.error(\"Error : 404\");\n        break;\n\n\n    case \"ETIMEDOUT\":\n        node.error(\"Error : Can't connect to controller : TimeOut\");\n        break;\n\n    case \"UNABLE_TO_VERIFY_LEAF_SIGNATURE\":\n        node.error(\"Error : You forgot to enable the TLS config in your HTTP node\");\n        break;\n\n}\n\n\n",
         "outputs": 1,
@@ -447,10 +447,10 @@
         "icon": "node-red/alert.svg"
     },
     {
-        "id": "858275559f0dc826",
+        "id": "89ccb3dd49118281",
         "type": "function",
-        "z": "d928e4c7a3fa0bb8",
-        "g": "3dc5aeb62706d68e",
+        "z": "4d0f0c0771ab4500",
+        "g": "885bfde15373d132",
         "name": "Debug Write",
         "func": "let device = msg.device;\nconst debug = flow.get('$parent.g_debug');\n\ndebug(device, \"txTime\", `${device.identity.deviceName} (${device.controller.protocol}) : TX time = ${Date.now() - device.transmitTime} ms`); \n\nreturn msg;",
         "outputs": 1,
@@ -466,9 +466,9 @@
         ]
     },
     {
-        "id": "f11892a0d3f6c7f9",
+        "id": "9b9ee65b4f88d4a8",
         "type": "group",
-        "z": "d928e4c7a3fa0bb8",
+        "z": "4d0f0c0771ab4500",
         "name": "Write UPLINK BACnet Objects",
         "style": {
             "stroke": "#ff0000",
@@ -477,8 +477,8 @@
             "color": "#000000"
         },
         "nodes": [
-            "aa32896080618b5a",
-            "e81001597722874e"
+            "ce546944050fc09d",
+            "0f12d8169e956e8a"
         ],
         "x": 394,
         "y": 319,
@@ -486,9 +486,9 @@
         "h": 82
     },
     {
-        "id": "3dc5aeb62706d68e",
+        "id": "885bfde15373d132",
         "type": "group",
-        "z": "d928e4c7a3fa0bb8",
+        "z": "4d0f0c0771ab4500",
         "name": "Create missing BACnet Objects",
         "style": {
             "stroke": "#ff0000",
@@ -497,12 +497,12 @@
             "color": "#000000"
         },
         "nodes": [
-            "44b1941021198257",
-            "4682bb25252c2165",
-            "e371754cea200fe7",
-            "9c6860428c107ecb",
-            "b317289272a5b5c9",
-            "858275559f0dc826"
+            "2ea60b064ee5fd3e",
+            "66bac6f6d3ef486f",
+            "2d70ba55e9d6dbc8",
+            "ba52022330bc5460",
+            "f8147aafe51f87df",
+            "89ccb3dd49118281"
         ],
         "x": 1154,
         "y": 219,
@@ -524,9 +524,9 @@
         "alpnprotocol": ""
     },
     {
-        "id": "4f4b9f7e3bab82a4",
+        "id": "9f44ee221cb42d7e",
         "type": "subflow",
-        "name": "Native BACnet Uplink",
+        "name": "Native BACnet Uplink (5)",
         "info": "",
         "category": "",
         "in": [
@@ -535,7 +535,7 @@
                 "y": 240,
                 "wires": [
                     {
-                        "id": "f41b0e67e47de851"
+                        "id": "dc26462b84a6a3e1"
                     }
                 ]
             }
@@ -546,7 +546,7 @@
                 "y": 240,
                 "wires": [
                     {
-                        "id": "8d8150ceba43aba1",
+                        "id": "5fdc8e1e8ee5de8e",
                         "port": 0
                     }
                 ]
@@ -557,10 +557,10 @@
         "color": "#DDAA99"
     },
     {
-        "id": "9a1b0c0caecf26bf",
+        "id": "7541f41d6484f72d",
         "type": "BACnet-Write",
-        "z": "4f4b9f7e3bab82a4",
-        "g": "9a98e94d2afb6027",
+        "z": "9f44ee221cb42d7e",
+        "g": "05e37569031775e2",
         "name": "",
         "objectType": "0",
         "instance": "d73587a053000e72",
@@ -575,15 +575,15 @@
         "y": 240,
         "wires": [
             [
-                "8d8150ceba43aba1"
+                "5fdc8e1e8ee5de8e"
             ]
         ]
     },
     {
-        "id": "f41b0e67e47de851",
+        "id": "dc26462b84a6a3e1",
         "type": "function",
-        "z": "4f4b9f7e3bab82a4",
-        "g": "9a98e94d2afb6027",
+        "z": "9f44ee221cb42d7e",
+        "g": "05e37569031775e2",
         "name": "WRITE Uplink Objects",
         "func": "\nlet device = msg.device;\n\nif(device.controller.protocol != \"bacnet\") return null;\n\nlet bacnetObject = device.bacnet.objects[device.bacnet.uplinkKeys[0]];\n\nconst writeProperty = JSON.parse('{\"deviceIPAddress\":\"' + device.controller.ipAddress + '\", \"objectId\": { \"type\":' + bacnetObject.objectType + ', \"instance\":' + bacnetObject.instanceNum + '}, \"propertyId\": 85, \"values\": [ { \"type\":' + ((bacnetObject.objectType==2)?4:0) +', \"value\":' + bacnetObject.value +  '} ]}');\n\nreturn {\n    \"payload\" : writeProperty,\n    \"device\" : device\n}\n",
         "outputs": 1,
@@ -596,15 +596,15 @@
         "y": 240,
         "wires": [
             [
-                "9a1b0c0caecf26bf"
+                "7541f41d6484f72d"
             ]
         ]
     },
     {
-        "id": "8d8150ceba43aba1",
+        "id": "5fdc8e1e8ee5de8e",
         "type": "function",
-        "z": "4f4b9f7e3bab82a4",
-        "g": "9a98e94d2afb6027",
+        "z": "9f44ee221cb42d7e",
+        "g": "05e37569031775e2",
         "name": "loop",
         "func": "let device = msg.device;\ndevice.bacnet.uplinkKeys.shift();\nconst debug = flow.get('$parentg_debug');\n\n\nif (device.bacnet.uplinkKeys.length != 0) return [null, { \"device\": device }];\nelse {\n    debug(device, \"up\",`${device.identity.deviceName} (${device.controller.protocol}) : Write Uplink Objects`)\n    return [{ \"device\": device }, null];\n}\n",
         "outputs": 2,
@@ -618,14 +618,14 @@
         "wires": [
             [],
             [
-                "f41b0e67e47de851"
+                "dc26462b84a6a3e1"
             ]
         ]
     },
     {
-        "id": "9a98e94d2afb6027",
+        "id": "05e37569031775e2",
         "type": "group",
-        "z": "4f4b9f7e3bab82a4",
+        "z": "9f44ee221cb42d7e",
         "name": "Write ULINK BACnet Objects",
         "style": {
             "label": true,
@@ -634,9 +634,9 @@
             "color": "#000000"
         },
         "nodes": [
-            "9a1b0c0caecf26bf",
-            "f41b0e67e47de851",
-            "8d8150ceba43aba1"
+            "7541f41d6484f72d",
+            "dc26462b84a6a3e1",
+            "5fdc8e1e8ee5de8e"
         ],
         "x": 434,
         "y": 199,
@@ -665,7 +665,7 @@
         "broadcastAddress": "255.255.255.255"
     },
     {
-        "id": "a3b76059602a569b",
+        "id": "bee4c50fff1dc47e",
         "type": "tab",
         "label": "LoRaBAC",
         "disabled": false,
@@ -673,9 +673,9 @@
         "env": []
     },
     {
-        "id": "cd6cba260ed29c53",
+        "id": "60e9292ab765c0cd",
         "type": "group",
-        "z": "a3b76059602a569b",
+        "z": "bee4c50fff1dc47e",
         "name": "MQTT (to Configure)",
         "style": {
             "stroke": "#6f2fa0",
@@ -684,18 +684,18 @@
             "color": "#000000"
         },
         "nodes": [
-            "190c36aea4575355",
-            "2bf48959435fa163"
+            "e06e4de4292c8a5b",
+            "62fb3011287918ba"
         ],
         "x": 14,
-        "y": 479,
+        "y": 439,
         "w": 552,
         "h": 250
     },
     {
-        "id": "05fd983d4f173e20",
+        "id": "d2d1fc57544dbba3",
         "type": "group",
-        "z": "a3b76059602a569b",
+        "z": "bee4c50fff1dc47e",
         "name": "LoRaBAC Configuration",
         "style": {
             "stroke": "#ff0000",
@@ -704,19 +704,19 @@
             "color": "#000000"
         },
         "nodes": [
-            "1116779877285488",
-            "7285cc5318649786",
-            "803da341183d6a1f"
+            "d6ddda8e8cb4e6c3",
+            "3af79af597322582",
+            "391a30c96b249174"
         ],
         "x": 614,
-        "y": 59,
+        "y": 19,
         "w": 492,
         "h": 82
     },
     {
-        "id": "04d6bff4de2ebe5b",
+        "id": "07be1cc8f1a9b91b",
         "type": "group",
-        "z": "a3b76059602a569b",
+        "z": "bee4c50fff1dc47e",
         "name": "MQTT (to Configure)",
         "style": {
             "stroke": "#6f2fa0",
@@ -725,17 +725,17 @@
             "color": "#000000"
         },
         "nodes": [
-            "8a1c0d19c8f4f568"
+            "8d442a031826a2cc"
         ],
         "x": 1774,
-        "y": 279,
+        "y": 239,
         "w": 212,
         "h": 82
     },
     {
-        "id": "632db5557a1584e8",
+        "id": "3cf027cc8cae9efd",
         "type": "group",
-        "z": "a3b76059602a569b",
+        "z": "bee4c50fff1dc47e",
         "name": "Uplink",
         "style": {
             "label": true,
@@ -743,19 +743,19 @@
             "fill": "#e3f3d3"
         },
         "nodes": [
-            "0c91ae6dd87fbf4a",
-            "c5884487e60a55af",
-            "3dfc9da98ae9b1ed"
+            "b848e9a53e30fc82",
+            "2194b145358418b6",
+            "7d963d341f4d9c6c"
         ],
         "x": 574,
-        "y": 219,
+        "y": 179,
         "w": 252,
         "h": 222
     },
     {
-        "id": "002ff1d6534567d0",
+        "id": "cae3f5bb0c384de3",
         "type": "group",
-        "z": "a3b76059602a569b",
+        "z": "bee4c50fff1dc47e",
         "name": "Downlink",
         "style": {
             "fill": "#e3f3d3",
@@ -763,24 +763,24 @@
             "color": "#000000"
         },
         "nodes": [
-            "70ec601050782903",
-            "78a2c72cc59901d5",
-            "0c0c323a919e3bbc",
-            "2dec7698e1b2e030",
-            "3e5bc399359eb1ba",
-            "3446cfe17eb0e3ef",
-            "1943740b9585ec6a",
-            "4e983d53155a6896"
+            "926c5da61c6e028b",
+            "27249b34076c410a",
+            "43988490d4fb4ebb",
+            "7d958e3e3f981186",
+            "6933e154c9f8ca62",
+            "3ccde99517f59368",
+            "02573d1616b783eb",
+            "9501957f5ac91756"
         ],
         "x": 874,
-        "y": 219,
+        "y": 179,
         "w": 852,
         "h": 222
     },
     {
-        "id": "f9ee7d6c602271d6",
+        "id": "873ecef81f367c79",
         "type": "debug",
-        "z": "a3b76059602a569b",
+        "z": "bee4c50fff1dc47e",
         "name": "Debug \"device\" object",
         "active": false,
         "tosidebar": true,
@@ -791,33 +791,15 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 680,
-        "y": 200,
+        "y": 160,
         "wires": []
     },
     {
-        "id": "803da341183d6a1f",
-        "type": "debug",
-        "z": "a3b76059602a569b",
-        "g": "05fd983d4f173e20",
-        "name": "deviceList",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1000,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "d567297d596ccc5f",
+        "id": "acc5123874e8665b",
         "type": "function",
-        "z": "a3b76059602a569b",
+        "z": "bee4c50fff1dc47e",
         "name": "Create Device Object",
-        "func": "let deviceList = flow.get('g_deviceList');\nlet networkServer;\nlet deviceName, deviceType, deviceNum, devEUI, topicDownlink;\nlet devicePayload = {};\n\nlet topicUp = msg.topic;\n\n// Guess the NetworkServer from the received frame\nif (msg.payload.hasOwnProperty('deviceInfo'))       networkServer = \"chirpstack\";\nif (msg.payload.hasOwnProperty('end_device_ids'))   networkServer = \"tts\";\nif (msg.payload.hasOwnProperty('DevEUI_uplink'))    networkServer = \"actility\";\n\n// Reject messages from Actility :\nif ( 'DevEUI_notification' in msg.payload || 'DevEUI_notification' in msg.payload)  return null;\nif ( 'DevEUI_downlink_Rejected' in msg.payload) {\n    node.error(\"Actility : Downlink Message Rejected\");\n    return null;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// The Things Stack Network Server \n/////////////////////////////////////////////////////////////////////////\n\nif (networkServer == \"tts\") {\n    deviceName = msg.payload.end_device_ids.device_id;\n    topicDownlink = topicUp.replace(flow.get('g_tts_topicUplinkSuffix'), \"\") + flow.get('g_tts_topicDownlinkSuffix');\n    devEUI = msg.payload.end_device_ids.dev_eui;\n    if (!Object.keys(msg.payload.uplink_message).some(element => element == \"decoded_payload\")) {\n        node.error(deviceName + \" : No payload decoder configured on the Network Server\");\n        return null;\n    }\n    devicePayload = msg.payload.uplink_message.decoded_payload;\n}\n\n\n//////////////////////////////////////////////////////////////////////////\n// Chirpstack Network Server \n/////////////////////////////////////////////////////////////////////////\n\nif (networkServer == \"chirpstack\") {\n    if (msg.payload.fPort == 0) return 0;\n    deviceName = msg.payload.deviceInfo.deviceName;\n    topicDownlink = topicUp.replace(flow.get('g_chirp_topicUplinkSuffix'), \"\") + flow.get('g_chirp_topicDownlinkSuffix');\n    devEUI = msg.payload.deviceInfo.devEui;\n    if (!Object.keys(msg.payload).some(element => element == \"object\")) {\n        node.error(deviceName + \" : No payload decoder configured on the Network Server\");\n        return null;\n    }\n    devicePayload = msg.payload.object;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// Actility Network Server \n/////////////////////////////////////////////////////////////////////////\n\nif (networkServer == \"actility\") {\n    deviceName = msg.payload.DevEUI_uplink.CustomerData.name;\n    topicDownlink = topicUp.replace(flow.get('g_actility_topicUplinkSuffix'), \"\") + flow.get('g_actility_topicDownlinkSuffix');\n    devEUI = msg.payload.DevEUI_uplink.DevEUI;\n    if (!Object.keys(msg.payload.DevEUI_uplink).some(element => element == \"payload\")) {\n        node.error(deviceName + \" : No payload decoder configured on the Network Server\");\n        return null;\n    }\n    devicePayload = msg.payload.DevEUI_uplink.payload;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// Checks\n/////////////////////////////////////////////////////////////////////////\nconst match = deviceName.match(/^(.*)-(\\d+)$/);\nif (match) {\n    deviceType = match[1];  // The part before the last dash\n    deviceNum = parseInt(match[2], 10);  // The number at the end, converted to an integer\n}\nelse {\n    node.error(`${deviceName} : this device Name doesn't respect \"xxx-num\" format`);\n    return null;\n}\n\nif ((deviceNum == 0)) {\n    node.error(`${deviceName} : Device Num is 0 is not allowed`);\n    return null;\n}\n\nif (deviceList[deviceType] == undefined) {\n    node.error(`${deviceType} : this Device Type doesn't belong to the Device List`);\n    return null;\n}\n\n// Check deviceNum overflow\nif (deviceNum > deviceList[deviceType].identity.maxDeviceNum) {\n    node.error(`Device \"${deviceName}\" instances overlaps another device : Dropped`);\n    return null;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// Create a copy of the \"deviceType\" object of the \"deviceList\" structure\n/////////////////////////////////////////////////////////////////////////\nlet device = JSON.parse(JSON.stringify(deviceList[deviceType]));\n\ndevice.identity.deviceName = deviceName;\ndevice.identity.deviceType = deviceType;\ndevice.identity.deviceNum = deviceNum;\ndevice.identity.devEUI = devEUI;\ndevice.mqtt.topicDownlink = topicDownlink;\n\nfor (let object in device.bacnet.objects) {\n    // Update instanceNum\n    switch (device.bacnet.objects[object].objectType) {\n        case \"analogValue\":\n            device.bacnet.objects[object].instanceNum += device.bacnet.offsetAV + (device.bacnet.instanceRangeAV * deviceNum);\n            break;\n        case \"binaryValue\":\n            device.bacnet.objects[object].instanceNum += device.bacnet.offsetBV + (device.bacnet.instanceRangeBV * deviceNum);\n            break;\n        default:\n            node.error(\"Object type of \" + object + \" is unknown : \" + device.bacnet.objects[object].objectType);\n            return null;\n            \n    }\n    \n    // Update objectName\n    device.bacnet.objects[object].objectName = deviceName + '-' + object + '-' + device.bacnet.objects[object].instanceNum;\n    // Update value\n    if (device.bacnet.objects[object].dataDirection == \"uplink\") {\n        let lorawanPayloadName = device.bacnet.objects[object].lorawanPayloadName;\n        let keys = lorawanPayloadName.split(/[\\.\\[\\]]/).filter(key => key !== \"\");\n        let value = keys.reduce((accumulator, currentValue) => accumulator[currentValue], devicePayload);\n        device.bacnet.objects[object].value = value;\n    }\n    // Check value\n    if (device.bacnet.objects[object].value == undefined || typeof device.bacnet.objects[object].value == \"object\") {\n        node.error(`Device : ${device.identity.deviceName} - Object : ${object} - Wrong Payload decoder or Wrong Device description`);\n        return null;\n    }\n\n    if (device.controller.protocol == \"bacnet\") {\n        // \"restAPIBacnet\" and \"bacnet\" compatibility \n        switch (device.bacnet.objects[object].objectType) {\n            case \"analogValue\": device.bacnet.objects[object].objectType = 2; break;\n            case \"binaryValue\": device.bacnet.objects[object].objectType = 5; break;\n        }\n        // Keep only uplink payload in a new object\n        device.bacnet.uplinkKeys = Object.entries(device.bacnet.objects)\n            .filter(([key, obj]) => obj.dataDirection === \"uplink\")\n            .map(([key, obj]) => key);\n    }\n}\n\n// For debug\ndevice.transmitTime = Date.now();\n\n// For InfluxDB support\ndevice.influxdb = {\n    \"source\": \"uplink\"\n};\n\n\nreturn {\n    \"device\": device\n}",
+        "func": "let deviceList = flow.get('g_deviceList');\nlet networkServer;\nlet deviceName, deviceType, deviceNum, devEUI, topicDownlink;\nlet devicePayload = {};\n\nlet topicUp = msg.topic;\n\n// Guess the NetworkServer from the received frame\nif (msg.payload.hasOwnProperty('deviceInfo'))       networkServer = \"chirpstack\";\nif (msg.payload.hasOwnProperty('end_device_ids'))   networkServer = \"tts\";\nif (msg.payload.hasOwnProperty('DevEUI_uplink'))    networkServer = \"actility\";\n\n// Reject messages from Actility :\nif ( 'DevEUI_notification' in msg.payload || 'DevEUI_notification' in msg.payload)  return null;\nif ( 'DevEUI_downlink_Rejected' in msg.payload) {\n    node.error(\"Actility : Downlink Message Rejected\");\n    return null;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// The Things Stack Network Server \n/////////////////////////////////////////////////////////////////////////\n\nif (networkServer == \"tts\") {\n    deviceName = msg.payload.end_device_ids.device_id;\n    topicDownlink = topicUp.replace(flow.get('g_tts_topicUplinkSuffix'), \"\") + flow.get('g_tts_topicDownlinkSuffix');\n    devEUI = msg.payload.end_device_ids.dev_eui;\n    if (!Object.keys(msg.payload.uplink_message).some(element => element == \"decoded_payload\")) {\n        node.error(deviceName + \" : No payload decoder configured on the Network Server\");\n        return null;\n    }\n    devicePayload = msg.payload.uplink_message.decoded_payload;\n}\n\n\n//////////////////////////////////////////////////////////////////////////\n// Chirpstack Network Server \n/////////////////////////////////////////////////////////////////////////\n\nif (networkServer == \"chirpstack\") {\n    if (msg.payload.fPort == 0) return 0;\n    deviceName = msg.payload.deviceInfo.deviceName;\n    topicDownlink = topicUp.replace(flow.get('g_chirp_topicUplinkSuffix'), \"\") + flow.get('g_chirp_topicDownlinkSuffix');\n    devEUI = msg.payload.deviceInfo.devEui;\n    if (!Object.keys(msg.payload).some(element => element == \"object\")) {\n        node.error(deviceName + \" : No payload decoder configured on the Network Server\");\n        return null;\n    }\n    devicePayload = msg.payload.object;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// Actility Network Server \n/////////////////////////////////////////////////////////////////////////\n\nif (networkServer == \"actility\") {\n    deviceName = msg.payload.DevEUI_uplink.CustomerData.name;\n    topicDownlink = topicUp.replace(flow.get('g_actility_topicUplinkSuffix'), \"\") + flow.get('g_actility_topicDownlinkSuffix');\n    devEUI = msg.payload.DevEUI_uplink.DevEUI;\n    if (!Object.keys(msg.payload.DevEUI_uplink).some(element => element == \"payload\")) {\n        node.error(deviceName + \" : No payload decoder configured on the Network Server\");\n        return null;\n    }\n    devicePayload = msg.payload.DevEUI_uplink.payload;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// Checks\n/////////////////////////////////////////////////////////////////////////\nconst match = deviceName.match(/^(.*)-(\\d+)$/);\nif (match) {\n    deviceType = match[1];  // The part before the last dash\n    deviceNum = parseInt(match[2], 10);  // The number at the end, converted to an integer\n}\nelse {\n    node.error(`${deviceName} : this device Name doesn't respect \"xxx-num\" format`);\n    return null;\n}\n\nif ((deviceNum == 0)) {\n    node.error(`${deviceName} : Device Num is 0 is not allowed`);\n    return null;\n}\n\nif (deviceList[deviceType] == undefined) {\n    node.error(`${deviceType} : this Device Type doesn't belong to the Device List`);\n    return null;\n}\n\n// Check deviceNum overflow\nif (deviceNum > deviceList[deviceType].identity.maxDeviceNum) {\n    node.error(`Device \"${deviceName}\" instances overlaps another device : Dropped`);\n    return null;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// Create a copy of the \"deviceType\" object of the \"deviceList\" structure\n/////////////////////////////////////////////////////////////////////////\nlet device = JSON.parse(JSON.stringify(deviceList[deviceType]));\n\ndevice.identity.deviceName = deviceName;\ndevice.identity.deviceType = deviceType;\ndevice.identity.deviceNum = deviceNum;\ndevice.identity.devEUI = devEUI;\ndevice.mqtt.topicDownlink = topicDownlink;\n\nfor (let object in device.bacnet.objects) {\n    // Update instanceNum\n    switch (device.bacnet.objects[object].assignementMode) {\n        case \"manual\":\n            \n            break;\n        case \"auto\":\n            switch (device.bacnet.objects[object].objectType) {\n                case \"analogValue\":\n                    device.bacnet.objects[object].instanceNum += device.bacnet.offsetAV + (device.bacnet.instanceRangeAV * deviceNum);\n                    break;\n                case \"binaryValue\":\n                    device.bacnet.objects[object].instanceNum += device.bacnet.offsetBV + (device.bacnet.instanceRangeBV * deviceNum);\n                    break;\n                default:\n                    node.error(\"Object type of \" + object + \" is unknown : \" + device.bacnet.objects[object].objectType);\n                    return null;\n                    \n            }\n            break;\n        default:\n            \n    }\n\n    // Update objectName\n    device.bacnet.objects[object].objectName = deviceName + '-' + object + '-' + device.bacnet.objects[object].instanceNum;\n    // Update value\n    if (device.bacnet.objects[object].dataDirection == \"uplink\") {\n        let lorawanPayloadName = device.bacnet.objects[object].lorawanPayloadName;\n        let keys = lorawanPayloadName.split(/[\\.\\[\\]]/).filter(key => key !== \"\");\n        let value = keys.reduce((accumulator, currentValue) => accumulator[currentValue], devicePayload);\n        device.bacnet.objects[object].value = value;\n    }\n    // Check value\n    if (device.bacnet.objects[object].value == undefined || typeof device.bacnet.objects[object].value == \"object\") {\n        node.error(`Device : ${device.identity.deviceName} - Object : ${object} - Wrong Payload decoder or Wrong Device description`);\n        return null;\n    }\n\n    if (device.controller.protocol == \"bacnet\") {\n        // \"restAPIBacnet\" and \"bacnet\" compatibility \n        switch (device.bacnet.objects[object].objectType) {\n            case \"analogValue\": device.bacnet.objects[object].objectType = 2; break;\n            case \"binaryValue\": device.bacnet.objects[object].objectType = 5; break;\n        }\n        // Keep only uplink payload in a new object\n        device.bacnet.uplinkKeys = Object.entries(device.bacnet.objects)\n            .filter(([key, obj]) => obj.dataDirection === \"uplink\")\n            .map(([key, obj]) => key);\n    }\n}\n\n// For debug\ndevice.transmitTime = Date.now();\n\n// For InfluxDB support\ndevice.influxdb = {\n    \"source\": \"uplink\"\n};\n\n\nreturn {\n    \"device\": device\n}",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -825,22 +807,22 @@
         "finalize": "",
         "libs": [],
         "x": 380,
-        "y": 340,
+        "y": 300,
         "wires": [
             [
-                "f9ee7d6c602271d6",
-                "0c91ae6dd87fbf4a",
-                "3dfc9da98ae9b1ed",
-                "c5884487e60a55af"
+                "873ecef81f367c79",
+                "b848e9a53e30fc82",
+                "7d963d341f4d9c6c",
+                "2194b145358418b6"
             ]
         ],
         "icon": "node-red/switch.svg"
     },
     {
-        "id": "190c36aea4575355",
+        "id": "e06e4de4292c8a5b",
         "type": "mqtt in",
-        "z": "a3b76059602a569b",
-        "g": "cd6cba260ed29c53",
+        "z": "bee4c50fff1dc47e",
+        "g": "60e9292ab765c0cd",
         "name": "MQTT Subscriber",
         "topic": "application/d37324a9-30c5-450f-93c7-0d57662aecc3/device/+/event/up",
         "qos": "2",
@@ -851,29 +833,29 @@
         "rh": 0,
         "inputs": 0,
         "x": 120,
-        "y": 520,
+        "y": 480,
         "wires": [
             [
-                "d567297d596ccc5f"
+                "acc5123874e8665b"
             ]
         ]
     },
     {
-        "id": "2bf48959435fa163",
+        "id": "62fb3011287918ba",
         "type": "comment",
-        "z": "a3b76059602a569b",
-        "g": "cd6cba260ed29c53",
+        "z": "bee4c50fff1dc47e",
+        "g": "60e9292ab765c0cd",
         "name": "MQTT Subscriber :\\n 1. Topic for TTN : v3/{application_id}@ttn/devices/+/up \\n 2. Topic for TTS : v3/{application_id}/devices/+/up \\n 3. Topic for ChirpStackV4 :  application/{application_id}/device/+/event/up \\n 4. Topic for Actility : See documentation.",
         "info": "1. Topic for TTN : v3/{application_id}@ttn/devices/+/up\nReplace {application_id} by your application id in TTN. /!\\ don't forget @ttn\n\n2. Topic for TTS : v3/{application_id}/devices/+/up\nReplace {application_id} by your application id in TTN.\n\n3. Topic for ChirpStackV4 :  application/{application_id}/device/+/event/up\nReplace {application_id} by your application id (it's a number, not a name !).\n\n4. Topic for Actility : Documentation for using Actility  Broker : https://docs.thingpark.com/thingpark-x/latest/Connector/BROKER_MQTT/. \n- For actility-USMB Broker, univ-smb/devices/+/uplink\n- For HiveMQ Broker : mqtt/things/+/uplink",
         "x": 290,
-        "y": 640,
+        "y": 600,
         "wires": []
     },
     {
-        "id": "1116779877285488",
+        "id": "d6ddda8e8cb4e6c3",
         "type": "inject",
-        "z": "a3b76059602a569b",
-        "g": "05fd983d4f173e20",
+        "z": "bee4c50fff1dc47e",
+        "g": "d2d1fc57544dbba3",
         "name": "trigger auto",
         "props": [
             {
@@ -888,21 +870,21 @@
         "payload": "true",
         "payloadType": "bool",
         "x": 675,
-        "y": 100,
+        "y": 60,
         "wires": [
             [
-                "7285cc5318649786"
+                "3af79af597322582"
             ]
         ],
         "l": false
     },
     {
-        "id": "7285cc5318649786",
+        "id": "3af79af597322582",
         "type": "function",
-        "z": "a3b76059602a569b",
-        "g": "05fd983d4f173e20",
+        "z": "bee4c50fff1dc47e",
+        "g": "d2d1fc57544dbba3",
         "name": "TO CONFIGURE ",
-        "func": "/////////////////////////////////////////////////////\n////////////    TO CONFIGURE      ///////////////////\n/////////////////////////////////////////////////////\n\n// configuration.js files (on GitHub) provides   //\n// examples of deviceList configuration          //\n\nlet deviceList = {\n    \n\n       }\n/////////////////////////////////////////////////\n/////////////   DO NOT MODIFY ///////////////////\n/////////////////////////////////////////////////\n\nconst networkServerSupported = [\"tts\", \"chirpstack\", \"actility\"];\nconst protocolSupported = [\"restAPIBacnet\", \"bacnet\"];\n\n// Store flow variables\nflow.set('g_deviceList', deviceList)\nflow.set('g_httpRequestTimeOut', 5000);\nflow.set('g_tts_topicDownlinkSuffix', \"/down\");\nflow.set('g_tts_topicUplinkSuffix', \"/up\");\nflow.set('g_chirp_topicDownlinkSuffix', \"/command/down\");\nflow.set('g_chirp_topicUplinkSuffix', \"/event/up\");\nflow.set('g_actility_topicDownlinkSuffix', \"/downlink\");\nflow.set('g_actility_topicUplinkSuffix', \"/uplink\");\n\n \n// Debug function\nconst debug = function (device, debugType, debugText) {\n    if (debugType == \"forceOn\") {\n        node.warn(debugText);\n    }\n    else if (device.controller.debug.some(element => element == \"all\" || element == debugType)) {\n        node.warn(debugText);\n    }\n    else {\n        return null;\n    }\n}\nflow.set(\"g_debug\", debug);\n\n// Controller HTTP Autentification key\nfor (let device in deviceList) {\n    const buffer = Buffer.from(deviceList[device].controller.login + ':' + deviceList[device].controller.password);\n    deviceList[device].controller.httpAuthentication = \"Basic \" + buffer.toString('base64');\n}\n\n////////////////////////////////\n// Check configuration settings\n////////////////////////////////\nlet objectInstanceArrayAV = [];\nlet objectInstanceArrayBV = [];\nlet maxDevNumAV, maxDevNumBV;\n\nfor (let device in deviceList) {\n    \n    // Add \"identity\" and \"mqtt\" properties\n    deviceList[device].identity = {};\n    deviceList[device].mqtt = {};\n\n    // Check LoRaWAN Network Servers [\"tts\", \"chirpstack\", \"actility\"]\n    if (!networkServerSupported.some(element => element == deviceList[device].lorawan.networkServer)) {\n        node.error(\"For device '\" + device + \"' : Network Server unknown - Choose between 'chirpstack', 'tts' or 'actility'\");\n        node.status({ fill: \"red\", shape: \"dot\", text: \"Network Server not supported\" });\n        return null;\n    }\n\n    // Check that bacnetObject size is 5\n    for (let object in deviceList[device].bacnet.objects) {\n\n        switch (deviceList[device].bacnet.objects[object].dataDirection) {\n            case \"uplink\":\n                if (Object.keys(deviceList[device].bacnet.objects[object]).length != 5) {\n                    node.error(`For device \"${device}\" : error in ${object}`);\n                    node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet object Size error\" });\n                    return null;\n                }\n                break;\n            case \"downlink\":\n                if (deviceList[device].bacnet.objects[object].hasOwnProperty(\"objectToCompareWith\") && Object.keys(deviceList[device].bacnet.objects[object]).length != 8){\n                    node.error(`For device \"${device}\" : error in ${object}`);\n                    node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet object Size error\" });\n                    return null;\n                }else if (!deviceList[device].bacnet.objects[object].hasOwnProperty(\"objectToCompareWith\") && Object.keys(deviceList[device].bacnet.objects[object]).length != 7) {\n                    node.error(`For device \"${device}\" : error in ${object}`);\n                    node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet object Size error\" });\n                    return null;\n                }\n                break;\n            default:\n                \n        }\n        \n    }\n\n    // Check device.controller.protocol [\"restAPIBacnet\", \"bacnet\"]\n    if (!protocolSupported.some(element => element == deviceList[device].controller.protocol)) {\n        node.error(`For device \"${device}\" : Protocol unknown - Choose between 'restAPIBacnet' or 'bacnet'`);\n        node.status({ fill: \"red\", shape: \"dot\", text: \"Network Server not supported\" });\n        return null;\n    }\n\n    // Check device.bacnet.instanceRange >= Number of BACnet object in the deviceList\n    let instanceRangeAV = 0, instanceRangeBV = 0;\n\n    for (let object in deviceList[device].bacnet.objects) {\n        switch (deviceList[device].bacnet.objects[object].objectType) {\n            case \"analogValue\":\n                if (deviceList[device].bacnet.objects[object].instanceNum >= deviceList[device].bacnet.instanceRangeAV){\n                node.error(`For device \"${device}\" : instanceNum too high for \"${object}\"`);\n                node.status({ fill: \"red\", shape: \"dot\", text: object + \" instanceNum too high\" });\n                return null;\n                }\n                instanceRangeAV++;\n                break;\n            case \"binaryValue\":\n                if (deviceList[device].bacnet.objects[object].instanceNum >= deviceList[device].bacnet.instanceRangeBV){\n                node.error(`For device \"${device}\" : instanceNum too high for \"${object}\"`);\n                node.status({ fill: \"red\", shape: \"dot\", text: object + \" instanceNum too high\" });\n                return null;\n                }\n                instanceRangeBV++;\n                break;\n            default:\n                \n        }\n        if(deviceList[device].bacnet.objects[object].instanceNum < 0){\n            node.error(`For device \"${device}\" : Negative instanceNum for \"${object}\"`);\n            node.status({ fill: \"red\", shape: \"dot\", text: object + \" negative instanceNum\" });\n            return null;\n        }\n    }\n    if (deviceList[device].bacnet.instanceRangeAV < instanceRangeAV) {\n        node.error(`For device \"${device}\" : instanceRange too small for Analog Value`);\n        node.status({ fill: \"red\", shape: \"dot\", text: \"instanceRange too small\" });\n        return null;\n    }\n    if (deviceList[device].bacnet.instanceRangeBV < instanceRangeBV) {\n        node.error(`For device \"${device}\" : instanceRange too small for Binary Value`);\n        node.status({ fill: \"red\", shape: \"dot\", text: \"instanceRange too small\" });\n        return null;\n    }\n\n    // Build an array with offsetAV, instanceRangeAV and device\n    objectInstanceArrayAV.push({ \"device\" : device, \"offset\" : deviceList[device].bacnet.offsetAV, \"instanceRange\" : deviceList[device].bacnet.instanceRangeAV});\n    // Build another array with offsetAV, instanceRangeAV and device\n    objectInstanceArrayBV.push({ \"device\" : device, \"offset\" : deviceList[device].bacnet.offsetBV, \"instanceRange\" : deviceList[device].bacnet.instanceRangeBV});\n}\n\n// Check that offset and instanceRange don't overlap and calcul maxDeviceNum for each type.\nobjectInstanceArrayAV.sort((a, b) => a.offset - b.offset);\nobjectInstanceArrayBV.sort((a, b) => a.offset - b.offset);\nfor (let i = 0; i < objectInstanceArrayAV.length - 1; i++) {\n    if (objectInstanceArrayAV[i].instanceRange != 0){\n        if (objectInstanceArrayAV[i].offset + objectInstanceArrayAV[i].instanceRange > objectInstanceArrayAV[i + 1].offset) {\n            node.error(`BACnet objects of Device \"${objectInstanceArrayAV[i].device}\" and \"${objectInstanceArrayAV[i + 1].device}\" overlap`)\n            node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet objects instances overlap\" });\n            return null;\n        }\n        else{\n            maxDevNumAV = Math.trunc((objectInstanceArrayAV[i + 1].offset - objectInstanceArrayAV[i].offset) / objectInstanceArrayAV[i].instanceRange) - 1;\n        }\n    }else{\n        maxDevNumAV = 0\n    }\n    if (objectInstanceArrayBV[i].instanceRange != 0){\n        if (objectInstanceArrayBV[i].offset + objectInstanceArrayBV[i].instanceRange > objectInstanceArrayBV[i + 1].offset) {\n            node.error(`BACnet objects of Device \"${objectInstanceArrayBV[i].device}\" and \"${objectInstanceArrayBV[i + 1].device}\" overlap`)\n            node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet objects instances overlap\" });\n            return null;\n        }\n        else{\n            maxDevNumBV = Math.trunc((objectInstanceArrayBV[i + 1].offset - objectInstanceArrayBV[i].offset) / objectInstanceArrayBV[i].instanceRange) - 1;\n        }\n    } else {\n        maxDevNumBV = 0\n    }\n\n    if (maxDevNumBV != 0 && maxDevNumAV != 0){\n        deviceList[objectInstanceArrayAV[i].device].identity.maxDeviceNum = Math.min(maxDevNumAV,maxDevNumBV);\n    }else{\n        deviceList[objectInstanceArrayAV[i].device].identity.maxDeviceNum = Math.max(maxDevNumAV, maxDevNumBV);\n    }\n}\n\n////////////////////////////////////\n// Return if all checkings are clear\n///////////////////////////////////\nnode.status({ fill: \"green\", shape: \"dot\", text: \"Configuration OK\" });\n\nreturn {\n    payload: deviceList\n}\n",
+        "func": "/////////////////////////////////////////////////////\n////////////    TO CONFIGURE      ///////////////////\n/////////////////////////////////////////////////////\n\n// configuration.js files (on GitHub) provides   //\n// examples of deviceList configuration          //\n\nlet deviceList = {\n    \n\n       }\n       \n/////////////////////////////////////////////////\n/////////////   DO NOT MODIFY ///////////////////\n/////////////////////////////////////////////////\n\nconst networkServerSupported = [\"tts\", \"chirpstack\", \"actility\"];\nconst protocolSupported = [\"restAPIBacnet\", \"bacnet\"];\n\n// Store flow variables\nflow.set('g_deviceList', deviceList)\nflow.set('g_httpRequestTimeOut', 5000);\nflow.set('g_tts_topicDownlinkSuffix', \"/down\");\nflow.set('g_tts_topicUplinkSuffix', \"/up\");\nflow.set('g_chirp_topicDownlinkSuffix', \"/command/down\");\nflow.set('g_chirp_topicUplinkSuffix', \"/event/up\");\nflow.set('g_actility_topicDownlinkSuffix', \"/downlink\");\nflow.set('g_actility_topicUplinkSuffix', \"/uplink\");\n\n \n// Debug function\nconst debug = function (device, debugType, debugText) {\n    if (debugType == \"forceOn\") {\n        node.warn(debugText);\n    }\n    else if (device.controller.debug.some(element => element == \"all\" || element == debugType)) {\n        node.warn(debugText);\n    }\n    else {\n        return null;\n    }\n}\nflow.set(\"g_debug\", debug);\n\n// Controller HTTP Autentification key\nfor (let device in deviceList) {\n    const buffer = Buffer.from(deviceList[device].controller.login + ':' + deviceList[device].controller.password);\n    deviceList[device].controller.httpAuthentication = \"Basic \" + buffer.toString('base64');\n}\n\n////////////////////////////////\n// Check configuration settings\n////////////////////////////////\nlet objectInstanceArrayAV = [];\nlet objectInstanceArrayBV = [];\nlet maxDevNumAV, maxDevNumBV;\n\nfor (let device in deviceList) {\n    \n    // Add \"identity\" and \"mqtt\" properties\n    deviceList[device].identity = {};\n    deviceList[device].mqtt = {};\n\n    // Check LoRaWAN Network Servers [\"tts\", \"chirpstack\", \"actility\"]\n    if (!networkServerSupported.some(element => element == deviceList[device].lorawan.networkServer)) {\n        node.error(\"For device '\" + device + \"' : Network Server unknown - Choose between 'chirpstack', 'tts' or 'actility'\");\n        node.status({ fill: \"red\", shape: \"dot\", text: \"Network Server not supported\" });\n        return null;\n    }\n\n    // Check that bacnetObject size is 5\n    for (let object in deviceList[device].bacnet.objects) {\n\n        switch (deviceList[device].bacnet.objects[object].dataDirection) {\n            case \"uplink\":\n                if (Object.keys(deviceList[device].bacnet.objects[object]).length != 6) {\n                    node.error(`For device \"${device}\" : error in ${object}`);\n                    node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet object Size error\" });\n                    return null;\n                }\n                break;\n            case \"downlink\":\n                if (deviceList[device].bacnet.objects[object].hasOwnProperty(\"objectToCompareWith\") && Object.keys(deviceList[device].bacnet.objects[object]).length != 9){\n                    node.error(`For device \"${device}\" : error in ${object}`);\n                    node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet object Size error\" });\n                    return null;\n                }else if (!deviceList[device].bacnet.objects[object].hasOwnProperty(\"objectToCompareWith\") && Object.keys(deviceList[device].bacnet.objects[object]).length != 8) {\n                    node.error(`For device \"${device}\" : error in ${object}`);\n                    node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet object Size error\" });\n                    return null;\n                }\n                break;\n            default:\n                \n        }\n        \n    }\n\n    // Check device.controller.protocol [\"restAPIBacnet\", \"bacnet\"]\n    if (!protocolSupported.some(element => element == deviceList[device].controller.protocol)) {\n        node.error(`For device \"${device}\" : Protocol unknown - Choose between 'restAPIBacnet' or 'bacnet'`);\n        node.status({ fill: \"red\", shape: \"dot\", text: \"Network Server not supported\" });\n        return null;\n    }\n\n    // Check device.bacnet.instanceRange >= Number of BACnet object in the deviceList\n    let instanceRangeAV = 0, instanceRangeBV = 0;\n\n    for (let object in deviceList[device].bacnet.objects) {\n        switch (deviceList[device].bacnet.objects[object].objectType) {\n            case \"analogValue\":\n                if (deviceList[device].bacnet.objects[object].instanceNum >= deviceList[device].bacnet.instanceRangeAV && deviceList[device].bacnet.objects[object].assignementMode != \"manual\"){\n                node.error(`For device \"${device}\" : instanceNum too high for \"${object}\"`);\n                node.status({ fill: \"red\", shape: \"dot\", text: object + \" instanceNum too high\" });\n                return null;\n                }\n                instanceRangeAV++;\n                break;\n            case \"binaryValue\":\n                if (deviceList[device].bacnet.objects[object].instanceNum >= deviceList[device].bacnet.instanceRangeBV && deviceList[device].bacnet.objects[object].assignementMode != \"manual\"){\n                node.error(`For device \"${device}\" : instanceNum too high for \"${object}\"`);\n                node.status({ fill: \"red\", shape: \"dot\", text: object + \" instanceNum too high\" });\n                return null;\n                }\n                instanceRangeBV++;\n                break;\n            default:\n                \n        }\n        if(deviceList[device].bacnet.objects[object].instanceNum < 0){\n            node.error(`For device \"${device}\" : Negative instanceNum for \"${object}\"`);\n            node.status({ fill: \"red\", shape: \"dot\", text: object + \" negative instanceNum\" });\n            return null;\n        }\n    }\n    if (deviceList[device].bacnet.instanceRangeAV < instanceRangeAV) {\n        node.error(`For device \"${device}\" : instanceRange too small for Analog Value`);\n        node.status({ fill: \"red\", shape: \"dot\", text: \"instanceRange too small\" });\n        return null;\n    }\n    if (deviceList[device].bacnet.instanceRangeBV < instanceRangeBV) {\n        node.error(`For device \"${device}\" : instanceRange too small for Binary Value`);\n        node.status({ fill: \"red\", shape: \"dot\", text: \"instanceRange too small\" });\n        return null;\n    }\n\n    // Build an array with offsetAV, instanceRangeAV and device\n    objectInstanceArrayAV.push({ \"device\" : device, \"offset\" : deviceList[device].bacnet.offsetAV, \"instanceRange\" : deviceList[device].bacnet.instanceRangeAV});\n    // Build another array with offsetAV, instanceRangeAV and device\n    objectInstanceArrayBV.push({ \"device\" : device, \"offset\" : deviceList[device].bacnet.offsetBV, \"instanceRange\" : deviceList[device].bacnet.instanceRangeBV});\n}\n\n// Check that offset and instanceRange don't overlap and calcul maxDeviceNum for each type.\nobjectInstanceArrayAV.sort((a, b) => a.offset - b.offset);\nobjectInstanceArrayBV.sort((a, b) => a.offset - b.offset);\nfor (let i = 0; i < objectInstanceArrayAV.length - 1; i++) {\n    if (objectInstanceArrayAV[i].instanceRange != 0){\n        if (objectInstanceArrayAV[i].offset + objectInstanceArrayAV[i].instanceRange > objectInstanceArrayAV[i + 1].offset) {\n            node.error(`BACnet objects of Device \"${objectInstanceArrayAV[i].device}\" and \"${objectInstanceArrayAV[i + 1].device}\" overlap`)\n            node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet objects instances overlap\" });\n            return null;\n        }\n        else{\n            maxDevNumAV = Math.trunc((objectInstanceArrayAV[i + 1].offset - objectInstanceArrayAV[i].offset) / objectInstanceArrayAV[i].instanceRange) - 1;\n        }\n    }else{\n        maxDevNumAV = 0\n    }\n    if (objectInstanceArrayBV[i].instanceRange != 0){\n        if (objectInstanceArrayBV[i].offset + objectInstanceArrayBV[i].instanceRange > objectInstanceArrayBV[i + 1].offset) {\n            node.error(`BACnet objects of Device \"${objectInstanceArrayBV[i].device}\" and \"${objectInstanceArrayBV[i + 1].device}\" overlap`)\n            node.status({ fill: \"red\", shape: \"dot\", text: \"BACnet objects instances overlap\" });\n            return null;\n        }\n        else{\n            maxDevNumBV = Math.trunc((objectInstanceArrayBV[i + 1].offset - objectInstanceArrayBV[i].offset) / objectInstanceArrayBV[i].instanceRange) - 1;\n        }\n    } else {\n        maxDevNumBV = 0\n    }\n\n    if (maxDevNumBV != 0 && maxDevNumAV != 0){\n        deviceList[objectInstanceArrayAV[i].device].identity.maxDeviceNum = Math.min(maxDevNumAV,maxDevNumBV);\n    }else{\n        deviceList[objectInstanceArrayAV[i].device].identity.maxDeviceNum = Math.max(maxDevNumAV, maxDevNumBV);\n    }\n}\n\n////////////////////////////////////\n// Return if all checkings are clear\n///////////////////////////////////\nnode.status({ fill: \"green\", shape: \"dot\", text: \"Configuration OK\" });\n\nreturn {\n    payload: deviceList\n}\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -910,19 +892,37 @@
         "finalize": "",
         "libs": [],
         "x": 830,
-        "y": 100,
+        "y": 60,
         "wires": [
             [
-                "803da341183d6a1f"
+                "391a30c96b249174"
             ]
         ],
         "icon": "node-red/cog.svg"
     },
     {
-        "id": "8a1c0d19c8f4f568",
+        "id": "391a30c96b249174",
+        "type": "debug",
+        "z": "bee4c50fff1dc47e",
+        "g": "d2d1fc57544dbba3",
+        "name": "deviceList",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "8d442a031826a2cc",
         "type": "mqtt out",
-        "z": "a3b76059602a569b",
-        "g": "04d6bff4de2ebe5b",
+        "z": "bee4c50fff1dc47e",
+        "g": "07be1cc8f1a9b91b",
         "name": "MQTT Publisher",
         "topic": "",
         "qos": "",
@@ -934,56 +934,56 @@
         "expiry": "",
         "broker": "f75024a426208b8a",
         "x": 1880,
-        "y": 320,
+        "y": 280,
         "wires": []
     },
     {
-        "id": "0c91ae6dd87fbf4a",
-        "type": "subflow:4f4b9f7e3bab82a4",
-        "z": "a3b76059602a569b",
-        "g": "632db5557a1584e8",
+        "id": "b848e9a53e30fc82",
+        "type": "subflow:9f44ee221cb42d7e",
+        "z": "bee4c50fff1dc47e",
+        "g": "3cf027cc8cae9efd",
         "name": "Native BACnet Uplink",
         "x": 700,
-        "y": 400,
+        "y": 360,
         "wires": [
             [
-                "3e5bc399359eb1ba"
+                "6933e154c9f8ca62"
             ]
         ]
     },
     {
-        "id": "c5884487e60a55af",
-        "type": "subflow:d928e4c7a3fa0bb8",
-        "z": "a3b76059602a569b",
-        "g": "632db5557a1584e8",
+        "id": "2194b145358418b6",
+        "type": "subflow:4d0f0c0771ab4500",
+        "z": "bee4c50fff1dc47e",
+        "g": "3cf027cc8cae9efd",
         "name": "Rest API Uplink",
         "x": 680,
-        "y": 260,
+        "y": 220,
         "wires": [
             [
-                "3446cfe17eb0e3ef"
+                "3ccde99517f59368"
             ]
         ]
     },
     {
-        "id": "3dfc9da98ae9b1ed",
+        "id": "7d963d341f4d9c6c",
         "type": "link out",
-        "z": "a3b76059602a569b",
-        "g": "632db5557a1584e8",
+        "z": "bee4c50fff1dc47e",
+        "g": "3cf027cc8cae9efd",
         "name": "Write InfluxDB for uplink",
         "mode": "link",
         "links": [
             "bcdc082a09ace57d"
         ],
         "x": 625,
-        "y": 340,
+        "y": 300,
         "wires": []
     },
     {
-        "id": "70ec601050782903",
+        "id": "926c5da61c6e028b",
         "type": "function",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "TO CONFIGURE",
         "func": "///////////////////////////////////////////////////////////\n////// This part is device dependant\n////// The configuration depends on the downlink strategy\n///////////////////////////////////////////////////////////\n\nlet device = msg.device;\nlet bacnetObjects = device.bacnet.objects;\nconst debug = flow.get(\"g_debug\");\nlet downlinkLowPriorityObject = 0;\nlet payload={};\n\nfunction parametres() {\n    switch (device.identity.deviceType) {\n    case \"usmb-valve\":\n        \n        break;\n    case \"micropelt-mlr003\":\n        //stringify the safetyMode and the userMode\n            switch (bacnetObjects[\"safetyMode\"].value) {\n                case \"active\":\n                    device.bacnet.objects[\"safetyMode\"].value = \"Ambient_Temperature\";\n                    break;\n                case \"inactive\":\n                    device.bacnet.objects[\"safetyMode\"].value = \"Valve_Position\";\n                    break;\n                default:\n                    node.error(\"Unknow safetyMode value : \" + bacnetObjects[\"safetyMode\"].value);\n            }\n            switch (bacnetObjects[\"userMode\"].value) {\n                case \"active\":\n                    device.bacnet.objects[\"userMode\"].value = \"Ambient_Temperature\";\n                    break;\n                case \"inactive\":\n                    device.bacnet.objects[\"userMode\"].value = \"Valve_Position\";\n                    break;\n                default:\n                    node.error(\"Unknow userMode value : \" + bacnetObjects[\"userMode\"].value);\n            }\n        break;\n\n    case \"mclimate-vicki\":\n        \n        break;\n\n    case \"milesight-wt101\":\n        \n        break;\n}\n}\n\n\n\nfor (let object in bacnetObjects) {\n\n    if (bacnetObjects[object].dataDirection === \"downlink\" && bacnetObjects[object].hasOwnProperty(\"objectToCompareWith\")) {\n        switch (bacnetObjects[object].downlinkPortPriority) {\n            case \"high\":\n                if (bacnetObjects[object].value != bacnetObjects[bacnetObjects[object].objectToCompareWith].value) {\n                    node.status({ fill: \"yellow\", shape: \"dot\", text: \"Downlink\" });\n                    debug(device, \"down\", `${device.identity.deviceName} (${device.controller.protocol}) : Downlink scheduled : ${bacnetObjects[object].objectToCompareWith} ${bacnetObjects[bacnetObjects[object].objectToCompareWith].value}  != ${object} ${bacnetObjects[object].value}`);\n                    parametres();\n                    //Creation of the downlink payload\n                    for (let obj in bacnetObjects){\n                        if (bacnetObjects[obj].dataDirection === \"downlink\" && bacnetObjects[obj].downlinkPort == bacnetObjects[object].downlinkPort){\n                            let temp = \"{ \\\"\" + obj + \"\\\" : \" + JSON.stringify(bacnetObjects[obj].value) + \" }\";                        \n                            payload = { ...payload, ...JSON.parse(temp) }\n                        }\n                    }\n                    msg ={\n                        \"payload\" : payload,\n                        \"device\" :device\n                    }\n                    msg.device.lorawan.downlinkPort = bacnetObjects[object].downlinkPort;\n                    return msg\n                }\n                break;\n            case \"low\":\n                //In case of low priority downlink the object name is kept till the end of the for loop \n                // to be sur that there is not any high priority downlink to send \n                if (bacnetObjects[object].value != bacnetObjects[bacnetObjects[object].objectToCompareWith].value) {\n                    downlinkLowPriorityObject = object;\n                }\n                break;\n            default:\n\n        }\n    }\n}\nif (downlinkLowPriorityObject != 0) {\n    node.status({ fill: \"yellow\", shape: \"dot\", text: \"Downlink\" });\n    debug(device, \"down\", `${device.identity.deviceName} (${device.controller.protocol}) : Downlink scheduled : ${bacnetObjects[downlinkLowPriorityObject].objectToCompareWith} ${bacnetObjects[bacnetObjects[downlinkLowPriorityObject].objectToCompareWith].value}  != ${downlinkLowPriorityObject} ${bacnetObjects[downlinkLowPriorityObject].value}`);\n    parametres();\n    //Creation of the dowlink payload\n    for (let obj in bacnetObjects){\n        if (bacnetObjects[obj].dataDirection === \"downlink\" && bacnetObjects[obj].downlinkPort == bacnetObjects[downlinkLowPriorityObject].downlinkPort){\n            let temp = \"{ \\\"\" + obj + \"\\\" : \" + JSON.stringify(bacnetObjects[obj].value) + \" }\";\n            payload = { ...payload, ...JSON.parse(temp) }\n        }\n    }\n    msg ={\n        \"payload\" : payload,\n        \"device\" :device\n    }\n    msg.device.lorawan.downlinkPort = bacnetObjects[downlinkLowPriorityObject].downlinkPort;\n    return msg\n}else{\n\n    node.status({fill: \"green\", shape: \"dot\" ,text: \"No downlink\"});\n    return null;\n}\n\n\n",
         "outputs": 1,
@@ -993,20 +993,20 @@
         "finalize": "",
         "libs": [],
         "x": 1310,
-        "y": 320,
+        "y": 280,
         "wires": [
             [
-                "78a2c72cc59901d5",
-                "4e983d53155a6896"
+                "27249b34076c410a",
+                "9501957f5ac91756"
             ]
         ],
         "icon": "node-red/cog.svg"
     },
     {
-        "id": "78a2c72cc59901d5",
+        "id": "27249b34076c410a",
         "type": "debug",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "Debug strategie",
         "active": false,
         "tosidebar": true,
@@ -1017,25 +1017,25 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1320,
-        "y": 380,
+        "y": 340,
         "wires": []
     },
     {
-        "id": "0c0c323a919e3bbc",
+        "id": "43988490d4fb4ebb",
         "type": "comment",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "Downlink Strategies",
         "info": "",
         "x": 1310,
-        "y": 280,
+        "y": 240,
         "wires": []
     },
     {
-        "id": "2dec7698e1b2e030",
+        "id": "7d958e3e3f981186",
         "type": "debug",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "Debug Downlink message",
         "active": false,
         "tosidebar": true,
@@ -1046,58 +1046,58 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1570,
-        "y": 380,
+        "y": 340,
         "wires": []
     },
     {
-        "id": "3e5bc399359eb1ba",
-        "type": "subflow:7fa81edc0245a9ce",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "id": "6933e154c9f8ca62",
+        "type": "subflow:05aa49c69dd92539",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "Native BACnet Downlink",
         "x": 1010,
-        "y": 400,
+        "y": 360,
         "wires": [
             [
-                "70ec601050782903",
-                "1943740b9585ec6a"
+                "926c5da61c6e028b",
+                "02573d1616b783eb"
             ]
         ]
     },
     {
-        "id": "3446cfe17eb0e3ef",
-        "type": "subflow:cb6d01f8bfd82a80",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "id": "3ccde99517f59368",
+        "type": "subflow:fdc4d05e7d77a1ac",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "Rest API Downlink",
         "x": 1030,
-        "y": 260,
+        "y": 220,
         "wires": [
             [
-                "70ec601050782903",
-                "1943740b9585ec6a"
+                "926c5da61c6e028b",
+                "02573d1616b783eb"
             ]
         ]
     },
     {
-        "id": "1943740b9585ec6a",
+        "id": "02573d1616b783eb",
         "type": "link out",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "Write InfluxDB for downlink",
         "mode": "link",
         "links": [
             "bcdc082a09ace57d"
         ],
         "x": 955,
-        "y": 340,
+        "y": 300,
         "wires": []
     },
     {
-        "id": "4e983d53155a6896",
+        "id": "9501957f5ac91756",
         "type": "function",
-        "z": "a3b76059602a569b",
-        "g": "002ff1d6534567d0",
+        "z": "bee4c50fff1dc47e",
+        "g": "cae3f5bb0c384de3",
         "name": "Create Downlink Message",
         "func": "\n\nlet device = msg.device;\nlet downlinkJson = {};\nconst debug = flow.get('g_debug');\n\n// Modify the downlink object according to the lorawanPayloadName.\n\nfor (let object in msg.payload) {\n    // Don't do any changes if lorawanPayloadName is the same as the BACnet Object name.\n    if (!Object.keys(device.bacnet.objects).some(element => element == device.bacnet.objects[object].lorawanPayloadName)) {\n        msg.payload[device.bacnet.objects[object].lorawanPayloadName] = msg.payload[object];\n        delete msg.payload[object];\n    }\n}\n\n\n//////////////////////////////////////////////////////////////////////////\n// The Things Stack Network Server \n/////////////////////////////////////////////////////////////////////////\nif (device.lorawan.networkServer == \"tts\") {\n    downlinkJson = {\n        \"topic\": device.mqtt.topicDownlink + (device.lorawan.flushDownlinkQueue ? \"/replace\" : \"/push\"),\n        \"payload\": {\n            \"downlinks\": [\n                {\n                    \"f_port\": device.lorawan.downlinkPort,\n                    \"decoded_payload\": msg.payload,\n                    \"priority\": \"NORMAL\"\n                },\n            ]\n        }\n    }\n    debug(device, \"txTime\", `${device.identity.deviceName} (${device.controller.protocol}) : TX time = ${Date.now() - device.transmitTime} ms`);\n    return downlinkJson;\n}\n\n//////////////////////////////////////////////////////////////////////////\n// Chipstack Network Server \n/////////////////////////////////////////////////////////////////////////\n// 1. Flush the downlink Queue\n\nif (device.lorawan.networkServer == \"chirpstack\") {\n    if (device.lorawan.flushDownlinkQueue == true) {\n\n        //We include flow value from libraries\n        var grpc = flow.get('grpc');\n        var device_grpc = flow.get('device_grpc');\n        var device_pb = flow.get('device_pb');\n\n        // This must point to the ChirpStack API interface.\n        const server = \"chirpstack.univ-lorawan.fr:9090\";\n        // The DevEUI for which we want to enqueue the downlink.\n        const devEui = device.identity.devEUI;\n        \n        // The API token (can be obtained through the ChirpStack web-interface).\n        const apiToken = device.lorawan.chirpstack.grpcApikey;\n\n        // Create the client for the DeviceService.\n        const deviceService = new device_grpc.DeviceServiceClient(\n            server,\n            grpc.credentials.createInsecure(),\n        );\n\n        // Create the Metadata object.\n        const metadata = new grpc.Metadata();\n        metadata.set(\"authorization\", \"Bearer \" + apiToken);\n\n        //Flush downlink queue request\n        const flushReq = new device_pb.FlushDeviceQueueRequest();\n        flushReq.setDevEui(devEui);\n\n        //Send the request\n        deviceService.flushQueue(flushReq, metadata, (err, resp) => {\n            if (err !== null) {\n                //node.error(`Can't flush ChirpStack downlink queue :  ${err}`);\n            }\n        });\n    }\n\n    // 2. Prepare downlink JSON\n    downlinkJson = {\n        \"topic\": device.mqtt.topicDownlink,\n        \"payload\": {\n            \"devEui\": device.identity.devEUI,\n            \"confirmed\": false,\n            \"fPort\": device.lorawan.downlinkPort,\n            \"object\": msg.payload\n        }\n    }\n    debug(device, \"txTime\", `${device.identity.deviceName} (${device.controller.protocol}) : TX time = ${Date.now() - device.transmitTime} ms`); \n    return downlinkJson;\n}\n\n\n//////////////////////////////////////////////////////////////////////////\n// Actility Network Server \n/////////////////////////////////////////////////////////////////////////\nif (device.lorawan.networkServer == \"actility\") {\n    downlinkJson = {\n        \"topic\": device.mqtt.topicDownlink,\n        \"payload\": {\n            \"DevEUI_downlink\": {\n                \"DevEUI\": device.identity.devEUI,\n                \"FPort\": device.lorawan.downlinkPort,\n                \"payload\": msg.payload,\n                \"FlushDownlinkQueue\": String(+device.lorawan.flushDownlinkQueue),\n                \"DriverCfg\": {\n                    \"app\": {\n                        \"pId\": device.lorawan.actility.driver.pId,\n                        \"mId\": device.lorawan.actility.driver.mId,\n                        \"ver\": device.lorawan.actility.driver.ver\n                    }\n                }\n            }\n        }\n    }\n    debug(device, \"txTime\", `${device.identity.deviceName} (${device.controller.protocol}) : TX time = ${Date.now() - device.transmitTime} ms`);\n    return downlinkJson;\n}\n\n\n\n\n",
         "outputs": 1,
@@ -1107,11 +1107,11 @@
         "finalize": "",
         "libs": [],
         "x": 1590,
-        "y": 320,
+        "y": 280,
         "wires": [
             [
-                "8a1c0d19c8f4f568",
-                "2dec7698e1b2e030"
+                "8d442a031826a2cc",
+                "7d958e3e3f981186"
             ]
         ],
         "icon": "node-red/bridge-dash.svg"

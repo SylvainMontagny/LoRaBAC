@@ -341,11 +341,12 @@ The `objects` is a JSON object that describes the association between all LoRaWA
     "BACNET_OBJECT_NAME_1": {       // String, name of the BACnet object to write in the controller
         "lorawanPayloadName": "LORAWAN_PAYLOAD_NAME", // String, name of the LoRaWAN paylaod as provided by the payload encoder
         "objectType": "OBJECT_TYPE",    // String, BACnet type: ["analogValue", "binaryValue"]
+        "assignementMode":"MODE",       // String, Assignement mode of the bacnet object ["auto", "manual"]
         "instanceNum": INSTANCE_NUM,    // Number, BACnet object instance number
         "dataDirection": "downlink",   // String, Direction of the BACnet Object
-        "downlinkPort": 10,             // LoRaWAN downlink Port
-        "downlinkPortPriority": "low",  // Priority level of the downlink
-        "objectToCompareWith": "usedTemperature", // The name of the uplink object to compare with to know if a downlink is needed
+        "downlinkPort": 10,             // Number, LoRaWAN downlink Port
+        "downlinkPortPriority": "low",  // String, Priority level of the downlink : ["low", "high"] 
+        "objectToCompareWith": "usedTemperature", // String, The name of the uplink object to compare with to know if a downlink is needed
         "value": null                   // Number, LoRaWAN payload value <> BACnet object present value. 
         },
     "BACNET_OBJECT_NAME_2": {
@@ -363,6 +364,7 @@ The `objects` is a JSON object that describes the association between all LoRaWA
     "BACNET_OBJECT_NAME_1": {       // String, name of the BACnet object to write in the controller
         "lorawanPayloadName": "LORAWAN_PAYLOAD_NAME", // String, name of the LoRaWAN paylaod as provided by the payload decoder
         "objectType": "OBJECT_TYPE",    // String, BACnet type: ["analogValue", "binaryValue"]
+        "assignementMode":"MODE",       // String, Assignement mode of the bacnet object ["auto", "manual"]
         "instanceNum": INSTANCE_NUM,    // Number, BACnet object instance number
         "dataDirection": "uplink",   // String, Direction of the BACnet Object
         "value": null                   // Number, LoRaWAN payload value <> BACnet object present value. 
@@ -395,7 +397,7 @@ A `brand-sensor` LoRaWAN device that works with `any controller`s using native B
             "instanceRangeAV": 1,
             "instanceRangeBV": 0,
             "objects": {
-                "temperature": { "lorawanPayloadName": "TempC", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "temperature": { "lorawanPayloadName": "TempC", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
             }
         }
     }
@@ -429,9 +431,9 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
             "instanceRangeAV": 3,
             "instanceRangeBV": 0,
             "objects": {
-                "valveSetpoint": { "lorawanPayloadName": "setpoint", "objectType": "analogValue", "instanceNum": 0, "dataDirection": "uplink", "value": null },
-                "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "target-setpoint", "objectType": "analogValue", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low","objectToCompareWith": "valveSetpoint", "value": 20 }
+                "valveSetpoint": { "lorawanPayloadName": "setpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
+                "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 1, "dataDirection": "uplink", "value": null },
+                "controllerSetpoint": { "lorawanPayloadName": "target-setpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low","objectToCompareWith": "valveSetpoint", "value": 20 }
             }
         }
     }
