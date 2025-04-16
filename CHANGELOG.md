@@ -5,7 +5,17 @@
 ## Known limitations
 * only tested with class A devices.
 
-## Version: V1.2.0 | 2025-04-15
+## Version: V1.4.0 | 2025-04-16
+
+### Added
+- A "downlink strategie" field has been added to the downlink BACnet objects description to choose a downlink strategie for each object for more refer to the readme part related to the downlink strategie.
+- A flow variable has been added to store the previous values of the downlink objects.
+- A node has been added to update this variable once the downlik message has been sent. 
+
+### Modified
+- The "objectToCompareWith" property is now "uplinkToCompareWith".
+
+## Version: V1.3.0 | 2025-04-15
 
 ### Added
 - An "assignement mode" field has been added to the downlink BACnet objects description to choose if the instance Number is Automatically or manually set.
