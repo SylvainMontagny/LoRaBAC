@@ -5,6 +5,12 @@
 ## Known limitations
 * only tested with class A devices.
 
+## Version: V1.4.1 | 2025-04-16
+
+### fixed
+- The downlink strategies node that wasn't working correctly has been fixed by adding two missing lines
+
+
 ## Version: V1.4.0 | 2025-04-16
 
 ### Added

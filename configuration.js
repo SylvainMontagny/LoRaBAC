@@ -28,7 +28,7 @@ let deviceList = {
 
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer,
@@ -49,7 +49,7 @@ let deviceList = {
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "valveSetpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "valveTemperature", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "high", "downlinkStrategie": "compareToUplinkValue", "uplinkToCompareWith": "valveSetpoint", "value": 20 },
+                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low", "downlinkStrategie": "onChangeOfValue", "uplinkToCompareWith": "valveSetpoint", "value": 20 },
             }
         }
     },
@@ -67,7 +67,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer
@@ -97,7 +97,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 5
         },
         "lorawan": {
             "networkServer": networkServer,
@@ -142,7 +142,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer
@@ -172,7 +172,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer
@@ -204,7 +204,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer
@@ -238,7 +238,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 5
         },
         "lorawan": {
             "networkServer": networkServer,
@@ -277,7 +277,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer,
@@ -309,7 +309,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer
@@ -340,7 +340,7 @@ let deviceList = {
             "password": password,
         },
         "identity":{
-            "maxDevNum": 15
+            "maxDevNum": 10
         },
         "lorawan": {
             "networkServer": networkServer,
@@ -348,7 +348,7 @@ let deviceList = {
         },
         "bacnet": {
             "offsetAV": 1000,
-            "offsetBV": 101,
+            "offsetBV": 100,
             "instanceRangeAV": 10,
             "instanceRangeBV": 0,
             "objects": {
