@@ -37,7 +37,6 @@ Current version : v1.4.0
       - [**Second example**:](#second-example)
   - [**5. Downlink strategies**](#5-downlink-strategies)
     - [**5.1. Overview of the Downlink Strategy**](#51-overview-of-the-downlink-strategy)
-    - [**5.2. Steps to Add a New Downlink Strategy**](#52-steps-to-add-a-new-downlink-strategy)
 
 ## **1. Overview**
 ### **1.1. What is LoRaBAC?**
