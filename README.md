@@ -1,7 +1,7 @@
 # LoRaBAC, an open-source LoRaWAN to BACnet interface
 LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables a seamless communication between these two systems, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN).
 
-Current version : v1.4.0
+Current version : v1.4.1
 
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
   - [**1. Overview**](#1-overview)
