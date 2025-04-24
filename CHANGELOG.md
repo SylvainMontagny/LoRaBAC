@@ -3,7 +3,18 @@
 
 
 ## Known limitations
-* only tested with class A devices.
+* only tested with class A  and class C (only fron v1.5.0) devices (LoRaBAC does not support class B).
+
+## Version: V1.5.0 | 2025-04-24
+
+### Added
+- A "polling of class C devices's downlink bacnet objects" group has been added to manage downlinks of class C devices.
+- Another group used to manage errors has been added this one allow the user to have more precision on where and why the error happened.
+- A new downlink strategie has been added. The "onChangeOfValueWithinRange" strategie that allow the user to choose a range within which the value will be updated, if the value is out of this range no downlink will be sent to the device.
+
+### Modified
+- The "oldvalues" flow context variable is now "previousValues".
+- The two subflows used for native bacnet communication have been replaced by two equivalent function nodes 
 
 ## Version: V1.4.1 | 2025-04-16
 
