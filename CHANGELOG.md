@@ -3,7 +3,17 @@
 
 
 ## Known limitations
-* only tested with class A  and class C (only fron v1.5.0) devices (LoRaBAC does not support class B).
+* only tested with class A  and class C (only from v1.5.0) devices (LoRaBAC does not support class B).
+
+## Version: V1.6.0 | 2025-04-24
+
+### Added
+- A "defaultValuesForDownlink" property has been added in the lorawan property of each device type of the device list to set static values for downlink.
+- A description has been added inside the information tab of the MQTT subscriber node.
+- Some tests has been added to ensure that the configuration is correct and that instances don't overlap another.
+
+### Modified
+- There is now only one subflow for restAPI in which we can choose if we **write** `Uplinks` on the controller or if we **read** the `Downlinks` from the controller    
 
 ## Version: V1.5.0 | 2025-04-24
 

@@ -7,8 +7,8 @@ const ipAddress = "TO_CONFIGURE";               // "a.b.c.d"
 const networkServer = "TO_CONFIGURE";           // tts, chirpstack, actility 
 const protocol = "TO_CONFIGURE";               // restAPIBacnet, bacnet, later : restAPIModbus, modbus
 const chirpstackGrpcApikey = "TO_CONFIGURE_IF_USING_CHIRPSTACK"     // chirpstack only
-const login = "TO_CONFIGURE_IF_USING_restAPIBacnet";
-const password = "TO_CONFIGURE_IF_USING_restAPIBacnet";
+const login = "TO_CONFIGURE";
+const password = "TO_CONFIGURE";
 
 
 
@@ -31,7 +31,15 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
-            "class": "C",
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
+            "class": "A",
             "networkServer": networkServer,
             "flushDownlinkQueue": false,
             "actility": {
@@ -71,6 +79,14 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
             "class": "A",
             "networkServer": networkServer
         },
@@ -102,6 +118,17 @@ let deviceList = {
             "maxDevNum": 5
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+                    "radioInterval": 5,
+                    "safetyValue": 20,
+                    "safetyMode": "Ambient_Temperature",
+                    "userMode":"Ambient_Temperature"
+                },
+                "fPort_2":{
+
+                }
+            },
             "class": "A",
             "networkServer": networkServer,
             "flushDownlinkQueue": false,
@@ -124,11 +151,7 @@ let deviceList = {
                 "ackError": { "lorawanPayloadName": "Radio_Communication_Error", "objectType": "binaryValue", "assignementMode":"auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 //////////////// DOWNLINKS ////////////////////
                 "controllerSetpoint": { "lorawanPayloadName": "setValue", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 7, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "downlinkStrategie": "compareToUplinkValue","uplinkToCompareWith": "valveSetpoint", "value": 20 },
-                "userMode": { "lorawanPayloadName": "userMode", "objectType": "binaryValue", "assignementMode":"auto", "instanceNum": 1, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "downlinkStrategie": "noDownlink", "value": 1 },
-                "safetyMode": { "lorawanPayloadName": "safetyMode", "objectType": "binaryValue", "assignementMode":"auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "downlinkStrategie": "noDownlink", "value": 1 },
-                "safetyValue": { "lorawanPayloadName": "safetyValue", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 8, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "downlinkStrategie": "noDownlink", "value": 20 },
                 "Room_Temperature": { "lorawanPayloadName": "Room_Temperature", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 9, "dataDirection": "downlink", "downlinkPort": 10, "downlinkPortPriority": "low", "downlinkStrategie": "compareToUplinkValue","uplinkToCompareWith": "usedTemperature", "value": 0 },
-                "radioInterval": { "lorawanPayloadName": "radioInterval", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 10, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "downlinkStrategie": "noDownlink", "value": 10 }
             }
         }
     },
@@ -149,6 +172,14 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
             "networkServer": networkServer
         },
         "bacnet": {
@@ -179,6 +210,14 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
             "class": "A",
             "networkServer": networkServer
         },
@@ -212,6 +251,14 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
             "class": "A",
             "networkServer": networkServer
         },
@@ -247,6 +294,14 @@ let deviceList = {
             "maxDevNum": 5
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
             "class": "A",
             "networkServer": networkServer,
             "flushDownlinkQueue": false
@@ -287,6 +342,14 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
             "class": "A",
             "networkServer": networkServer,
             "flushDownlinkQueue": false
@@ -320,6 +383,14 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+
+                },
+                "fPort_2":{
+
+                }
+            },
             "class": "A",
             "networkServer": networkServer
         },
@@ -353,6 +424,14 @@ let deviceList = {
             "maxDevNum": 10
         },
         "lorawan": {
+            "defaultValuesForDownlink": {
+                "fPort_1": {
+
+                },
+                "fPort_2": {
+
+                }
+            },
             "networkServer": networkServer,
             "flushDownlinkQueue": false
         },

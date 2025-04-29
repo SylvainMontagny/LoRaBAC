@@ -1,7 +1,7 @@
 # LoRaBAC, an open-source LoRaWAN to BACnet interface
 LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables a seamless communication between these two systems, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN).
 
-Current version : v1.5.0
+Current version : v1.6.0
 
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
   - [**1. Overview**](#1-overview)
@@ -295,14 +295,15 @@ The values in brackets [ ] are the available possibilities.
 
 #### **Details of the `lorawan` property:**
 
-| Property            | Description                                                                 | Required                       |
-|---------------------|-----------------------------------------------------------------------------|--------------------------------|
-| `class`             | Device class used: ["A", "B", "C"]                                          | Yes                            |
-| `networkServer`     | Network Server used: ["tts", "chirpstack", "actility"]                      | Yes                            |
-| `flushDownlinkQueue`| Enable "Flush Downlink Queue": [true, false]                                | Only if using downlink         |
-| `chirpstack`        | [ChirpStack specific information](#43-specific-information-about-the-network-server) | Only if using ChirpStack AND Flush downlink Queue capability |
-| `actility`          | [Actility specific information](#43-specific-information-about-the-network-server) | Only if using Actility AND downlink |
-| `tts`               | [TTS specific information](#43-specific-information-about-the-network-server) | Only if using TTS              |
+| Property                  | Description                                                                 | Required                       |
+|---------------------------|-----------------------------------------------------------------------------|--------------------------------|
+| `defaultValuesForDownlink`| Values that are needed for downlink but are constants                       | Only if needed with your device|
+| `class`                   | Device class used: ["A", "B", "C"]                                          | Yes                            |
+| `networkServer`           | Network Server used: ["tts", "chirpstack", "actility"]                      | Yes                            |
+| `flushDownlinkQueue`      | Enable "Flush Downlink Queue": [true, false]                                | Only if using downlink         |
+| `chirpstack`              | [ChirpStack specific information](#43-specific-information-about-the-network-server) | Only if using ChirpStack AND Flush downlink Queue capability |
+| `actility`                | [Actility specific information](#43-specific-information-about-the-network-server) | Only if using Actility AND downlink |
+| `tts`                     | [TTS specific information](#43-specific-information-about-the-network-server) | Only if using TTS              |
 
 <br><br>
 
@@ -402,10 +403,10 @@ A `brand-sensor` LoRaWAN device that works with `any controller`s using native B
             "ipAddress": "ipAddress",
         },
         "identity":{
-            "class": "A"
             "maxDevNum": 15
         },
         "lorawan": {
+            "class": "A",
             "networkServer": "tts",
         },
         "bacnet": {
@@ -427,7 +428,8 @@ In this example, the LoRaWAN payload `TempC` will be written in an `analog value
 - `offsetAV + (instanceRangeAV * x) + instanceNum` for `brand-sensor-x`. 
 
 #### **Second example**:
-A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller using `Rest API`, `ChirpStack`, 3 BACnet objects (2 uplink and 1 downlink), object instance for `analog values starts at 0`, object instance for `binary values starts at 0`, maximun number of device is `15`, downlink port used is `30`.
+
+A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller using `Rest API`, `ChirpStack`, 3 BACnet objects (2 uplink and 1 downlink), object instance for `analog values starts at 0`, object instance for `binary values starts at 0`, maximun number of device is `15`, downlink port used by the **controllerSetpoint BACnet object** is `30` and there is a static value to send on the downlink port 30, `radioInterval`.
 
 ```json
     "brand-sensor": {
@@ -443,6 +445,19 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
             "maxDevNum": 15
         },
         "lorawan": {
+            "defaultValuesForDownlink":{
+                "fPort_1":{
+                    
+                },
+                "fPort_30":{
+                    "radioInterval": 5
+                },
+                ...
+                "fPort_x":{
+
+                }
+            },
+            "class": "A",
             "networkServer": "chirpstack"
         },
         "bacnet": {
@@ -462,6 +477,7 @@ In this example:
 - The LoRaWAN payload `setpoint` will be **written** in an `analog value` BACnet object called `valveSetpoint`:
 - The LoRaWAN payload `temperature` will be **written** in an `analog value` BACnet object called `valveTemperature`.
 - The `analog value` of the BACnet object `controllerSetpoint` will be **written** in the LoRaWAN payload called `target-setpoint`.
+- The `defaultValuesForDownlink` of `fPort_30` will be **written** in the **same** LoRaWAN payload as `controllerSetpoint`.
 
 The following instance number will be used for the BACnet object:
 
@@ -500,6 +516,6 @@ Right now, in the LoRaBAC application, there are three dowlink strategies that c
 * The **"noDownlink"** strategie
     -
     * with this strategie no action is taken.
-    * Use this strategie if some downlink object are needed for a downlink but their values never change
+    * Use this strategie if you want to see the objects on the BACnet network but won't change their value
 
 
