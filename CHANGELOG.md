@@ -5,6 +5,24 @@
 ## Known limitations
 * only tested with class A  and class C (only from v1.5.0) devices (LoRaBAC does not support class B).
 
+## Version: V1.7.0 | 2025-05-09
+
+### Added
+- A "defaultValuesForDownlink" property has been added in the lorawan property of each device type of the device list to set static values for downlink.
+
+### Modified
+- The downlink strategies have been changed and are now :
+    - **`compareToUplinkObject`**
+    - **`compareToUplinkObjectWithinRange`** 
+    - **`onChangeOfThisObjectValue`** 
+    - **`onChangeOfThisObjectValueWithinRange`** 
+- Now the the flow do not stop after the création of the missing BACnet objects
+- The test for the overlap of manualy assigned BACnet objects has been removed
+- The TO CONFIGURE node is now inside the node called `Create Device Object (On Start TO CONFIGURE)` in the "On Start" tab.
+
+### Fixed
+- the native BACnet nodes were perviously used with a hard coded IP address. Now the IP address used is the one we set in the configuration node.
+
 ## Version: V1.6.0 | 2025-04-24
 
 ### Added
@@ -13,7 +31,7 @@
 - Some tests has been added to ensure that the configuration is correct and that instances don't overlap another.
 
 ### Modified
-- There is now only one subflow for restAPI in which we can choose if we **write** `Uplinks` on the controller or if we **read** the `Downlinks` from the controller    
+- There is now only one subflow for restAPI in which we can choose if we **write** `Uplinks` on the controller or if we **read** the `Downlinks` from the controller.    
 
 ## Version: V1.5.0 | 2025-04-24
 
@@ -28,7 +46,7 @@
 
 ## Version: V1.4.1 | 2025-04-16
 
-### fixed
+### Fixed
 - The downlink strategies node that wasn't working correctly has been fixed by adding two missing lines
 
 
