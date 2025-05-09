@@ -1,0 +1,68 @@
+{
+  "milesight-wt101": {
+    "identity": {
+      "maxDevNum": 100
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "downlinkPort": 30,
+      "flushDownlinkQueue": false,
+      "class": "A",
+      "chirpstack": {}
+    },
+    "bacnet": {
+      "offsetAV": 7000,
+      "offsetBV": 1000,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "valveSetpoint": {
+          "lorawanPayloadName": "temperature_target",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "downlinkStrategie": "onChangeOfValue",
+          "instanceNum": 0,
+          "priority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "",
+          "range": [
+            0,
+            100
+          ],
+          "value": null
+        },
+        "valveTemperature": {
+          "lorawanPayloadName": "temperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "downlinkStrategie": "onChangeOfValue",
+          "instanceNum": 1,
+          "priority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "",
+          "range": [
+            0,
+            100
+          ],
+          "value": null
+        },
+        "controllerSetpoint": {
+          "lorawanPayloadName": "temperature_target",
+          "dataDirection": "downlink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "priority": "low",
+          "objectType": "analogValue",
+          "value": 20
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

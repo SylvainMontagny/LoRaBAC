@@ -1,0 +1,59 @@
+{
+"watteco-tempo": {
+    "identity": {
+      "maxDevNum": 100
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "downlinkPort": 30,
+      "flushDownlinkQueue": true,
+      "class": "A",
+      "chirpstack": {}
+    },
+    "bacnet": {
+      "offsetAV": 3000,
+      "offsetBV": 500,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "temperature": {
+          "lorawanPayloadName": "data[5].value",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "downlinkStrategie": "onChangeOfValue",
+          "instanceNum": 0,
+          "priority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "",
+          "range": [
+            0,
+            100
+          ],
+          "value": null
+        },
+        "humidity": {
+          "lorawanPayloadName": "data[11].value",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "downlinkStrategie": "onChangeOfValue",
+          "instanceNum": 1,
+          "priority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "",
+          "range": [
+            0,
+            100
+          ],
+          "value": null
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "usmb-valve": {
+    "identity": {
+      "maxDevNum": 100
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "downlinkPort": 30,
+      "flushDownlinkQueue": false,
+      "class": "A",
+      "chirpstack": {}
+    },
+    "bacnet": {
+      "offsetAV": 0,
+      "offsetBV": 0,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "valveSetpoint": {
+          "lorawanPayloadName": "valveSetpoint",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "downlinkStrategie": "onChangeOfValue",
+          "instanceNum": 0,
+          "priority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "",
+          "range": [
+            0,
+            100
+          ],
+          "value": null
+        },
+        "valveTemperature": {
+          "lorawanPayloadName": "valveTemperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "downlinkStrategie": "onChangeOfValue",
+          "instanceNum": 1,
+          "priority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "",
+          "range": [
+            0,
+            100
+          ],
+          "value": null
+        },
+        "controllerSetpoint": {
+          "lorawanPayloadName": "controllerSetpoint",
+          "dataDirection": "downlink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "priority": "low",
+          "objectType": "analogValue",
+          "value": 20
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}
