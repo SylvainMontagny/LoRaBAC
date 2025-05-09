@@ -7,9 +7,6 @@
 
 ## Version: V1.7.0 | 2025-05-09
 
-### Added
-- A "defaultValuesForDownlink" property has been added in the lorawan property of each device type of the device list to set static values for downlink.
-
 ### Modified
 - The downlink strategies have been changed and are now :
     - **`compareToUplinkObject`**
