@@ -61,7 +61,7 @@ let deviceList = {
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "valveSetpoint", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "valveTemperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low", "downlinkStrategie": "compareToUplinkObjectWithinRange", "range":[15,30], "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 },
+                "controllerSetpoint": { "lorawanPayloadName": "controllerSetpoint", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low", "downlinkStrategy": "compareToUplinkObjectWithinRange", "range":[15,30], "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 },
             }
         }
     },
@@ -145,7 +145,6 @@ let deviceList = {
                 ///////////////// UPLINKS /////////////////////
                 "valveSetpoint": { "lorawanPayloadName": "User_Value", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "Ambient_Temperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "usedTemperature": { "lorawanPayloadName": "Used_Temperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 9, "dataDirection": "uplink", "value": null },
                 "currentConsumed": { "lorawanPayloadName": "Average_Current_Consumed", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "uplink", "value": null },
                 "currentGenerated": { "lorawanPayloadName": "Average_Current_Generated", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 3, "dataDirection": "uplink", "value": null },
                 "valvePosition": { "lorawanPayloadName": "Current_Valve_Position", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 4, "dataDirection": "uplink", "value": null },
@@ -153,8 +152,8 @@ let deviceList = {
                 "batteryVoltage": { "lorawanPayloadName": "Storage_Voltage", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 6, "dataDirection": "uplink", "value": null },
                 "ackError": { "lorawanPayloadName": "Radio_Communication_Error", "objectType": "binaryValue", "assignementMode": "auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 //////////////// DOWNLINKS ////////////////////
-                "controllerSetpoint": { "lorawanPayloadName": "setValue", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 7, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "downlinkStrategie": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 },
-                //"Room_Temperature": { "lorawanPayloadName": "Room_Temperature", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 9, "dataDirection": "downlink", "downlinkPort": 10, "downlinkPortPriority": "low", "downlinkStrategie": "compareToUplinkObject","uplinkObjectToCompareWith": "usedTemperature", "value": 0 },
+                "controllerSetpoint": { "lorawanPayloadName": "setValue", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 7, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "high", "downlinkStrategy": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 },
+                //"Room_Temperature": { "lorawanPayloadName": "Room_Temperature", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 9, "dataDirection": "downlink", "downlinkPort": 10, "downlinkPortPriority": "low", "downlinkStrategy": "compareToUplinkObject","uplinkObjectToCompareWith": "usedTemperature", "value": 0 },
             }
         }
     },
@@ -317,10 +316,10 @@ let deviceList = {
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "targetTemperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "sensorTemperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "setTargetTemperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "low", "downlinkStrategie": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 21 },
+                "controllerSetpoint": { "lorawanPayloadName": "setTargetTemperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "low", "downlinkStrategy": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 21 },
                 "valvePosition": { "lorawanPayloadName": "valveOpenness", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 3, "dataDirection": "uplink", "value": null },
                 "valveChildLock": { "lorawanPayloadName": "childLock", "objectType": "binaryValue", "assignementMode": "auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
-                "controllerChildLock": { "lorawanPayloadName": "setChildLock", "objectType": "binaryValue", "assignementMode": "auto", "instanceNum": 1, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "low", "downlinkStrategie": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveChildLock", "value": true },
+                "controllerChildLock": { "lorawanPayloadName": "setChildLock", "objectType": "binaryValue", "assignementMode": "auto", "instanceNum": 1, "dataDirection": "downlink", "downlinkPort": 1, "downlinkPortPriority": "low", "downlinkStrategy": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveChildLock", "value": true },
                 "batteryVoltage": { "lorawanPayloadName": "batteryVoltage", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 4, "dataDirection": "uplink", "value": null },
                 "openWindownDetection": { "lorawanPayloadName": "openWindow", "objectType": "binaryValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "uplink", "value": null },
                 "valveHumidity": { "lorawanPayloadName": "relativeHumidity", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 5, "dataDirection": "uplink", "value": null },
@@ -365,7 +364,7 @@ let deviceList = {
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 85, "downlinkPortPriority": "low", "downlinkStrategie": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 }
+                "controllerSetpoint": { "lorawanPayloadName": "temperature_target", "objectType": "analogValue", "assignementMode": "auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 85, "downlinkPortPriority": "low", "downlinkStrategy": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 }
             }
         }
     },

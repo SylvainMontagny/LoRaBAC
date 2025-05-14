@@ -1,5 +1,5 @@
 {
-"watteco-tempo": {
+  "watteco-tempo": {
     "identity": {
       "maxDevNum": 100
     },
@@ -9,10 +9,8 @@
       ]
     },
     "lorawan": {
-      "downlinkPort": 30,
       "flushDownlinkQueue": true,
-      "class": "A",
-      "chirpstack": {}
+      "class": "A"
     },
     "bacnet": {
       "offsetAV": 3000,
@@ -24,30 +22,16 @@
           "lorawanPayloadName": "data[5].value",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "downlinkStrategie": "onChangeOfValue",
           "instanceNum": 0,
-          "priority": "low",
           "objectType": "analogValue",
-          "uplinkToCompareWith": "",
-          "range": [
-            0,
-            100
-          ],
           "value": null
         },
         "humidity": {
           "lorawanPayloadName": "data[11].value",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "downlinkStrategie": "onChangeOfValue",
           "instanceNum": 1,
-          "priority": "low",
           "objectType": "analogValue",
-          "uplinkToCompareWith": "",
-          "range": [
-            0,
-            100
-          ],
           "value": null
         }
       }
