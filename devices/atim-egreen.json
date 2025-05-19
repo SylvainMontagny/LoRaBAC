@@ -1,0 +1,51 @@
+{
+  "atim-egreen": {
+    "identity": {
+      "maxDevNum": 10
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "flushDownlinkQueue": true,
+      "class": "A"
+    },
+    "bacnet": {
+      "offsetAV": 800,
+      "offsetBV": 100,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "batteryVoltage": {
+          "lorawanPayloadName": "tension.value[0]",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "temperature": {
+          "lorawanPayloadName": "temperature0.value[0]",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 1,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "current": {
+          "lorawanPayloadName": "courant.value[0]",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "objectType": "analogValue",
+          "value": null
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

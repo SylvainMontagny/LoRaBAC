@@ -5,6 +5,19 @@
 ## Known limitations
 * only tested with class A  and class C (only from v1.5.0) devices (LoRaBAC does not support class B).
 
+## Version: V2.0.0 | 2025-05-19
+
+### Added
+- The LoRaBAC flow now uses the **`@montagny/node-red-contrib-lorawan-bacnet`**'s LoRaBAC node.
+- The codec of each device of the device list has been added in the **"codecs"** directory.
+-A json file has been added for each device to add them separately in the LoRaBAC flow.
+- some exemple flows have been added.
+
+### Modified
+- the device list is now a json object.
+- now to handle the class C devices you need to add the **"Class_C_polling_addon"** json to the LoRaBAC flow
+
+
 ## Version: V1.7.0 | 2025-05-09
 
 ### Modified
@@ -13,7 +26,7 @@
     - **`compareToUplinkObjectWithinRange`** 
     - **`onChangeOfThisObjectValue`** 
     - **`onChangeOfThisObjectValueWithinRange`** 
-- Now the the flow do not stop after the création of the missing BACnet objects
+- Now the the flow do not stop after the creation of the missing BACnet objects
 - The test for the overlap of manualy assigned BACnet objects has been removed
 - The TO CONFIGURE node is now inside the node called `Create Device Object (On Start TO CONFIGURE)` in the "On Start" tab.
 

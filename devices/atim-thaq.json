@@ -1,0 +1,59 @@
+{
+  "atim-thaq": {
+    "identity": {
+      "maxDevNum": 10
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "flushDownlinkQueue": true,
+      "class": "A"
+    },
+    "bacnet": {
+      "offsetAV": 400,
+      "offsetBV": 50,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "co2": {
+          "lorawanPayloadName": "CO2.value[0]",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "humidity": {
+          "lorawanPayloadName": "humidity0.value[0]",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 1,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "cov": {
+          "lorawanPayloadName": "COV.value[0]",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "temperature": {
+          "lorawanPayloadName": "temperature0.value[0]",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 3,
+          "objectType": "analogValue",
+          "value": null
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

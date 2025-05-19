@@ -1,0 +1,107 @@
+{
+  "mclimate-vicki": {
+    "identity": {
+      "maxDevNum": 10
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "flushDownlinkQueue": false,
+      "class": "A"
+    },
+    "bacnet": {
+      "offsetAV": 600,
+      "offsetBV": 50,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 5,
+      "objects": {
+        "valveSetpoint": {
+          "lorawanPayloadName": "targetTemperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "valveTemperature": {
+          "lorawanPayloadName": "sensorTemperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 1,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "controllerSetpoint": {
+          "lorawanPayloadName": "setTargetTemperature",
+          "dataDirection": "downlink",
+          "downlinkPort": 30,
+          "assignementMode": "auto",
+          "downlinkStrategy": "compareToUplinkObject",
+          "instanceNum": 2,
+          "downlinkPortPriority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "valveSetpoint",
+          "value": 21
+        },
+        "valvePosition": {
+          "lorawanPayloadName": "valveOpenness",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 3,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "valveChildLock": {
+          "lorawanPayloadName": "childLock",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "binaryValue",
+          "value": null
+        },
+        "controllerChildLock": {
+          "lorawanPayloadName": "setChildLock",
+          "dataDirection": "downlink",
+          "downlinkPort": 30,
+          "assignementMode": "auto",
+          "downlinkStrategy": "compareToUplinkObject",
+          "instanceNum": 1,
+          "downlinkPortPriority": "low",
+          "objectType": "binaryValue",
+          "uplinkToCompareWith": "valveChildLock",
+          "value": true
+        },
+        "batteryVoltage": {
+          "lorawanPayloadName": "batteryVoltage",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 4,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "openWindownDetection": {
+          "lorawanPayloadName": "openWindow",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "objectType": "binaryValue",
+          "value": null
+        },
+        "valveHumidity": {
+          "lorawanPayloadName": "relativeHumidity",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 5,
+          "objectType": "analogValue",
+          "value": null
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

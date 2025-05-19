@@ -1,0 +1,53 @@
+{
+  "usmb-valve": {
+    "identity": {
+      "maxDevNum": 10
+    },
+    "controller": {
+      "debug": "all"
+    },
+    "lorawan": {
+      "flushDownlinkQueue": false,
+      "class": "A"
+    },
+    "bacnet": {
+      "offsetAV": 0,
+      "offsetBV": 0,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "valveSetpoint": {
+          "lorawanPayloadName": "valveSetpoint",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "valveTemperature": {
+          "lorawanPayloadName": "valveTemperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 1,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "controllerSetpoint": {
+          "lorawanPayloadName": "controllerSetpoint",
+          "dataDirection": "downlink",
+          "downlinkPort": "30",
+          "assignementMode": "auto",
+          "downlinkStrategy": "compareToUplinkObject",
+          "instanceNum": 2,
+          "downlinkPortPriority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "valveSetpoint",
+          "value": 20
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

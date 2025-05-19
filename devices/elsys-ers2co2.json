@@ -1,0 +1,75 @@
+{
+  "elsys-ers2co2": {
+    "identity": {
+      "maxDevNum": 10
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "flushDownlinkQueue": true,
+      "class": "A"
+    },
+    "bacnet": {
+      "offsetAV": 500,
+      "offsetBV": 50,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "co2": {
+          "lorawanPayloadName": "co2",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "people": {
+          "lorawanPayloadName": "motion",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 1,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "humidity": {
+          "lorawanPayloadName": "humidity",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "temperature": {
+          "lorawanPayloadName": "temperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 3,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "batteryVoltage": {
+          "lorawanPayloadName": "vdd",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 4,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "light": {
+          "lorawanPayloadName": "light",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 5,
+          "objectType": "analogValue",
+          "value": null
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

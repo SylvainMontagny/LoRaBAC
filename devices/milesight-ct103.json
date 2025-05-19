@@ -1,0 +1,51 @@
+{
+  "milesight-ct103": {
+    "identity": {
+      "maxDevNum": 10
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "flushDownlinkQueue": false,
+      "class": "A"
+    },
+    "bacnet": {
+      "offsetAV": 900,
+      "offsetBV": 100,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 0,
+      "objects": {
+        "totalCurrent": {
+          "lorawanPayloadName": "total_current",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "current": {
+          "lorawanPayloadName": "current",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 1,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "temperature": {
+          "lorawanPayloadName": "temperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "objectType": "analogValue",
+          "value": null
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

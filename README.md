@@ -1,7 +1,6 @@
 # LoRaBAC, an open-source LoRaWAN to BACnet interface
 LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables a seamless communication between these two systems, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN).
 
-Current version : v1.7.0
 
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
   - [**1. Overview**](#1-overview)
@@ -118,9 +117,6 @@ LoRaBAC relies on an **MQTT broker** for communication. You can use:
 ### **2.3. Node-RED Setup**
 LoRaBAC is a **Node-RED flow**, so you need a **Node-RED instance** to run it. Ensure the following packages are installed:
 
-#### **Required Node-RED Packages:**
-- `node-red-contrib-bacnet` (for BACnet integration).
-
 #### **Additional Packages for ChirpStackV4:**
 If you’re using **ChirpStackV4** and want to enable the **"Flush Downlink Queue"** feature, install:
 - `@grpc/grpc-js`
@@ -144,7 +140,8 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 ### **3.2 LoRaBAC configuration for uplink**
 1. **Import LoRaBAC:**
     * Open Node-RED and go to `Menu > Import`
-    * Select the LoRaBAC.json file from the [GitHub repository](https://github.com/SylvainMontagny)
+    * Select the LoRaBAC.json file from the example section
+    
 2. **Connect the MQTT client:**
     * In Node-RED, locate the MQTT client subscriber node (on the left).
     * Enter the MQTT broker details (broker address, login, password).
@@ -358,9 +355,9 @@ The `objects` is a JSON object that describes the association between all LoRaWA
         "dataDirection": "downlink",   // String, Direction of the BACnet Object
         "downlinkPort": 10,             // Number, LoRaWAN downlink Port
         "downlinkPortPriority": "DOWNLINK_PRIORITY",  // String, Priority level of the downlink : ["low", "high"]
-        "downlinkStrategie": "STRATEGIE" // String, Strategie used to know if a downlink is needed : ["compareToUplinkObjectWithinRange", "onChangeOfThisValue", "compareToUplinkObject", "onChangeOfThisValueWithinRange"]
-        "uplinkToCompareWith": "usedTemperature", // String, The name of the uplink object to compare with for the "compareToUplinkValue" strategie (optionnal if other strategie)
-        "range": [a,b], // Array, The start and the end of the range to check for the "onChangeOfValueWithinRange" and "compareToUplinkObjectWithinRange" strategies (optionnal if other strategies)
+        "downlinkStrategy": "STRATEGY" // String, Strategy used to know if a downlink is needed : ["compareToUplinkObjectWithinRange", "onChangeOfThisValue", "compareToUplinkObject", "onChangeOfThisValueWithinRange"]
+        "uplinkObjectToCompareWith": "usedTemperature", // String, The name of the uplink object to compare with for the "compareToUplinkValue" and "compareToUplinkObjectWithinRange" strategies (optionnal if other strategy)
+        "range": [a,b], // Array, The start and the end of the range to check for the "onChangeOfValueWithinRange" and "compareToUplinkObjectWithinRange" strategies (optionnal if other strategy)
         "value": "DEFAULT_VALUE" // Number, LoRaWAN payload value <> BACnet object present value. 
         },
     "BACNET_OBJECT_NAME_2": {
@@ -468,7 +465,7 @@ A `brand-sensor` LoRaWAN device connected to a `Distech-Controls` controller usi
             "objects": {
                 "valveSetpoint": { "lorawanPayloadName": "setpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 0, "dataDirection": "uplink", "value": null },
                 "valveTemperature": { "lorawanPayloadName": "temperature", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 1, "dataDirection": "uplink", "value": null },
-                "controllerSetpoint": { "lorawanPayloadName": "target-setpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low","downlinkStrategie": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 }
+                "controllerSetpoint": { "lorawanPayloadName": "target-setpoint", "objectType": "analogValue", "assignementMode":"auto", "instanceNum": 2, "dataDirection": "downlink", "downlinkPort": 30, "downlinkPortPriority": "low","downlinkStrategy": "compareToUplinkObject", "uplinkObjectToCompareWith": "valveSetpoint", "value": 20 }
             }
         }
     }
@@ -493,30 +490,30 @@ The following instance number will be used for the BACnet object:
 Interfacing uplink LoRaWAN payload with BACNet object is quite simple, however it's more challenging to send downlink from BACnet object to LoRaWAN end-device as we need to define a strategy. The strategy describes what downlink message should be sent from the BACnet object to the LoRaWAN end-device.
 
 ### **5.1. Overview of the Downlink Strategies**
-Right now, in the LoRaBAC application, there are three dowlink strategies that can cover almost all use case. These strategies are set for each BACnet "downlink" object, see [BACnet object description](#44-downlink-bacnet-object-description).  
+Right now, in the LoRaBAC application, there are three dowlink strategies that can cover almost all use case. These strategies are set for each "downlink" BACnet object, see [BACnet object description](#44-downlink-bacnet-object-description).  
 
-* The **"compareToUplinkObject"** strategie
+* The **"compareToUplinkObject"** strategy
     -
     * On each uplink, the BACnet object value is compared to its corresponding uplink object value (set by the **"uplinkObjectToCompareWith"** property). 
     * If the values are different, the object value is sent to the device with a downlink message.
     * If the values are the same, no action is taken.
 
-* The **"compareToUplinkObjectWithinRange"** strategie
+* The **"compareToUplinkObjectWithinRange"** strategy
     -
     * On each uplink, the BACnet object value is compared to its corresponding uplink object value (set by the **"uplinkObjectToCompareWith"** property). 
-    * If the values are different and the new value is within the range, this new value is sent to the device with a downlink message.
+    * If the values are different and the new value is within the range (set by the **"range"** property), this new value is sent to the device with a downlink message.
     * If the values are the same or if the new value is not within the range, no action is taken.
 
- * The **"onChangeOfThisValue"** strategie
+ * The **"onChangeOfThisValue"** strategy
     -
     * On each uplink or polling time for class C devices, the BACnet object value is compared to its old value (from the previous downlink). 
     * If the values are different, the object value is sent to the device with a downlink message.
     * If the values are the same, no action is taken.
 
-* The **"onChangeOfThisValueWithinRange"** strategie
+* The **"onChangeOfThisValueWithinRange"** strategy
     -
     * On each uplink or polling time for class C devices, the BACnet object value is compared to its old value (from the previous downlink). 
-    * If the values are different and the new object walue is within the range, the object value is sent to the device with a downlink message.
+    * If the values are different and the new object walue is within the range (set by the **"range"** property), the object value is sent to the device with a downlink message.
     * If the values are the same or if the new value is not within the range, no action is taken.
 
 
