@@ -1,7 +1,7 @@
 {
   "usmb-valve": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": "all"
@@ -52,7 +52,7 @@
   },
   "dragino-lht65": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -64,7 +64,7 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 1000,
+      "offsetAV": 100,
       "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
@@ -101,7 +101,7 @@
   },
   "micropelt-mlr003": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -113,7 +113,7 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 2000,
+      "offsetAV": 200,
       "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 5,
@@ -210,7 +210,7 @@
   },
   "watteco-tempo": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -222,8 +222,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 3000,
-      "offsetBV": 500,
+      "offsetAV": 300,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -251,7 +251,7 @@
   },
   "atim-thaq": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -263,8 +263,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 4000,
-      "offsetBV": 500,
+      "offsetAV": 400,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -308,7 +308,7 @@
   },
   "elsys-ers2co2": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -320,8 +320,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 5000,
-      "offsetBV": 500,
+      "offsetAV": 500,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -381,7 +381,7 @@
   },
   "mclimate-vicki": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -393,8 +393,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 6000,
-      "offsetBV": 500,
+      "offsetAV": 600,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 5,
       "objects": {
@@ -486,7 +486,7 @@
   },
   "milesight-wt101": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -498,8 +498,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 7000,
-      "offsetBV": 1000,
+      "offsetAV": 700,
+      "offsetBV": 100,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -539,7 +539,7 @@
   },
   "atim-egreen": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -551,8 +551,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 8000,
-      "offsetBV": 1000,
+      "offsetAV": 800,
+      "offsetBV": 100,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -588,7 +588,7 @@
   },
   "milesight-ct103": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -600,8 +600,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 9000,
-      "offsetBV": 1000,
+      "offsetAV": 900,
+      "offsetBV": 100,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {

@@ -1,7 +1,7 @@
 {
   "mclimate-vicki": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -13,8 +13,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 6000,
-      "offsetBV": 500,
+      "offsetAV": 600,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 5,
       "objects": {

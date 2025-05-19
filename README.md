@@ -1,7 +1,6 @@
 # LoRaBAC, an open-source LoRaWAN to BACnet interface
 LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables a seamless communication between these two systems, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN).
 
-Current version : v1.7.0
 
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
   - [**1. Overview**](#1-overview)
@@ -118,9 +117,6 @@ LoRaBAC relies on an **MQTT broker** for communication. You can use:
 ### **2.3. Node-RED Setup**
 LoRaBAC is a **Node-RED flow**, so you need a **Node-RED instance** to run it. Ensure the following packages are installed:
 
-#### **Required Node-RED Packages:**
-- `node-red-contrib-bacnet` (for BACnet integration).
-
 #### **Additional Packages for ChirpStackV4:**
 If you’re using **ChirpStackV4** and want to enable the **"Flush Downlink Queue"** feature, install:
 - `@grpc/grpc-js`
@@ -132,7 +128,7 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 
 
 ## **3. Getting Started**
-v
+
 ### **3.1. LoRaWAN Network Server configuration**
 1. **Provision your end-device:**
     * Log in to your LoRaWAN Network Server (LNS)
@@ -144,7 +140,8 @@ v
 ### **3.2 LoRaBAC configuration for uplink**
 1. **Import LoRaBAC:**
     * Open Node-RED and go to `Menu > Import`
-    * Select the LoRaBAC.json file from the [GitHub repository](https://github.com/SylvainMontagny)
+    * Select the LoRaBAC.json file from the example section
+    
 2. **Connect the MQTT client:**
     * In Node-RED, locate the MQTT client subscriber node (on the left).
     * Enter the MQTT broker details (broker address, login, password).

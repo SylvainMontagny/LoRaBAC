@@ -1,7 +1,7 @@
 {
   "watteco-tempo": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -13,8 +13,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 3000,
-      "offsetBV": 500,
+      "offsetAV": 300,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {

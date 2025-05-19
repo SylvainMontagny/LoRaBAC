@@ -1,7 +1,7 @@
 {
   "micropelt-mlr003": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -13,7 +13,7 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 2000,
+      "offsetAV": 200,
       "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 5,

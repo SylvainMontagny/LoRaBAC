@@ -1,7 +1,7 @@
 {
   "dragino-lht65": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -13,7 +13,7 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 1000,
+      "offsetAV": 100,
       "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,

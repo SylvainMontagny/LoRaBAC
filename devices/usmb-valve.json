@@ -1,7 +1,7 @@
 {
   "usmb-valve": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": "all"

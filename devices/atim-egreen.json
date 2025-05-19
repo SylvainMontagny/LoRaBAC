@@ -1,7 +1,7 @@
 {
   "atim-egreen": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 10
     },
     "controller": {
       "debug": [
@@ -13,8 +13,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 8000,
-      "offsetBV": 1000,
+      "offsetAV": 800,
+      "offsetBV": 100,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
