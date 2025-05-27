@@ -38,7 +38,7 @@
           "lorawanPayloadName": "Used_Temperature",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "instanceNum": 9,
+          "instanceNum": 2,
           "objectType": "analogValue",
           "value": null
         },
@@ -46,7 +46,7 @@
           "lorawanPayloadName": "Average_Current_Consumed",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "instanceNum": 2,
+          "instanceNum": 3,
           "objectType": "analogValue",
           "value": null
         },
@@ -54,7 +54,7 @@
           "lorawanPayloadName": "Average_Current_Generated",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "instanceNum": 3,
+          "instanceNum": 4,
           "objectType": "analogValue",
           "value": null
         },
@@ -62,7 +62,7 @@
           "lorawanPayloadName": "Current_Valve_Position",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "instanceNum": 4,
+          "instanceNum": 5,
           "objectType": "analogValue",
           "value": null
         },
@@ -70,7 +70,7 @@
           "lorawanPayloadName": "Flow_Temperature",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "instanceNum": 5,
+          "instanceNum": 6,
           "objectType": "analogValue",
           "value": null
         },
@@ -78,7 +78,7 @@
           "lorawanPayloadName": "Storage_Voltage",
           "dataDirection": "uplink",
           "assignementMode": "auto",
-          "instanceNum": 6,
+          "instanceNum": 7,
           "objectType": "analogValue",
           "value": null
         },
@@ -93,13 +93,26 @@
         "controllerSetpoint": {
           "lorawanPayloadName": "setValue",
           "dataDirection": "downlink",
-          "downlinkPort": 30,
+          "downlinkPort": 1,
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
-          "instanceNum": 7,
+          "instanceNum": 8,
           "downlinkPortPriority": "low",
           "objectType": "analogValue",
           "uplinkToCompareWith": "valveSetpoint",
+          "value": 20
+        }
+        ,
+        "Room_Temperature": {
+          "lorawanPayloadName": "Room_Temperature",
+          "dataDirection": "downlink",
+          "downlinkPort": 10,
+          "assignementMode": "auto",
+          "downlinkStrategy": "compareToUplinkObject",
+          "instanceNum": 9,
+          "downlinkPortPriority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "usedTemperature",
           "value": 20
         }
       }

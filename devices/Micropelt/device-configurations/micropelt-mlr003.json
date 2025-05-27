@@ -1,0 +1,103 @@
+{
+  "micropelt-mlr003": {
+    "identity": {
+      "maxDevNum": 10
+    },
+    "controller": {
+      "debug": [
+        "all"
+      ]
+    },
+    "lorawan": {
+      "flushDownlinkQueue": false,
+      "class": "A"
+    },
+    "bacnet": {
+      "offsetAV": 200,
+      "offsetBV": 0,
+      "instanceRangeAV": 10,
+      "instanceRangeBV": 5,
+      "objects": {
+        "valveSetpoint": {
+          "lorawanPayloadName": "User_Value",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "valveTemperature": {
+          "lorawanPayloadName": "Ambient_Temperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 1,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "currentConsumed": {
+          "lorawanPayloadName": "Average_Current_Consumed",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 2,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "currentGenerated": {
+          "lorawanPayloadName": "Average_Current_Generated",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 3,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "valvePosition": {
+          "lorawanPayloadName": "Current_Valve_Position",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 4,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "valveFlowTemperature": {
+          "lorawanPayloadName": "Flow_Temperature",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 5,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "batteryVoltage": {
+          "lorawanPayloadName": "Storage_Voltage",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 6,
+          "objectType": "analogValue",
+          "value": null
+        },
+        "ackError": {
+          "lorawanPayloadName": "Radio_Communication_Error",
+          "dataDirection": "uplink",
+          "assignementMode": "auto",
+          "instanceNum": 0,
+          "objectType": "binaryValue",
+          "value": null
+        },
+        "controllerSetpoint": {
+          "lorawanPayloadName": "setValue",
+          "dataDirection": "downlink",
+          "downlinkPort": 30,
+          "assignementMode": "auto",
+          "downlinkStrategy": "compareToUplinkObject",
+          "instanceNum": 7,
+          "downlinkPortPriority": "low",
+          "objectType": "analogValue",
+          "uplinkToCompareWith": "valveSetpoint",
+          "value": 20
+        }
+      }
+    },
+    "mqtt": {
+      "topicDownlink": {}
+    }
+  }
+}

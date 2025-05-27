@@ -3,7 +3,7 @@
 
 
 ## Known limitations
-* only tested with class A  and class C (only from v1.5.0) devices (LoRaBAC does not support class B).
+* only tested with class A  and class C (only from v1.5.0) devices.
 
 ## Version: V2.0.0 | 2025-05-19
 
