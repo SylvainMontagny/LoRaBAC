@@ -117,6 +117,8 @@ LoRaBAC relies on an **MQTT broker** for communication. You can use:
 ### **2.3. Node-RED Setup**
 LoRaBAC is a **Node-RED flow**, so you need a **Node-RED instance** to run it. Ensure the following packages are installed:
 
+- @montagny/node-red-contrib-lorawan-bacnet
+
 #### **Additional Packages for ChirpStackV4:**
 If you’re using **ChirpStackV4** and want to enable the **"Flush Downlink Queue"** feature, install:
 - `@grpc/grpc-js`
