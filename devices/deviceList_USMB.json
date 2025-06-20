@@ -101,7 +101,7 @@
   },
   "micropelt-mlr003": {
     "identity": {
-      "maxDevNum": 10
+      "maxDevNum": 100
     },
     "controller": {
       "debug": [
@@ -116,7 +116,7 @@
       "offsetAV": 200,
       "offsetBV": 0,
       "instanceRangeAV": 10,
-      "instanceRangeBV": 5,
+      "instanceRangeBV": 0,
       "objects": {
         "valveSetpoint": {
           "lorawanPayloadName": "User_Value",
@@ -134,52 +134,12 @@
           "objectType": "analogValue",
           "value": null
         },
-        "currentConsumed": {
-          "lorawanPayloadName": "Average_Current_Consumed",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 2,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "currentGenerated": {
-          "lorawanPayloadName": "Average_Current_Generated",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 3,
-          "objectType": "analogValue",
-          "value": null
-        },
         "valvePosition": {
           "lorawanPayloadName": "Current_Valve_Position",
           "dataDirection": "uplink",
           "assignementMode": "auto",
           "instanceNum": 4,
           "objectType": "analogValue",
-          "value": null
-        },
-        "valveFlowTemperature": {
-          "lorawanPayloadName": "Flow_Temperature",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 5,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "batteryVoltage": {
-          "lorawanPayloadName": "Storage_Voltage",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 6,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "ackError": {
-          "lorawanPayloadName": "Radio_Communication_Error",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "binaryValue",
           "value": null
         },
         "controllerSetpoint": {
@@ -214,8 +174,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 300,
-      "offsetBV": 50,
+      "offsetAV": 1300,
+      "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -255,8 +215,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 400,
-      "offsetBV": 50,
+      "offsetAV": 1400,
+      "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -312,8 +272,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 500,
-      "offsetBV": 50,
+      "offsetAV": 1500,
+      "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -385,8 +345,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 600,
-      "offsetBV": 50,
+      "offsetAV": 1600,
+      "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 5,
       "objects": {
@@ -409,7 +369,7 @@
         "controllerSetpoint": {
           "lorawanPayloadName": "setTargetTemperature",
           "dataDirection": "downlink",
-          "downlinkPort": 30,
+          "downlinkPort": 1,
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
           "instanceNum": 2,
@@ -437,7 +397,7 @@
         "controllerChildLock": {
           "lorawanPayloadName": "setChildLock",
           "dataDirection": "downlink",
-          "downlinkPort": 1,
+          "downlinkPort": 30,
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
           "instanceNum": 1,
@@ -490,8 +450,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 700,
-      "offsetBV": 100,
+      "offsetAV": 1700,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -543,8 +503,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 800,
-      "offsetBV": 100,
+      "offsetAV": 1800,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {
@@ -592,8 +552,8 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 900,
-      "offsetBV": 100,
+      "offsetAV": 1900,
+      "offsetBV": 50,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
       "objects": {

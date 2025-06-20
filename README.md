@@ -36,6 +36,7 @@ LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRa
       - [**Second example**:](#second-example)
   - [**5. Downlink strategies**](#5-downlink-strategies)
     - [**5.1. Overview of the Downlink Strategies**](#51-overview-of-the-downlink-strategies)
+  - [**6. Device list checks**](#6-device-list-checks)
 
 ## **1. Overview**
 ### **1.1. What is LoRaBAC?**
@@ -518,6 +519,28 @@ Right now, in the LoRaBAC application, there are three dowlink strategies that c
     * If the values are different and the new object walue is within the range (set by the **"range"** property), the object value is sent to the device with a downlink message.
     * If the values are the same or if the new value is not within the range, no action is taken.
 
+## **6. Device list checks**
 
+- [x] Check if the LNS is supported by LoRaBAC
+- [x] Check if the properties common to each BACnet objects are present
+- [x] Check if the properties specific to downlink objects are present
+- [x] Check if the property "uplinkToCompareWith" is present with the "compareToUplinkObject" and "compareToUplinkObjectWithinRange" downlink strategies.
+- [x] Check if the property "range" is present with the "compareToUplinkObjectWithinRange" and "onChangeOfThisValueWithinRange" downlink strategies.
+- [x] Check if "range" is a two element array with element 0 superior to element 1
+- [x] Check if the protocol is supported by LoRaBAC
+- [x] Check if all the objects of a device have the same "assignementMode"
+- [x] Check for each object of each device if the "InstanceNum" is positive
+- [x] Check for each object of each device if the "instanceNum" is inferior to the "instanceRange"
+- [x] Check if the manually assigned objects don't overlap with autoamatically assiged objects
+- [x] Check if the autoamatically assigned objects don't overlap with other autoamatically assiged objects
+- [x] Check if each object have a different instance offset
+- [x] Check if each object and each deviceType have a different names
+- [x] Check if the object compared to the downlink object is an uplink object for the comparaison strategies
 
+#### When a device emmit :
+- [x] Check if the device name is in the good format (xxx-num)
+- [x] Check if the device number is not equal to 0 
+- [x] Check if the device is present in the device list
+- [x] Check if the device number is inferior to the max number of device
+- [x] Check if there is a payload decoder
 
