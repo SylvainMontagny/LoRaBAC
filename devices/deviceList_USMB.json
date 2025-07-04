@@ -1,58 +1,7 @@
 {
-  "usmb-valve": {
-    "identity": {
-      "maxDevNum": 10
-    },
-    "controller": {
-      "debug": "all"
-    },
-    "lorawan": {
-      "flushDownlinkQueue": false,
-      "class": "A"
-    },
-    "bacnet": {
-      "offsetAV": 0,
-      "offsetBV": 0,
-      "instanceRangeAV": 10,
-      "instanceRangeBV": 0,
-      "objects": {
-        "valveSetpoint": {
-          "lorawanPayloadName": "valveSetpoint",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "valveTemperature": {
-          "lorawanPayloadName": "valveTemperature",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 1,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "controllerSetpoint": {
-          "lorawanPayloadName": "controllerSetpoint",
-          "dataDirection": "downlink",
-          "downlinkPort": "30",
-          "assignementMode": "auto",
-          "downlinkStrategy": "compareToUplinkObject",
-          "instanceNum": 2,
-          "downlinkPortPriority": "low",
-          "objectType": "analogValue",
-          "uplinkToCompareWith": "valveSetpoint",
-          "value": 20
-        }
-      }
-    },
-    "mqtt": {
-      "topicDownlink": {}
-    }
-  },
   "dragino-lht65": {
     "identity": {
-      "maxDevNum": 10
+      "maxDevNum": 500
     },
     "controller": {
       "debug": [
@@ -64,7 +13,7 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 100,
+      "offsetAV": 0,
       "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
@@ -101,7 +50,7 @@
   },
   "micropelt-mlr003": {
     "identity": {
-      "maxDevNum": 100
+      "maxDevNum": 500
     },
     "controller": {
       "debug": [
@@ -113,7 +62,7 @@
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 200,
+      "offsetAV": 5000,
       "offsetBV": 0,
       "instanceRangeAV": 10,
       "instanceRangeBV": 0,
@@ -160,198 +109,25 @@
       "topicDownlink": {}
     }
   },
-  "watteco-tempo": {
+  "usmb-valve": {
     "identity": {
       "maxDevNum": 10
     },
     "controller": {
-      "debug": [
-        "all"
-      ]
-    },
-    "lorawan": {
-      "flushDownlinkQueue": true,
-      "class": "A"
-    },
-    "bacnet": {
-      "offsetAV": 1300,
-      "offsetBV": 0,
-      "instanceRangeAV": 10,
-      "instanceRangeBV": 0,
-      "objects": {
-        "temperature": {
-          "lorawanPayloadName": "data[5].value",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "humidity": {
-          "lorawanPayloadName": "data[11].value",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 1,
-          "objectType": "analogValue",
-          "value": null
-        }
-      }
-    },
-    "mqtt": {
-      "topicDownlink": {}
-    }
-  },
-  "atim-thaq": {
-    "identity": {
-      "maxDevNum": 10
-    },
-    "controller": {
-      "debug": [
-        "all"
-      ]
-    },
-    "lorawan": {
-      "flushDownlinkQueue": true,
-      "class": "A"
-    },
-    "bacnet": {
-      "offsetAV": 1400,
-      "offsetBV": 0,
-      "instanceRangeAV": 10,
-      "instanceRangeBV": 0,
-      "objects": {
-        "co2": {
-          "lorawanPayloadName": "CO2.value[0]",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "humidity": {
-          "lorawanPayloadName": "humidity0.value[0]",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 1,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "cov": {
-          "lorawanPayloadName": "COV.value[0]",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 2,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "temperature": {
-          "lorawanPayloadName": "temperature0.value[0]",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 3,
-          "objectType": "analogValue",
-          "value": null
-        }
-      }
-    },
-    "mqtt": {
-      "topicDownlink": {}
-    }
-  },
-  "elsys-ers2co2": {
-    "identity": {
-      "maxDevNum": 10
-    },
-    "controller": {
-      "debug": [
-        "all"
-      ]
-    },
-    "lorawan": {
-      "flushDownlinkQueue": true,
-      "class": "A"
-    },
-    "bacnet": {
-      "offsetAV": 1500,
-      "offsetBV": 0,
-      "instanceRangeAV": 10,
-      "instanceRangeBV": 0,
-      "objects": {
-        "co2": {
-          "lorawanPayloadName": "co2",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "people": {
-          "lorawanPayloadName": "motion",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 1,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "humidity": {
-          "lorawanPayloadName": "humidity",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 2,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "temperature": {
-          "lorawanPayloadName": "temperature",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 3,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "batteryVoltage": {
-          "lorawanPayloadName": "vdd",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 4,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "light": {
-          "lorawanPayloadName": "light",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 5,
-          "objectType": "analogValue",
-          "value": null
-        }
-      }
-    },
-    "mqtt": {
-      "topicDownlink": {}
-    }
-  },
-  "mclimate-vicki": {
-    "identity": {
-      "maxDevNum": 10
-    },
-    "controller": {
-      "debug": [
-        "all"
-      ]
+      "debug": "all"
     },
     "lorawan": {
       "flushDownlinkQueue": false,
       "class": "A"
     },
     "bacnet": {
-      "offsetAV": 1600,
+      "offsetAV": 10000,
       "offsetBV": 0,
       "instanceRangeAV": 10,
-      "instanceRangeBV": 5,
+      "instanceRangeBV": 0,
       "objects": {
         "valveSetpoint": {
-          "lorawanPayloadName": "targetTemperature",
+          "lorawanPayloadName": "valveSetpoint",
           "dataDirection": "uplink",
           "assignementMode": "auto",
           "instanceNum": 0,
@@ -359,7 +135,7 @@
           "value": null
         },
         "valveTemperature": {
-          "lorawanPayloadName": "sensorTemperature",
+          "lorawanPayloadName": "valveTemperature",
           "dataDirection": "uplink",
           "assignementMode": "auto",
           "instanceNum": 1,
@@ -367,114 +143,9 @@
           "value": null
         },
         "controllerSetpoint": {
-          "lorawanPayloadName": "setTargetTemperature",
+          "lorawanPayloadName": "controllerSetpoint",
           "dataDirection": "downlink",
-          "downlinkPort": 1,
-          "assignementMode": "auto",
-          "downlinkStrategy": "compareToUplinkObject",
-          "instanceNum": 2,
-          "downlinkPortPriority": "low",
-          "objectType": "analogValue",
-          "uplinkToCompareWith": "valveSetpoint",
-          "value": 21
-        },
-        "valvePosition": {
-          "lorawanPayloadName": "valveOpenness",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 3,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "valveChildLock": {
-          "lorawanPayloadName": "childLock",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "binaryValue",
-          "value": null
-        },
-        "controllerChildLock": {
-          "lorawanPayloadName": "setChildLock",
-          "dataDirection": "downlink",
-          "downlinkPort": 30,
-          "assignementMode": "auto",
-          "downlinkStrategy": "compareToUplinkObject",
-          "instanceNum": 1,
-          "downlinkPortPriority": "low",
-          "objectType": "binaryValue",
-          "uplinkToCompareWith": "valveChildLock",
-          "value": true
-        },
-        "batteryVoltage": {
-          "lorawanPayloadName": "batteryVoltage",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 4,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "openWindownDetection": {
-          "lorawanPayloadName": "openWindow",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 2,
-          "objectType": "binaryValue",
-          "value": null
-        },
-        "valveHumidity": {
-          "lorawanPayloadName": "relativeHumidity",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 5,
-          "objectType": "analogValue",
-          "value": null
-        }
-      }
-    },
-    "mqtt": {
-      "topicDownlink": {}
-    }
-  },
-  "milesight-wt101": {
-    "identity": {
-      "maxDevNum": 10
-    },
-    "controller": {
-      "debug": [
-        "all"
-      ]
-    },
-    "lorawan": {
-      "flushDownlinkQueue": false,
-      "class": "A"
-    },
-    "bacnet": {
-      "offsetAV": 1700,
-      "offsetBV": 50,
-      "instanceRangeAV": 10,
-      "instanceRangeBV": 0,
-      "objects": {
-        "valveSetpoint": {
-          "lorawanPayloadName": "temperature_target",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "valveTemperature": {
-          "lorawanPayloadName": "temperature",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 1,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "controllerSetpoint": {
-          "lorawanPayloadName": "temperature_target",
-          "dataDirection": "downlink",
-          "downlinkPort": 30,
+          "downlinkPort": "30",
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
           "instanceNum": 2,
@@ -482,104 +153,6 @@
           "objectType": "analogValue",
           "uplinkToCompareWith": "valveSetpoint",
           "value": 20
-        }
-      }
-    },
-    "mqtt": {
-      "topicDownlink": {}
-    }
-  },
-  "atim-egreen": {
-    "identity": {
-      "maxDevNum": 10
-    },
-    "controller": {
-      "debug": [
-        "all"
-      ]
-    },
-    "lorawan": {
-      "flushDownlinkQueue": true,
-      "class": "A"
-    },
-    "bacnet": {
-      "offsetAV": 1800,
-      "offsetBV": 50,
-      "instanceRangeAV": 10,
-      "instanceRangeBV": 0,
-      "objects": {
-        "batteryVoltage": {
-          "lorawanPayloadName": "tension.value[0]",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "temperature": {
-          "lorawanPayloadName": "temperature0.value[0]",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 1,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "current": {
-          "lorawanPayloadName": "courant.value[0]",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 2,
-          "objectType": "analogValue",
-          "value": null
-        }
-      }
-    },
-    "mqtt": {
-      "topicDownlink": {}
-    }
-  },
-  "milesight-ct103": {
-    "identity": {
-      "maxDevNum": 10
-    },
-    "controller": {
-      "debug": [
-        "all"
-      ]
-    },
-    "lorawan": {
-      "flushDownlinkQueue": false,
-      "class": "A"
-    },
-    "bacnet": {
-      "offsetAV": 1900,
-      "offsetBV": 50,
-      "instanceRangeAV": 10,
-      "instanceRangeBV": 0,
-      "objects": {
-        "totalCurrent": {
-          "lorawanPayloadName": "total_current",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 0,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "current": {
-          "lorawanPayloadName": "current",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 1,
-          "objectType": "analogValue",
-          "value": null
-        },
-        "temperature": {
-          "lorawanPayloadName": "temperature",
-          "dataDirection": "uplink",
-          "assignementMode": "auto",
-          "instanceNum": 2,
-          "objectType": "analogValue",
-          "value": null
         }
       }
     },
