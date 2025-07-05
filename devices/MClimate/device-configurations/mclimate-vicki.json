@@ -37,7 +37,7 @@
         "controllerSetpoint": {
           "lorawanPayloadName": "setTargetTemperature",
           "dataDirection": "downlink",
-          "downlinkPort": 30,
+          "downlinkPort": 1,
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
           "instanceNum": 2,
@@ -65,7 +65,7 @@
         "controllerChildLock": {
           "lorawanPayloadName": "setChildLock",
           "dataDirection": "downlink",
-          "downlinkPort": 30,
+          "downlinkPort": 1,
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
           "instanceNum": 1,

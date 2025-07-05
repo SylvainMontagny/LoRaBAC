@@ -85,7 +85,7 @@
         "controllerSetpoint": {
           "lorawanPayloadName": "setValue",
           "dataDirection": "downlink",
-          "downlinkPort": 30,
+          "downlinkPort": 1,
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
           "instanceNum": 7,

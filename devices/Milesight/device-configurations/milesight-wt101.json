@@ -37,7 +37,7 @@
         "controllerSetpoint": {
           "lorawanPayloadName": "temperature_target",
           "dataDirection": "downlink",
-          "downlinkPort": 30,
+          "downlinkPort": 85,
           "assignementMode": "auto",
           "downlinkStrategy": "compareToUplinkObject",
           "instanceNum": 2,
