@@ -1,5 +1,5 @@
 # LoRaBAC, an open-source LoRaWAN to BACnet interface
-LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables a seamless communication, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN). LoRaBAC is based on the [LoRaBAC node](https://flows.nodered.org/node/@montagny/node-red-contrib-lorawan-bacnet) In this repository, you will find the NodeRED flow that need to be used in order to run the application.
+LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRaWAN end-devices** and **BACnet controllers**. It enables a seamless communication, supporting both **uplink** (from LoRaWAN to BACnet) and **downlink** (from BACnet to LoRaWAN). LoRaBAC is based on the [LoRaBAC node](https://flows.nodered.org/node/@montagny/node-red-contrib-lorawan-bacnet). In this repository, you will find the NodeRED flow that need to be used in order to run the overall application.
 
 
 - [LoRaBAC, an open-source LoRaWAN to BACnet interface](#lorabac-an-open-source-lorawan-to-bacnet-interface)
@@ -27,13 +27,13 @@ LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRa
     - [**4.3.2. Instance Num configuration**](#432-instance-num-configuration)
     - [**4.3.3. BACnet Object list configuration**](#433-bacnet-object-list-configuration)
     - [**4.4. Examples**](#44-examples)
-    - [**4.4.1. Assignation example**](#441-assignation-example)
-      - [**4.4.2. Configuration example 1**:](#442-configuration-example-1)
-      - [**4.4.3. Configuration example 2**:](#443-configuration-example-2)
+    - [**4.4.1. Assignation example 1**](#441-assignation-example-1)
+    - [**4.4.2. Configuration example 2**:](#442-configuration-example-2)
+    - [**4.4.3. Configuration example 3**:](#443-configuration-example-3)
   - [APPENDIX A: **Downlink strategies**](#appendix-a-downlink-strategies)
     - [A.1. The **On compare to the following uplink object** strategy](#a1-the-on-compare-to-the-following-uplink-object-strategy)
-    - [A.2. The **On compare to following uplink object within range"** strategy](#a2-the-on-compare-to-following-uplink-object-within-range-strategy)
-    - [A.3. The \*\*On change of this value on the BMS"](#a3-the-on-change-of-this-value-on-the-bms)
+    - [A.2. The **On compare to following uplink object within range** strategy](#a2-the-on-compare-to-following-uplink-object-within-range-strategy)
+    - [A.3. The **On change of this value on the BMS**](#a3-the-on-change-of-this-value-on-the-bms)
     - [A.4. The **On change of this value within range** strategy](#a4-the-on-change-of-this-value-within-range-strategy)
   - [APPENDIX B: **Specific information about the Network Server**](#appendix-b-specific-information-about-the-network-server)
     - [B.1. Details for `actility`:](#b1-details-for-actility)
@@ -43,16 +43,16 @@ LoRaBAC is a **Node-RED-based application** that acts as a bridge between **LoRa
 ### **1.1. What is LoRaBAC?**
 LoRaBAC is open-source application built on **Node-RED**. It allows you to integrate LoRaWAN devices with BACnet controllers, making it ideal for **smart building applications**.
 
-![alt text](images/lorabac.png)
+![LoRaBAC](images/lorabac.png)
 #### **Key Features:**
 - **Universal Compatibility:**
   - [x] Works with **all LoRaWAN end-devices** and **gateways**.
   - [x] Supports **ChirpStack**, **Actility**, and **The Things Stack** (The Things Network / The Things Industries) Network Servers.
-  - [x] Integrates with **all BACnet controllers** using native BACnet protocols (or **Distech-Controls controllers** when using API Rest).
+  - [x] Integrates with **all BACnet controllers** using native BACnet protocols (or **Distech-Controls controllers** when using Rest API).
 
 - **Bidirectional Communication:**
   - [x] **Uplink:** Writes LoRaWAN payloads to specific BACnet objects.
-  - [x] **Downlink:** Reads BACnet objects and sends data to LoRaWAN devices.
+  - [x] **Downlink:** Writes BACnet objects to specific LoRaWAN payload.
 
 - **Proven Use Cases:**
   - [x] Thermostatic valves
@@ -72,9 +72,9 @@ LoRaBAC is designed with a **different approach** compared to other LoRaWAN-BACn
 
 2. **Flexible Deployment:**
    - LoRaBAC can be installed **anywhere**:
-     - On the **LoRaWAN Gateway**.
-     - Within the **local network**.
-     - Directly on the **BACnet controller**.
+     - On the **LoRaWAN Gateway**
+     - Within the **local network**
+     - Directly on the **BACnet controller**
 
 3. **Open Source and Free:**
    - LoRaBAC is **free to use** and **open-source** under the **MIT License**, offering full transparency and customization.
@@ -87,7 +87,7 @@ LoRaBAC is designed with a **different approach** compared to other LoRaWAN-BACn
    - Each new LoRaWAN device type requires **manual configuration**. It is not a "Plug and Play" solution.
 
 ### **1.3. Support**
-To get support on LoRaWAN or LoRaBAC, please refers to the followings ressources, or [reach us](https://www.univ-smb.fr/lorawan/en/contact/) out.
+To get support on LoRaWAN or LoRaBAC, please refers to the following ressources, or [reach us](https://www.univ-smb.fr/lorawan/en/contact/) out.
 
 :tv: Webinar Replay: [LoRaWAN and BACnet interfaces for Smart Building]()
 
@@ -100,12 +100,11 @@ To get support on LoRaWAN or LoRaBAC, please refers to the followings ressources
 :bulb: 2 days training sessions: [LoRaWAN and IoT Training](https://www.univ-smb.fr/lorawan/avada_portfolio/formation-distanciel/)
 
 ## **2. Prerequisites**
-
 ### **2.1. LoRaWAN End-Device**
-To use LoRaBAC, ensure your LoRaWAN devices are:
-- Provisioned on a **Network Server**.
-- Configured with a **payload decoders** (for uplink).
-- Configured with a **payload encoders** (for downlink, if needed).
+To use LoRaBAC you will need:
+- a LoRaWAN **Network Server** (ChirpStack, TTN or Actility).
+- The device **payload decoders** (for uplink).
+- the device **payload encoders** (for downlink, if needed).
 
 Payload decoder and encoders should be provided by your device manufacturer, however, in this repository you will find the payload codec of the tested devices.
 
@@ -144,11 +143,11 @@ A pre-configured **Node-RED Docker image** is available on [Docker Hub](https://
 1. **Install LoRaBAC node**
     * Open Node-RED and go to `Menu > Manage Palette`.
     * On the `Install` tab, search for @montagny/node-red-contrib-lorawan-bacnet palette and install it.
-2. **Import LoRaBAC flow:**
+2. **Import LoRaBAC flow**
     * Go to `Menu > Import`
     * Select the LoRaBAC.json file from this repository.
     
-3. **Connect the MQTT client:**
+3. **Connect the MQTT client**
     * In Node-RED, locate the MQTT client subscriber node (on the left).
     * Enter the MQTT broker details (broker address, login, password).
     * Set the topic to subscribe to (see the information panel of the MQTT subscriber node in your flow).
@@ -188,11 +187,11 @@ The global configuration has 3 items :
 When using REST API, you need to provide the login and password of your controller.
 
 ### **4.3. Device list**
-The device list is the list of each device type used with LoRaBAC. For example, if your use case has 200 "thermostatic-valve" and 300 "temperature-sensor", then you need to configure 2 device types and the device list should look like as follows :
+The device list is the list of all device type used with LoRaBAC. For example, if your use case has 200 "thermostatic-valve" and 300 "temperature-sensor", then you need to configure 2 device types and the device list should look like as follows :
 
-METTRE L'IMAGE CORRESPONDANCE
+![LoRaBAC](images/deviceListExample.png)
 
-Existing configuration for some end-devices can be imported thanks to a json file from this repository under the `devices` directory. For this you need to use  the `Import from JSON` button. 
+Existing configuration for some end-devices can be imported thanks to a json file from this repository under the `devices` directory. For this you need to use  the `Import from JSON` button. In the same way you can export your configuration by copying the JSON file and import it later.
 
 LoRaBAC comes with the support of the following LoRaWAN device types: usmb-valve (simulation of a thermostatic valve using a NUCLEO_WL55), dragino-lht65, watteco-tempo, atim-thaq, elsys-ers2co2, mclimate-vicki, milesight-wt101, micropelt-mlr003, atim-egreen, milesight-ct103. 
 
@@ -202,27 +201,32 @@ LoRaBAC comes with the support of the following LoRaWAN device types: usmb-valve
 - **"All event"**: Most verbose level
 - **"Uplink events"**: Print only uplink events
 - **"Downlink events"**: Print only downlink events
-- **"Creation events"**: Print only object creation event
+- **"Creation events"**: Print only object creation events
 - **"Print TX Time"**: Print transmission time only
 <br>
-1. LoRaWAN device class: A, B or C.
-2. Maximum Device Number: the maximum number of device for this device type. This field is helpful to detect if BACnet objects overlap.
-3. Flush Downlink Queue: This allows to force to flush the downlink queue on the LNS when sending a downlink.
+2. LoRaWAN device class: A, B or C.
+3. Maximum Device Number: the maximum number of device for this device type. This field is helpful to detect if BACnet objects overlap.
+4. Flush Downlink Queue: This allows to force to flush the downlink queue on the LNS when sending a downlink.
 
 ### **4.3.2. Instance Num configuration**
-LoRaBAC handles automatic assignement between the LoRaWAN payload and the BACnet instance number. This assignement is based on the device number NUM given in the LoRaWAN device name (xxxxx-NUM). 
+LoRaBAC handles automatic assignement between the LoRaWAN payload and the BACnet object. This assignement is based on the device number NUM given in the LoRaWAN device name (xxxxx-NUM). 
 * Offset AV: This is where all BACnet Analog Value will be written for this device type.
 * Offset BV: This is where all BACnet Binary Value will be written for this device type.
-* Instance Range AV: This is range allocated for the Analog Value for each device.
-* Instance Range BV: This is range allocated for the Binary Value for each device.
+* Instance Range AV: This is the range allocated for the Analog Value for each device of this device type.
+* Instance Range BV: This is the range allocated for the Binary Value for each device of this device type.
 
-So at which instance number the BACnet object will be written? They will be written at : Offset AV + (Instance Range AV * NUM). NUM is the device number. 
+So at which instance number the BACnet object will be written? They will be written at : **Offset AV** + (**Instance Range AV** * **NUM**).
+
+Where **NUM** is the device number. 
 
 ### **4.3.3. BACnet Object list configuration**
-Whithin the allocated range, we need to assign the LoRaWAN payload with the corresponding BACnet object. 
-First, we need to list all BACnet object that need to be stored on the controller. For example, if you want to transform three LoRaWAN payload into three BACnet object called valveTemperature, valveSetpoint and controllerSetpoint, you will have the following configuration :
+Whithin the allocated range, we need to assign the LoRaWAN payload with the corresponding BACnet object. First, we need to list all BACnet objects we need. For example, if you want to transform:
+* two LoRaWAN payloads into two BACnet objects called valveTemperature, valveSetpoint.
+* one BACnet object called controllerSetpoint into one LoRaWAN payload.
+Then you will have the following configuration :
 
-IMAGE FROM LORABAC
+![BACNet object list configuration](images/BACnetObjectListExample.png)
+
 
 Then for each BACnet object, we need to provide :
 **LoRaWAN Payload name**: The corresponding LoRaWAN payload name as it is in your LoRaWAN codec.
@@ -233,13 +237,13 @@ Then for each BACnet object, we need to provide :
 
 When chosing downlink, we have another set of configuration to provide :
 **Downlink FPort**: The LoRaWAN payload port to use for downlink.
-**Priority**: If you have several downlink configured, which one do you consider as a priority.
+**Priority**: If you have several downlinks configured, which one do you consider as a priority.
 **Downlink strategies**: Choose your downlink strategy. Please refer to the Appendix to know more about the downlink strategy proposed in LoRaBAC.
 **Uplink object name**: If the downlink strategy is based on another BACnet object.
 **Default Value**: Default value of the BACnet object when creating it with the REST API.
 
 ### **4.4. Examples**
-### **4.4.1. Assignation example**
+### **4.4.1. Assignation example 1**
 For the device type `usmb-valve` with an `Instance Range Analog Value = 10`, an `Instance Range Binary Value = 5`, an `Offset Analog Value = 0` and `Offset Binary Value = 0`.
 
 For the device **usmb-valve-1**:
@@ -270,15 +274,17 @@ For the device **usmb-valve-51**:
 - ...
 
 The general rule is that the BACnet instance of the Analog Value is `offsetAV + (instanceRangeAV * NUM) + instanceNumOffset` for `usmb-valve-NUM`. 
-* NUM is the device Number.
-* instanceNumOffset is the instance NUM offset assigned in the section 4.3.3.  
+* `NUM` is the device Number.
+* `instanceNumOffset` is the instance NUM offset assigned in the section 4.3.3.  
 
 
-#### **4.4.2. Configuration example 1**: 
+### **4.4.2. Configuration example 2**: 
 15 `temperature-sensor` LoRaWAN devices send a LoRaWAN payload called `TempC`. We want to transform this `TempC` LoRaWAN payload into an Analog Value BACnet object called `temperature`. We want all Analog Value to start at 1000.
 The configuration should as follows:
 
-IMAGE !!!
+![BACNet object list configuration](images/objectListExample2.png)
+
+![BACNet object list configuration](images/objectConfigurationExample2.png)
 
 
 In this example, the LoRaWAN payload `TempC` will be written in an `analog value` BACnet object called `temperature` with the following instance numbers :
@@ -287,15 +293,29 @@ In this example, the LoRaWAN payload `TempC` will be written in an `analog value
 - `1003` for `temperature-sensor-3`
 - `offsetAV + (instanceRangeAV * NUM) + instanceNumOffset` for `temperature-sensor-NUM`. 
 
-#### **4.4.3. Configuration example 2**: 
+### **4.4.3. Configuration example 3**: 
 50 `thermostatic-valve` LoRaWAN devices send LoRaWAN payloads called `temp` and `setpoint`. We want to transform `temp` LoRaWAN payload into an Analog Value BACnet object called `valveTemperature`. In the same way, we want to transform `setpoint` LoRaWAN payload into an Analog values BACnet object called `valveSetpoint`. 
 
 The `thermostatic-valve` also need to transform an Analog Value called `controllerSetpoint` into a LoRaWAN payload called `userSetpoint`. In order to prevent useless downlinks, the downlinks will be sent only when the `valveSetpoint` is different from `controllerSetpoint`. This downlink has to be sent on port `30`.
 
 We want all Analog Value to start at 2000.
 
+The device list is as follows:
+![BACNet object list configuration](images/deviceListExample3.png)
 
-The following instance number will be used for the BACnet object:
+The object list is as follows:
+![BACNet object list configuration](images/objectListExample3.png)
+
+The valveSTemperature configuration is as follows:
+![BACNet object list configuration](images/valveTemperatureExample3.png)
+
+The valveSetpoint configuration is as follows:
+![BACNet object list configuration](images/valveSetpointExample3.png)
+
+The controllerSetpoint configuration is as follows:
+![BACNet object list configuration](images/controllerSetpointExample3.png)
+
+The following instance number will be assigned for the BACnet objects:
 
 |                   | valveSetpoint   | valveTemperature | controllerSetpoint |
 |-------------------|:---------------:|:----------------:|:------------------:|
@@ -315,12 +335,12 @@ On each uplink, the BACnet object value is compared to the BACnet object configu
 * If the values are different, the object value is sent to the device with a downlink message.
 * If the values are the same, no action is taken.
 
-### A.2. The **On compare to following uplink object within range"** strategy
+### A.2. The **On compare to following uplink object within range** strategy
 On each uplink, the BACnet object value is compared to the BACnet object configured. 
 * If the values are equal within the margin (range), than no action is taken.
 * If the values are different and outside the margin (range), than a downlink is scheduled.
 
-### A.3. The **On change of this value on the BMS"
+### A.3. The **On change of this value on the BMS**
 On each uplink (or polling time for class C end-devices), the BACnet object value is compared to its previous value (from the previous downlink). 
 * If the values are different, a downlink is scheduled.
 * If the values are the same, no action is taken.
@@ -331,9 +351,8 @@ On each uplink (or polling time for class C end-devices), the BACnet object valu
 * If the values are different and outside the margin (range), than a downlink is scheduled.
 
 
-
 ## APPENDIX B: **Specific information about the Network Server**
-Depending on the LoRaWAN Network Server, there might be some specific configuration.
+Depending on the LoRaWAN Network Server, there might be some specific configurations.
 
 ### B.1. Details for `actility`:
 When using downlink, ThingPark needs information to retrieve the payload encoder. In ThingPark, the payload decoder are called drivers and have 3 identifiers : pID, mID and ver.
