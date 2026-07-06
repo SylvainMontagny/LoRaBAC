@@ -257,7 +257,7 @@
         "id": "5f754ddd5c5bce24",
         "type": "mqtt-broker",
         "name": "The Things Stack",
-        "broker": "stack",
+        "broker": "thethingsstack",
         "port": "1883",
         "tls": "",
         "clientid": "",
