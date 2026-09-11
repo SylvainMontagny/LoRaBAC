@@ -130,7 +130,7 @@ function decode_port_1(input) {
   output.User_Value = get_user_value(input);
 
   if (input.length == 12) {
-    utmp = input[11] * 0.25;
+    var utmp = input[11] * 0.25;
     output.Used_Temperature = utmp;
   }
   return output;
